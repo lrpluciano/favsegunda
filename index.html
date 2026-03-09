@@ -1,0 +1,1875 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquitetura de Computadores - Fundamentos Completos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0c1017;
+            --bg-card: #141a24;
+            --bg-elevated: #1a222e;
+            --fg: #e4e8ee;
+            --fg-muted: #7a8599;
+            --accent: #22c997;
+            --accent-dim: rgba(34, 201, 151, 0.12);
+            --warning: #e8a838;
+            --warning-dim: rgba(232, 168, 56, 0.12);
+            --danger: #e85858;
+            --danger-dim: rgba(232, 88, 88, 0.12);
+            --info: #4a9fd4;
+            --info-dim: rgba(74, 159, 212, 0.12);
+            --border: #252d3a;
+        }
+        
+        * { box-sizing: border-box; }
+        
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            line-height: 1.75;
+            font-size: 16px;
+        }
+        
+        .font-mono { font-family: 'IBM Plex Mono', monospace; }
+        
+        /* Navigation */
+        .nav-sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 260px;
+            height: 100vh;
+            background: var(--bg-card);
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            z-index: 100;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .nav-sidebar.open { transform: translateX(0); }
+        
+        @media (min-width: 1200px) {
+            .nav-sidebar { transform: translateX(0); }
+            main { margin-left: 260px; }
+        }
+        
+        .nav-item {
+            display: block;
+            padding: 0.75rem 1.25rem;
+            color: var(--fg-muted);
+            font-size: 0.875rem;
+            border-left: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-item:hover {
+            color: var(--fg);
+            background: var(--bg-elevated);
+        }
+        
+        .nav-item.active {
+            color: var(--accent);
+            background: var(--accent-dim);
+            border-left-color: var(--accent);
+        }
+        
+        /* Cards and boxes */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+        
+        .highlight-box {
+            background: var(--accent-dim);
+            border-radius: 8px;
+            padding: 1.25rem 1.5rem;
+            border-left: 3px solid var(--accent);
+        }
+        
+        .warning-box {
+            background: var(--warning-dim);
+            border-radius: 8px;
+            padding: 1.25rem 1.5rem;
+            border-left: 3px solid var(--warning);
+        }
+        
+        .danger-box {
+            background: var(--danger-dim);
+            border-radius: 8px;
+            padding: 1.25rem 1.5rem;
+            border-left: 3px solid var(--danger);
+        }
+        
+        .info-box {
+            background: var(--info-dim);
+            border-radius: 8px;
+            padding: 1.25rem 1.5rem;
+            border-left: 3px solid var(--info);
+        }
+        
+        /* Professor box - special styling */
+        .professor-box {
+            background: linear-gradient(135deg, rgba(34, 201, 151, 0.08), rgba(74, 159, 212, 0.08));
+            border: 1px solid rgba(34, 201, 151, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .professor-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--info));
+        }
+        
+        /* Diagram */
+        .diagram-box {
+            background: var(--bg-elevated);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .diagram-box:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        
+        .diagram-connector {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+        }
+        
+        /* Comparison */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        @media (max-width: 640px) {
+            .comparison-grid { grid-template-columns: 1fr; }
+        }
+        
+        .comparison-card {
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .comparison-slow {
+            background: var(--danger-dim);
+            border: 1px solid rgba(232, 88, 88, 0.3);
+        }
+        
+        .comparison-fast {
+            background: var(--accent-dim);
+            border: 1px solid rgba(34, 201, 151, 0.3);
+        }
+        
+        /* Accordion */
+        .accordion {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .accordion-header {
+            width: 100%;
+            padding: 1.25rem 1.5rem;
+            background: var(--bg-card);
+            border: none;
+            color: var(--fg);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: left;
+            transition: background 0.2s ease;
+        }
+        
+        .accordion-header:hover {
+            background: var(--bg-elevated);
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+        
+        .accordion.open .accordion-content {
+            max-height: 800px;
+        }
+        
+        .accordion-icon {
+            transition: transform 0.3s ease;
+        }
+        
+        .accordion.open .accordion-icon {
+            transform: rotate(180deg);
+        }
+        
+        /* Reveal animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Progress indicator */
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--info));
+            z-index: 200;
+            transition: width 0.1s ease;
+        }
+        
+        /* Lists */
+        .concept-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .concept-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .concept-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.6rem;
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+        
+        /* Mobile nav toggle */
+        .nav-toggle {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            width: 56px;
+            height: 56px;
+            background: var(--accent);
+            border: none;
+            border-radius: 50%;
+            color: var(--bg);
+            cursor: pointer;
+            z-index: 150;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(34, 201, 151, 0.3);
+            transition: transform 0.2s ease;
+        }
+        
+        .nav-toggle:hover { transform: scale(1.05); }
+        
+        @media (min-width: 1200px) {
+            .nav-toggle { display: none; }
+        }
+        
+        .nav-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 90;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { transition: none; opacity: 1; transform: none; }
+            * { transition-duration: 0.01ms !important; }
+        }
+        
+        /* Section spacing */
+        section { padding: 3rem 0; }
+        
+        /* Definition */
+        .definition {
+            font-size: 1.125rem;
+            color: var(--fg);
+            border-left: 3px solid var(--accent);
+            padding-left: 1.25rem;
+            margin: 1.5rem 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Reading Progress -->
+    <div class="reading-progress" id="reading-progress"></div>
+    
+    <!-- Navigation Sidebar -->
+    <nav class="nav-sidebar" id="nav-sidebar">
+        <div class="p-6 border-b border-[#252d3a]">
+            <span class="font-mono text-sm font-semibold">
+                <span class="text-[#22c997]">ARCH</span> Fundamentos
+            </span>
+            <p class="text-xs text-[#7a8599] mt-1">Arquitetura de Computadores</p>
+        </div>
+        
+        <div class="py-4">
+            <a href="#inicio" class="nav-item active">Introducao</a>
+            <a href="#von-neumann" class="nav-item">1. Arquitetura</a>
+            <a href="#cpu" class="nav-item">2. CPU</a>
+            <a href="#ram" class="nav-item">3. Memoria RAM</a>
+            <a href="#armazenamento" class="nav-item">4. Armazenamento</a>
+            <a href="#gpu" class="nav-item">5. Placa de Video</a>
+            <a href="#gargalo" class="nav-item">6. Gargalo</a>
+            <a href="#diagnostico" class="nav-item">7. Diagnostico</a>
+            <a href="#sintese" class="nav-item">Sintese Final</a>
+        </div>
+    </nav>
+    
+    <!-- Mobile Nav Overlay -->
+    <div class="nav-overlay" id="nav-overlay"></div>
+    
+    <!-- Mobile Nav Toggle -->
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu de navegacao">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+    </button>
+    
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-6 py-8">
+        
+        <!-- Introdução -->
+        <section id="inicio" class="reveal">
+            <header class="mb-12">
+                <p class="text-sm font-mono text-[#22c997] mb-4 tracking-wider">ARQUITETURA DE COMPUTADORES</p>
+                <h1 class="text-3xl md:text-4xl font-bold leading-tight mb-6">
+                    Fundamentos para Diagnostico de Desempenho
+                </h1>
+                <p class="text-lg text-[#7a8599] leading-relaxed">
+                    Este material apresenta os conceitos fundamentais sobre os componentes de um computador 
+                    e como eles interagem. Ao final, voce tera conhecimento suficiente para identificar 
+                    problemas de desempenho e propor solucoes tecnicas fundamentadas.
+                </p>
+            </header>
+            
+            <div class="professor-box mb-8">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-full bg-[#22c997]/20 flex items-center justify-center flex-shrink-0">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#22c997" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-[#22c997] mb-2">Orientacao do Professor</p>
+                        <p class="text-[#7a8599] text-sm leading-relaxed">
+                            Estude cada secao com atencao. Nao decore informacoes, tente entender a logica 
+                            por tras de cada conceito. Pergunte-se: "Por que isso funciona assim?" e 
+                            "O que acontece se isso falhar?". Essa mentalidade e essencial para o diagnostico.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card p-6">
+                <h3 class="font-semibold mb-4">O que voce vai aprender</h3>
+                <ul class="concept-list text-[#7a8599]">
+                    <li>Como os componentes do computador se comunicam</li>
+                    <li>Funcao e caracteristicas de cada componente</li>
+                    <li>Como identificar gargalos de desempenho</li>
+                    <li>Metodo sistematico para diagnostico de problemas</li>
+                    <li>Como priorizar solucoes baseado em custo-beneficio</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Seção 1: Arquitetura -->
+        <section id="von-neumann" class="reveal">
+            <h2 class="text-2xl font-bold mb-6">1. Como o Computador Funciona</h2>
+            
+            <p class="text-[#7a8599] mb-6">
+                Para diagnosticar problemas de desempenho, primeiro precisamos entender como um computador 
+                funciona. Todos os computadores modernos seguem um modelo basico que define como seus 
+                componentes interagem.
+            </p>
+            
+            <div class="definition">
+                <strong>Arquitetura de Von Neumann</strong> e o modelo fundamental que descreve a estrutura 
+                de um computador: uma CPU que processa dados, uma memoria que armazena dados e instrucoes, 
+                e dispositivos de entrada/saida que permitem interacao com o mundo externo.
+            </div>
+            
+            <!-- Diagrama -->
+            <div class="card p-8 my-8">
+                <p class="text-sm text-[#7a8599] mb-8 text-center font-mono">MODELO DE VON NEUMANN - Visao Geral</p>
+                
+                <div class="flex flex-col gap-6">
+                    <!-- CPU -->
+                    <div class="diagram-box">
+                        <div class="text-xs text-[#7a8599] mb-1 font-mono">CPU - UNIDADE CENTRAL DE PROCESSAMENTO</div>
+                        <div class="font-semibold text-lg">Processador</div>
+                        <p class="text-xs text-[#7a8599] mt-2">Executa instrucoes e realiza calculos</p>
+                    </div>
+                    
+                    <div class="diagram-connector">
+                        <svg width="24" height="48" viewBox="0 0 24 48">
+                            <path d="M12 0 L12 48" stroke="currentColor" stroke-width="2" stroke-dasharray="4"/>
+                            <polygon points="12,48 6,38 18,38" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    
+                    <!-- Memória -->
+                    <div class="diagram-box">
+                        <div class="text-xs text-[#7a8599] mb-1 font-mono">MEMORIA PRINCIPAL</div>
+                        <div class="font-semibold text-lg">RAM</div>
+                        <p class="text-xs text-[#7a8599] mt-2">Armazena dados e programas em execucao</p>
+                    </div>
+                    
+                    <div class="diagram-connector">
+                        <svg width="24" height="48" viewBox="0 0 24 48">
+                            <path d="M12 0 L12 48" stroke="currentColor" stroke-width="2" stroke-dasharray="4"/>
+                            <polygon points="12,48 6,38 18,38" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    
+                    <!-- E/S -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="diagram-box">
+                            <div class="text-xs text-[#7a8599] mb-1 font-mono">ENTRADA</div>
+                            <div class="text-sm">Teclado, Mouse</div>
+                        </div>
+                        <div class="diagram-box">
+                            <div class="text-xs text-[#7a8599] mb-1 font-mono">SAIDA</div>
+                            <div class="text-sm">Monitor, Impressora</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Barramento -->
+                <div class="mt-8 pt-6 border-t border-[#252d3a]">
+                    <div class="diagram-box bg-[#22c997]/10 border-[#22c997]">
+                        <div class="text-xs text-[#22c997] mb-1 font-mono">BARRAMENTO DE DADOS</div>
+                        <div class="text-sm">Canal de comunicacao que conecta todos os componentes</div>
+                    </div>
+                </div>
+            </div>
+            
+            <h3 class="text-xl font-semibold mb-4">Ciclo de Processamento</h3>
+            
+            <p class="text-[#7a8599] mb-6">
+                Para executar qualquer tarefa, o computador segue um ciclo continuo de tres etapas:
+            </p>
+            
+            <div class="grid md:grid-cols-3 gap-4 mb-8">
+                <div class="card p-5">
+                    <div class="text-2xl font-bold text-[#22c997] mb-3">1</div>
+                    <h4 class="font-semibold mb-2">Busca</h4>
+                    <p class="text-sm text-[#7a8599]">A CPU busca a instrucao na memoria RAM atraves do barramento</p>
+                </div>
+                <div class="card p-5">
+                    <div class="text-2xl font-bold text-[#22c997] mb-3">2</div>
+                    <h4 class="font-semibold mb-2">Decodificacao</h4>
+                    <p class="text-sm text-[#7a8599]">A CPU interpreta a instrucao para entender o que deve fazer</p>
+                </div>
+                <div class="card p-5">
+                    <div class="text-2xl font-bold text-[#22c997] mb-3">3</div>
+                    <h4 class="font-semibold mb-2">Execucao</h4>
+                    <p class="text-sm text-[#7a8599]">A CPU realiza a operacao e armazena o resultado</p>
+                </div>
+            </div>
+            
+            <div class="professor-box mb-8">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-full bg-[#22c997]/20 flex items-center justify-center flex-shrink-0">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c997" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-[#22c997] mb-2">Orientacao do Professor</p>
+                        <p class="text-[#7a8599] text-sm leading-relaxed">
+                            Perceba que todos os componentes estao conectados pelo barramento. Isso significa que 
+                            a velocidade do barramento afeta a comunicacao entre todos. Um barramento lento 
+                            limita ate mesmo uma CPU rapida. Pense nisso como uma estrada: mesmo com carros rapidos, 
+                            uma estrada estreita cria congestionamento.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="highlight-box">
+                <p class="font-medium mb-2">Conceito-chave para diagnostico</p>
+                <p class="text-sm text-[#7a8599]">
+                    O desempenho do sistema depende da <strong class="text-[#e4e8ee]">velocidade combinada</strong> 
+                    de todos os componentes. Um componente lento pode limitar todo o sistema, independente de 
+                    quao rapidos sejam os outros. Isso e o que chamamos de <strong class="text-[#e4e8ee]">gargalo</strong>.
+                </p>
+            </div>
+        </section>
+
+        <!-- Seção 2: CPU -->
+        <section id="cpu" class="reveal">
+            <h2 class="text-2xl font-bold mb-6">2. CPU - O Processador</h2>
+            
+            <p class="text-[#7a8599] mb-6">
+                A CPU (Unidade Central de Processamento) e o componente responsavel por executar todas as 
+                instrucoes do computador. Ela e frequentemente chamada de "cerebro" do computador porque 
+                coordena todas as operacoes.
+            </p>
+            
+            <div class="definition">
+                <strong>CPU</strong> e o componente que busca instrucoes da memoria, as decodifica e as executa. 
+                Cada instrucao pode ser uma operacao matematica, uma comparacao logica, ou um comando para 
+                transferir dados entre componentes.
+            </div>
+            
+            <h3 class="text-xl font-semibold mb-4 mt-8">Componentes Internos da CPU</h3>
+            
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div class="card p-6">
+                    <h4 class="font-semibold mb-4 text-[#22c997]">Unidade de Controle (UC)</h4>
+                    <p class="text-sm text-[#7a8599] mb-4">
+                        A UC funciona como um maestro de orquestra. Ela:
+                    </p>
+                    <ul class="concept-list text-sm text-[#7a8599]">
+                        <li>Busca instrucoes da memoria RAM</li>
+                        <li>Decodifica cada instrucao</li>
+                        <li>Determina quais operacoes sao necessarias</li>
+                        <li>Coordena a execucao entre os componentes</li>
+                    </ul>
+                </div>
+                
+                <div class="card p-6">
+                    <h4 class="font-semibold mb-4 text-[#22c997]">ULA (Unidade Logica Aritmetica)</h4>
+                    <p class="text-sm text-[#7a8599] mb-4">
+                        A ULA e quem realiza o trabalho "pesado":
+                    </p>
+                    <ul class="concept-list text-sm text-[#7a8599]">
+                        <li>Operacoes aritmeticas: soma, subtracao, multiplicacao, divisao</li>
+                        <li>Operacoes logicas: AND, OR, NOT, comparacoes</li>
+                        <li>Calculos necessarios para renderizacao</li>
+                        <li>Processamento de dados em geral</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card p-6 mb-8">
+                <h4 class="font-semibold mb-4 text-[#22c997]">Registradores</h4>
+                <p class="text-sm text-[#7a8599] mb-4">
+                    Sao pequenas memorias dentro da CPU, extremamente rapidas. Armazenam:
+                </p>
+                <div class="grid grid-cols-2 gap-4 text-sm">
+                    <div class="bg-[#1a222e] p-3 rounded">
+                        <span class="text-[#e4e8ee]">PC (Program Counter)</span>
+                        <p class="text-xs text-[#7a8599] mt-1">Endereco da proxima instrucao</p>
+                    </div>
+                    <div class="bg-[#1a222e] p-3 rounded">
+                        <span class="text-[#e4e8ee]">IR (Instruction Register)</span>
+                        <p class="text-xs text-[#7a8599] mt-1">Instrucao sendo executada</p>
+                    </div>
+                    <div class="bg-[#1a222e] p-3 rounded">
+                        <span class="text-[#e4e8ee]">ACC (Acumulador)</span>
+                        <p class="text-xs text-[#7a8599] mt-1">Resultados das operacoes</p>
+                    </div>
+                    <div class="bg-[#1a222e] p-3 rounded">
+                        <span class="text-[#e4e8ee]">Registradores Gerais</span>
+                        <p class="text-xs text-[#7a8599] mt-1">Dados temporarios varios</p>
+                    </div>
+                </div>
+            </div>
+            
+            <h3 class="text-xl font-semibold mb-4">Caracteristicas que Afetam o Desempenho</h3>
+            
+            <div class="space-y-6 mb-8">
+                <div class="card p-6">
+                    <h4 class="font-semibold mb-3">Clock (Frequencia)</h4>
+                    <p class="text-sm text-[#7a8599] mb-4">
+                        O clock determina quantas instrucoes a CPU pode processar por segundo. 
+                        Medido em GHz (gigahertz), onde 1 GHz = 1 bilhao de ciclos por segundo.
+                    </p>
+                    <div class="bg-[#1a222e] p-4 rounded-lg">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm">Exemplo pratico</span>
+                            <span class="font-mono text-[#22c997]">2.4 GHz</span>
+                        </div>
+                        <p class="text-xs text-[#7a8599]">
+                            Uma CPU de 2.4 GHz pode executar ate 2.4 bilhoes de ciclos por segundo. 
+                            Cada instrucao pode precisar de um ou mais ciclos.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="card p-6">
+                    <h4 class="font-semibold mb-3">Nucleos (Cores)</h4>
+                    <p class="text-sm text-[#7a8599] mb-4">
+                        Cada nucleo e uma unidade de processamento independente. Mais nucleos permitem 
+                        executar mais tarefas simultaneamente (paralelismo).
+                    </p>
+                    <div class="grid grid-cols-3 gap-3 text-center">
+                        <div class="bg-[#1a222e] p-3 rounded">
+                            <div class="text-xl font-bold text-[#e85858]">2</div>
+                            <div class="text-xs text-[#7a8599]">Basic</div>
+                            <div class="text-xs text-[#7a8599]">Tarefas simples</div>
+                        </div>
+                        <div class="bg-[#1a222e] p-3 rounded">
+                            <div class="text-xl font-bold text-[#e8a838]">4-6</div>
+                            <div class="text-xs text-[#7a8599]">Padrao</div>
+                            <div class="text-xs text-[#7a8599]">Multitarefa moderada</div>
+                        </div>
+                        <div class="bg-[#1a222e] p-3 rounded">
+                            <div class="text-xl font-bold text-[#22c997]">8+</div>
+                            <div class="text-xs text-[#7a8599]">Profissional</div>
+                            <div class="text-xs text-[#7a8599]">Renderizacao, VMs</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card p-6">
+                    <h4 class="font-semibold mb-3">Geracao da Arquitetura</h4>
+                    <p class="text-sm text-[#7a8599] mb-4">
+                        Processadores mais modernos sao mais eficientes, mesmo com mesmo clock. 
+                        Uma CPU de 2.4 GHz de 2024 e muito mais rapida que uma de 2.4 GHz de 2011.
+                    </p>
+                    <div class="highlight-box">
+                        <p class="text-sm">
+                            <strong>Exemplo do caso:</strong> O Intel Core i5 de 2a geracao (2011) tem 
+                            arquitetura muito antiga, com baixa eficiencia comparado aos padroes atuais.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="professor-box mb-8">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-full bg-[#22c997]/20 flex items-center justify-center flex-shrink-0">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c997" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-[#22c997] mb-2">Orientacao do Professor</p>
+                        <p class="text-[#7a8599] text-sm leading-relaxed">
+                            Quando um software faz muitos calculos (renderizacao 3D, compilacao de codigo, 
+                            compressao de videos), a CPU trabalha em capacidade maxima. Se ela nao conseguir 
+                            acompanhar, o processo fica lento. Observe no Gerenciador de Tarefas: se a CPU 
+                            esta em 100%, ela e o gargalo.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="warning-box">
+                <p class="font-medium text-[#e8a838] mb-2">Sinais de que a CPU e o gargalo</p>
+                <ul class="text-sm text-[#7a8599] space-y-2">
+                    <li>• Uso da CPU constantemente acima de 90%</li>
+                    <li>• Renderizacoes e calculos demoram muito</li>
+                    <li>• Sistema trava ao executar uma unica tarefa pesada</li>
+                    <li>• Programas demoram para responder mesmo com RAM disponivel</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Seção 3: RAM -->
+        <section id="ram" class="reveal">
+            <h2 class="text-2xl font-bold mb-6">3. Memoria RAM</h2>
+            
+            <p class="text-[#7a8599] mb-6">
+                A memoria RAM (Random Access Memory) e onde o computador armazena os dados que estao 
+                sendo usados no momento. Diferente do disco rigido, a RAM e muito mais rapida, mas 
+                perde todo conteudo quando o computador e desligado.
+            </p>
+            
+            <div class="definition">
+                <strong>RAM</strong> e uma memoria volatil de acesso rapido que armazena temporariamente 
+                dados e programas em execucao. "Volatil" significa que precisa de energia eletrica 
+                constante para manter os dados.
+            </div>
+            
+            <h3 class="text-xl font-semibold mb-4 mt-8">Hierarquia de Memoria</h3>
+            
+            <p class="text-[#7a8599] mb-6">
+                O computador usa diferentes tipos de memoria organizadas em uma hierarquia de velocidade e capacidade:
+            </p>
+            
+            <div class="card p-6 mb-8">
+                <div class="space-y-3">
+                    <div class="flex items-center gap-4">
+                        <div class="flex-1 bg-[#22c997]/20 p-3 rounded text-center">
+                            <div class="font-semibold text-[#22c997]">Registradores</div>
+                            <div class="text-xs text-[#7a8599]">Nanosegundos | KB</div>
+                        </div>
+                        <svg class="w-6 h-6 text-[#7a8599]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                        <div class="w-20 text-xs text-[#7a8599] text-right">Mais rapido<br>Menor capacidade</div>
+                    </div>
+                    
+                    <div class="flex items-center gap-4">
+                        <div class="flex-1 bg-[#22c997]/10 p-3 rounded text-center">
+                            <div class="font-semibold text-[#22c997]">Cache (L1, L2, L3)</div>
+                            <div class="text-xs text-[#7a8599]">Nanosegundos | MB</div>
+                        </div>
+                        <svg class="w-6 h-6 text-[#7a8599]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                    </div>
+                    
+                    <div class="flex items-center gap-4">
+                        <div class="flex-1 bg-[#e8a838]/10 p-3 rounded text-center">
+                            <div class="font-semibold text-[#e8a838]">RAM</div>
+                            <div class="text-xs text-[#7a8599]">Dezenas de ns | GB</div>
+                        </div>
+                        <svg class="w-6 h-6 text-[#7a8599]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                    </div>
+                    
+                    <div class="flex items-center gap-4">
+                        <div class="flex-1 bg-[#e85858]/10 p-3 rounded text-center">
+                            <div class="font-semibold text-[#e85858]">Disco (SSD/HDD)</div>
+                            <div class="text-xs text-[#7a8599]">Milissegundos | TB</div>
+                        </div>
+                        <svg class="w-6 h-6 text-[#7a8599]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                        <div class="w-20 text-xs text-[#7a8599] text-right">Mais lento<br>Maior capacidade</div>
+                    </div>
+                </div>
+            </div>
+            
+            <h3 class="text-xl font-semibold mb-4">Fluxo de Dados</h3>
+            
+            <div class="card p-6 mb-8">
+                <p class="text-sm text-[#7a8599] mb-6 text-center">Como os dados se movem durante a execucao de um programa</p>
+                
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="text-center p-4 bg-[#e85858]/10 rounded-lg flex-1">
+                        <div class="font-mono text-xs text-[#e85858] mb-1">DISCO</div>
+                        <div class="font-semibold">Armazenamento</div>
+                        <p class="text-xs text-[#7a8599] mt-2">Dados permanentes</p>
+                        <p class="text-xs text-[#7a8599]">Muito lento</p>
+                    </div>
+                    
+                    <div class="flex flex-col items-center gap-1">
+                        <svg class="w-8 h-8 text-[#22c997] hidden md:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                        <svg class="w-8 h-8 text-[#22c997] md:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 5v14M5 12l7 7 7-7"/>
+                        </svg>
+                        <span class="text-xs text-[#7a8599]">carregar</span>
+                    </div>
+                    
+                    <div class="text-center p-4 bg-[#e8a838]/10 rounded-lg flex-1">
+                        <div class="font-mono text-xs text-[#e8a838] mb-1">RAM</div>
+                        <div class="font-semibold">Memoria</div>
+                        <p class="text-xs text-[#7a8599] mt-2">Dados em uso</p>
+                        <p class="text-xs text-[#7a8599]">Rapido</p>
+                    </div>
+                    
+                    <div class="flex flex-col items-center gap-1">
+                        <svg class="w-8 h-8 text-[#22c997] hidden md:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                        <svg class="w-8 h-8 text-[#22c997] md:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 5v14M5 12l7 7 7-7"/>
+                        </svg>
+                        <span class="text-xs text-[#7a8599]">processar</span>
+                    </div>
+                    
+                    <div class="text-center p-4 bg-[#22c997]/10 rounded-lg flex-1">
+                        <div class="font-mono text-xs text-[#22c997] mb-1">CPU</div>
+                        <div class="font-semibold">Processador</div>
+                        <p class="text-xs text-[#7a8599] mt-2">Execucao</p>
+                        <p class="text-xs text-[#7a8599]">Muito rapido</p>
+                    </div>
+                </div>
+            </div>
+            
+            <h3 class="text-xl font-semibold mb-4">Memoria Virtual (Swap)</h3>
+            
+            <p class="text-[#7a8599] mb-6">
+                Quando a RAM enche, o sistema operacional usa espaco no disco rigido como "memoria extra". 
+                Isso e chamado de memoria virtual ou swap.
+            </p>
+            
+            <div class="danger-box mb-8">
+                <p class="font-medium text-[#e85858] mb-3">O problema da memoria virtual</p>
+                <p class="text-sm text-[#7a8599] mb-4">
+                    O disco e <strong class="text-[#e4e8ee]">muito mais lento</strong> que a RAM. Quando o sistema 
+                    precisa usar swap, o desempenho cai drasticamente.
+                </p>
+                <div class="grid grid-cols-2 gap-4 text-center">
+                    <div class="bg-[#0c1017] p-3 rounded">
+                        <div class="text-lg font-bold text-[#22c997]">RAM</div>
+                        <div class="text-xs text-[#7a8599]">~25 GB/s</div>
+                    </div>
+                    <div class="bg-[#0c1017] p-3 rounded">
+                        <div class="text-lg font-bold text-[#e85858]">HDD Swap</div>
+                        <div class="text-xs text-[#7a8599]">~0.1 GB/s</div>
+                    </div>
+                </div>
+                <p class="text-xs text-[#7a8599] mt-4 text-center">
+                    Swap pode ser <strong class="text-[#e85858]">250x mais lento</strong> que RAM
+                </p>
+            </div>
+            
+            <div class="professor-box mb-8">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-full bg-[#22c997]/20 flex items-center justify-center flex-shrink-0">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c997" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-[#22c997] mb-2">Orientacao do Professor</p>
+                        <p class="text-[#7a8599] text-sm leading-relaxed">
+                            Imagine que a RAM e uma mesa de trabalho, e o disco e um arquivo ao lado. Quando a 
+                            mesa enche, voce precisa guardar coisas no arquivo para abrir espaco. Mas toda vez 
+                            que precisa de algo que esta no arquivo, tem que levantar, ir ate o arquivo, buscar, 
+                            voltar... Muito lento. Por isso, quando a RAM e insuficiente, o sistema trava: esta 
+                            "indo ao arquivo" o tempo todo.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card p-6 mb-8">
+                <h4 class="font-semibold mb-4">Quanta RAM e necessaria?</h4>
+                <div class="space-y-3">
+                    <div class="flex items-center gap-4">
+                        <div class="w-16 text-center">
+                            <div class="text-lg font-bold text-[#e85858]">4 GB</div>
+                        </div>
+                        <div class="flex-1 bg-[#e85858]/10 p-3 rounded">
+                            <p class="text-sm">Insuficiente para uso profissional. So serve para navegacao basica.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-16 text-center">
+                            <div class="text-lg font-bold text-[#e8a838]">8 GB</div>
+                        </div>
+                        <div class="flex-1 bg-[#e8a838]/10 p-3 rounded">
+                            <p class="text-sm">Minimo para trabalho de escritorio e multitarefa moderada.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-16 text-center">
+                            <div class="text-lg font-bold text-[#22c997]">16 GB</div>
+                        </div>
+                        <div class="flex-1 bg-[#22c997]/10 p-3 rounded">
+                            <p class="text-sm">Recomendado para design, edicao, programacao e multitarefa pesada.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-16 text-center">
+                            <div class="text-lg font-bold text-[#4a9fd4]">32+ GB</div>
+                        </div>
+                        <div class="flex-1 bg-[#4a9fd4]/10 p-3 rounded">
+                            <p class="text-sm">Para trabalho profissional com arquivos grandes, VMs, renderizacao 3D.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="warning-box">
+                <p class="font-medium text-[#e8a838] mb-2">Sinais de RAM insuficiente</p>
+                <ul class="text-sm text-[#7a8599] space-y-2">
+                    <li>• Sistema trava ao abrir varios programas</li>
+                    <li>• Disco com muita atividade mesmo sem arquivos grandes</li>
+                    <li>• Programas demoram para responder ao alternar</li>
+                    <li>• Uso de memoria acima de 85% constante</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Seção 4: Armazenamento -->
+        <section id="armazenamento" class="reveal">
+            <h2 class="text-2xl font-bold mb-6">4. Armazenamento: HDD vs SSD</h2>
+            
+            <p class="text-[#7a8599] mb-6">
+                O armazenamento e onde todos os dados sao guardados permanentemente: sistema operacional, 
+                programas, documentos, fotos, videos. A diferenca de desempenho entre HDD e SSD e 
+                dramatica e afeta absolutamente tudo no computador.
+            </p>
+            
+            <h3 class="text-xl font-semibold mb-4">HDD (Hard Disk Drive)</h3>
+            
+            <div class="card p-6 mb-6">
+                <p class="text-sm text-[#7a8599] mb-4">
+                    O HDD usa discos magneticos que giram fisicamente. Uma cabeca de leitura se move 
+                    sobre o disco para ler e escrever dados, como uma vitrola.
+                </p>
+                
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="bg-[#1a222e] p-3 rounded">
+                        <div class="text-xs text-[#7a8599] mb-1">Velocidade tipica</div>
+                        <div class="font-mono text-[#e85858]">80-160 MB/s</div>
+                    </div>
+                    <div class="bg-[#1a222e] p-3 rounded">
+                        <div class="text-xs text-[#7a8599] mb-1">Tempo de acesso</div>
+                        <div class="font-mono text-[#e85858]">5-10 ms</div>
+                    </div>
+                </div>
+                
+                <ul class="concept-list text-sm text-[#7a8599]">
+                    <li>Partes moveis sujeitas a desgaste e falhas</li>
+                    <li>Velocidade limitada pela rotacao mecanica (5400/7200 RPM)</li>
+                    <li>Mais lento conforme o disco enche e fragmenta</li>
+                    <li>Faz ruido durante operacao</li>
+                </ul>
+            </div>
+            
+            <h3 class="text-xl font-semibold mb-4">SSD (Solid State Drive)</h3>
+            
+            <div class="card p-6 mb-6">
+                <p class="text-sm text-[#7a8599] mb-4">
+                    O SSD usa memoria flash, sem partes moveis. Cada dado e acessado eletronicamente, 
+                    resultando em velocidades muito maiores.
+                </p>
+                
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="bg-[#1a222e] p-3 rounded">
+                        <div class="text-xs text-[#7a8599] mb-1">SSD SATA</div>
+                        <div class="font-mono text-[#22c997]">~550 MB/s</div>
+                    </div>
+                    <div class="bg-[#1a222e] p-3 rounded">
+                        <div class="text-xs text-[#7a8599] mb-1">SSD NVMe</div>
+                        <div class="font-mono text-[#22c997]">~3500 MB/s</div>
+                    </div>
+                </div>
+                
+                <ul class="concept-list text-sm text-[#7a8599]">
+                    <li>Sem partes moveis: silencioso e mais resistente</li>
+                    <li>Acesso instantaneo a qualquer dado</li>
+                    <li>Desempenho consistente independente da capacidade usada</li>
+                    <li>Menor consumo de energia e gera menos calor</li>
+                </ul>
+            </div>
+            
+            <h3 class="text-xl font-semibold mb-4">Comparacao Direta</h3>
+            
+            <div class="comparison-grid mb-8">
+                <div class="comparison-card comparison-slow">
+                    <div class="text-2xl font-bold text-[#e85858] mb-2">HDD</div>
+                    <div class="font-mono text-3xl mb-4">100 MB/s</div>
+                    <div class="space-y-2 text-sm text-[#7a8599]">
+                        <div class="flex justify-between">
+                            <span>Boot do Windows</span>
+                            <span class="text-[#e85858]">1-3 min</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Abrir programa</span>
+                            <span class="text-[#e85858]">10-30 s</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Tempo de acesso</span>
+                            <span class="text-[#e85858]">5-10 ms</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="comparison-card comparison-fast">
+                    <div class="text-2xl font-bold text-[#22c997] mb-2">SSD NVMe</div>
+                    <div class="font-mono text-3xl mb-4">3500 MB/s</div>
+                    <div class="space-y-2 text-sm text-[#7a8599]">
+                        <div class="flex justify-between">
+                            <span>Boot do Windows</span>
+                            <span class="text-[#22c997]">10-15 s</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Abrir programa</span>
+                            <span class="text-[#22c997]">1-3 s</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Tempo de acesso</span>
+                            <span class="text-[#22c997]">0.1 ms</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="highlight-box mb-8">
+                <p class="font-medium mb-2">Por que o disco afeta TUDO?</p>
+                <p class="text-sm text-[#7a8599] mb-3">
+                    O disco e usado em praticamente todas as operacoes do computador:
+                </p>
+                <ul class="text-sm text-[#7a8599] space-y-1">
+                    <li>• <strong class="text-[#e4e8ee]">Inicializacao:</strong> Carregar o sistema operacional</li>
+                    <li>• <strong class="text-[#e4e8ee]">Abrir programas:</strong> Carregar executaveis para RAM</li>
+                    <li>• <strong class="text-[#e4e8ee]">Memoria virtual:</strong> Quando a RAM enche</li>
+                    <li>• <strong class="text-[#e4e8ee]">Arquivos temporarios:</strong> Cache de navegadores, apps</li>
+                    <li>• <strong class="text-[#e4e8ee]">Salvar/carregar:</strong> Qualquer trabalho com arquivos</li>
+                </ul>
+            </div>
+            
+            <div class="professor-box mb-8">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-full bg-[#22c997]/20 flex items-center justify-center flex-shrink-0">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c997" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-[#22c997] mb-2">Orientacao do Professor</p>
+                        <p class="text-[#7a8599] text-sm leading-relaxed">
+                            O SSD e frequentemente o upgrade com melhor custo-beneficio. Um computador antigo 
+                            com HDD pode parecer "novo" apenas trocando para SSD. A diferenca e imediatamente 
+                            perceptivel em todas as tarefas. Se voce so pode fazer um upgrade, escolha o SSD.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="warning-box">
+                <p class="font-medium text-[#e8a838] mb-2">Sinais de que o disco e o gargalo</p>
+                <ul class="text-sm text-[#7a8599] space-y-2">
+                    <li>• Inicializacao do sistema muito lenta (mais de 1 minuto)</li>
+                    <li>• Programas demoram para abrir</li>
+                    <li>• Sistema fica lento mesmo com CPU e RAM com folga</li>
+                    <li>• LED do disco constantemente aceso durante uso</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Seção 5: GPU -->
+        <section id="gpu" class="reveal">
+            <h2 class="text-2xl font-bold mb-6">5. Placa de Video (GPU)</h2>
+            
+            <p class="text-[#7a8599] mb-6">
+                A GPU (Graphics Processing Unit) e especializada em processar imagens e executar 
+                calculos paralelos em grande escala. E essencial para qualquer trabalho grafico, 
+                jogos, edicao de video e renderizacao 3D.
+            </p>
+            
+            <div class="definition">
+                <strong>GPU</strong> e um processador projetado para executar milhoes de operacoes 
+                simultaneas. Diferente da CPU, que processa poucas tarefas complexas, a GPU processa 
+                milhares de tarefas simples ao mesmo tempo.
+            </div>
+            
+            <h3 class="text-xl font-semibold mb-4 mt-8">GPU Integrada vs Dedicada</h3>
+            
+            <div class="comparison-grid mb-8">
+                <div class="comparison-card comparison-slow text-left">
+                    <div class="text-lg font-bold text-[#e85858] mb-4">GPU Integrada</div>
+                    
+                    <p class="text-sm text-[#7a8599] mb-4">
+                        Embutida no processador, compartilha recursos com o sistema.
+                    </p>
+                    
+                    <ul class="text-sm text-[#7a8599] space-y-2">
+                        <li>• Usa a RAM do sistema (sem memoria propria)</li>
+                        <li>• Desempenho limitado</li>
+                        <li>• Consome menos energia</li>
+                        <li>• Ideal para: navegacao, escritorio, video simples</li>
+                    </ul>
+                    
+                    <div class="mt-4 p-3 bg-[#0c1017] rounded">
+                        <p class="text-xs text-[#e85858]">
+                            <strong>Problema:</strong> Ao usar RAM para video, sobra menos RAM para o sistema. 
+                            Uma GPU integrada com 4GB RAM total e muito limitada.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="comparison-card comparison-fast text-left">
+                    <div class="text-lg font-bold text-[#22c997] mb-4">GPU Dedicada</div>
+                    
+                    <p class="text-sm text-[#7a8599] mb-4">
+                        Placa separada com processador e memoria proprios.
+                    </p>
+                    
+                    <ul class="text-sm text-[#7a8599] space-y-2">
+                        <li>• Tem VRAM propria (4-24 GB)</li>
+                        <li>• Alto desempenho grafico</li>
+                        <li>• Processamento independente da CPU</li>
+                        <li>• Ideal para: design, games, edicao, renderizacao</li>
+                    </ul>
+                    
+                    <div class="mt-4 p-3 bg-[#0c1017] rounded">
+                        <p class="text-xs text-[#22c997]">
+                            <strong>Vantagem:</strong> VRAM dedicada libera RAM do sistema e permite 
+                            processamento grafico muito mais rapido.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <h3 class="text-xl font-semibold mb-4">VRAM - Memoria de Video</h3>
+            
+            <div class="card p-6 mb-8">
+                <p class="text-sm text-[#7a8599] mb-4">
+                    A VRAM (Video RAM) e memoria dedicada exclusivamente para processamento grafico. 
+                    Ela armazena texturas, modelos 3D, frames em renderizacao e dados de video.
+                </p>
+                
+                <div class="space-y-3">
+                    <div class="flex items-center gap-4">
+                        <div class="w-20 text-center">
+                            <div class="font-mono text-[#e8a838]">2-4 GB</div>
+                        </div>
+                        <div class="flex-1 text-sm text-[#7a8599]">
+                            Resolucoes ate 1080p, jogos leves, edicao basica
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-20 text-center">
+                            <div class="font-mono text-[#22c997]">6-8 GB</div>
+                        </div>
+                        <div class="flex-1 text-sm text-[#7a8599]">
+                            1080p alto ou 1440p, design profissional, edicao de video
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-20 text-center">
+                            <div class="font-mono text-[#4a9fd4]">12+ GB</div>
+                        </div>
+                        <div class="flex-1 text-sm text-[#7a8599]">
+                            4K, renderizacao 3D complexa, IA, trabalho profissional
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="professor-box mb-8">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-full bg-[#22c997]/20 flex items-center justify-center flex-shrink-0">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c997" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-[#22c997] mb-2">Orientacao do Professor</p>
+                        <p class="text-[#7a8599] text-sm leading-relaxed">
+                            Para trabalho com design grafico, a GPU dedicada faz toda diferenca. Programas como 
+                            Photoshop, Premiere, After Effects e Blender usam a GPU para acelerar renderizacao, 
+                            previsualizacao e efeitos. Uma GPU integrada nao consegue acompanhar essas demandas, 
+                            sobrecarregando a CPU e tornando o trabalho muito lento.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="warning-box">
+                <p class="font-medium text-[#e8a838] mb-2">Sinais de que a GPU e o gargalo</p>
+                <ul class="text-sm text-[#7a8599] space-y-2">
+                    <li>• Renderizacao extremamente lenta em softwares graficos</li>
+                    <li>• Previsualizacao trava ao manipular cenas 3D</li>
+                    <li>• Edicao de video com lag mesmo em baixa resolucao</li>
+                    <li>• CPU e RAM com folga, mas sistema lento em tarefas graficas</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Seção 6: Gargalo -->
+        <section id="gargalo" class="reveal">
+            <h2 class="text-2xl font-bold mb-6">6. Gargalo de Desempenho</h2>
+            
+            <p class="text-[#7a8599] mb-6">
+                Entender o conceito de gargalo e fundamental para diagnosticar problemas de desempenho. 
+                E a chave para identificar qual componente deve ser substituido primeiro.
+            </p>
+            
+            <div class="definition">
+                <strong>Gargalo (Bottleneck)</strong> e quando um componente mais lento limita o desempenho 
+                de todo o sistema, impedindo que os componentes mais rapidos atinjam seu potencial maximo.
+            </div>
+            
+            <h3 class="text-xl font-semibold mb-4 mt-8">Analogia: O Funil</h3>
+            
+            <div class="card p-8 mb-8">
+                <div class="flex flex-col items-center">
+                    <div class="w-full max-w-md">
+                        <!-- Visual do gargalo -->
+                        <div class="flex items-end justify-center gap-1 mb-6">
+                            <div class="h-16 w-20 bg-[#22c997]/20 rounded-t flex items-center justify-center">
+                                <span class="text-xs text-[#22c997]">RAPIDO</span>
+                            </div>
+                            <div class="h-16 w-20 bg-[#22c997]/20 rounded-t flex items-center justify-center">
+                                <span class="text-xs text-[#22c997]">RAPIDO</span>
+                            </div>
+                            <div class="h-16 w-20 bg-[#22c997]/20 rounded-t flex items-center justify-center">
+                                <span class="text-xs text-[#22c997]">RAPIDO</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-center mb-6">
+                            <div class="h-8 w-48 bg-gradient-to-b from-[#e85858] to-[#e85858]/50 rounded-b flex items-center justify-center">
+                                <span class="text-xs text-[#e4e8ee]">GARGALO</span>
+                            </div>
+                        </div>
+                        
+                        <p class="text-center text-sm text-[#7a8599]">
+                            Tres componentes rapidos, mas o fluxo total e limitado pelo ponto mais estreito
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <h3 class="text-xl font-semibold mb-4">Exemplos Praticos</h3>
+            
+            <div class="space-y-4 mb-8">
+                <div class="card p-5">
+                    <h4 class="font-semibold mb-3">Exemplo 1: CPU poderosa + HDD lento</h4>
+                    <p class="text-sm text-[#7a8599]">
+                        Mesmo com uma CPU capaz de processar 5 bilhoes de operacoes por segundo, ela precisa 
+                        esperar o HDD ler os dados a apenas 100 MB/s. A CPU passa a maior parte do tempo 
+                        <strong class="text-[#e4e8ee]">esperando</strong>, nao processando.
+                    </p>
+                </div>
+                
+                <div class="card p-5">
+                    <h4 class="font-semibold mb-3">Exemplo 2: 32GB RAM + CPU antiga</h4>
+                    <p class="text-sm text-[#7a8599]">
+                        Ter muita RAM nao ajuda se a CPU nao consegue processar os dados rapido o suficiente. 
+                        A RAM ficara cheia de dados que a CPU nao consegue processar, e o gargalo muda de 
+                        lugar, mas nao desaparece.
+                    </p>
+                </div>
+                
+                <div class="card p-5">
+                    <h4 class="font-semibold mb-3">Exemplo 3: GPU dedicada + RAM insuficiente</h4>
+                    <p class="text-sm text-[#7a8599]">
+                        Uma GPU poderosa precisa carregar texturas e dados da RAM. Se a RAM e insuficiente, 
+                        esses dados precisam vir do disco (swap), que e muito lento. A GPU fica esperando 
+                        dados que deveriam chegar instantaneamente.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="highlight-box mb-8">
+                <p class="font-medium mb-3">Consequencia pratica</p>
+                <p class="text-sm text-[#7a8599]">
+                    Um computador com componentes desbalanceados tera o desempenho do seu componente mais 
+                    lento. Nao adianta investir em uma CPU top de linha se o disco e um HDD de 5400 RPM. 
+                    O sistema continuara lento.
+                </p>
+            </div>
+            
+            <div class="professor-box mb-8">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-full bg-[#22c997]/20 flex items-center justify-center flex-shrink-0">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c997" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-[#22c997] mb-2">Orientacao do Professor</p>
+                        <p class="text-[#7a8599] text-sm leading-relaxed">
+                            Para identificar o gargalo, observe qual componente esta em 100% de uso enquanto 
+                            os outros estao ociosos ou com pouca atividade. Esse componente e o limitador. 
+                            Use o Gerenciador de Tarefas (Ctrl+Shift+Esc) para monitorar CPU, RAM e Disco 
+                            em tempo real. O Monitor de Desempenho oferece graficos detalhados.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card p-6">
+                <h4 class="font-semibold mb-4">Como identificar o gargalo</h4>
+                
+                <div class="space-y-4">
+                    <div class="flex items-start gap-4">
+                        <div class="w-8 h-8 rounded-full bg-[#22c997]/10 flex items-center justify-center text-[#22c997] text-sm font-bold">1</div>
+                        <div>
+                            <p class="font-medium">Abra o Gerenciador de Tarefas</p>
+                            <p class="text-sm text-[#7a8599]">Ctrl + Shift + Esc</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start gap-4">
+                        <div class="w-8 h-8 rounded-full bg-[#22c997]/10 flex items-center justify-center text-[#22c997] text-sm font-bold">2</div>
+                        <div>
+                            <p class="font-medium">Va na aba Desempenho</p>
+                            <p class="text-sm text-[#7a8599]">Veja os graficos de CPU, Memoria e Disco</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start gap-4">
+                        <div class="w-8 h-8 rounded-full bg-[#22c997]/10 flex items-center justify-center text-[#22c997] text-sm font-bold">3</div>
+                        <div>
+                            <p class="font-medium">Execute a tarefa problematica</p>
+                            <p class="text-sm text-[#7a8599]">Abra o programa que esta lento, faca a renderizacao, etc.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start gap-4">
+                        <div class="w-8 h-8 rounded-full bg-[#22c997]/10 flex items-center justify-center text-[#22c997] text-sm font-bold">4</div>
+                        <div>
+                            <p class="font-medium">Observe qual componente atinge 100%</p>
+                            <p class="text-sm text-[#7a8599]">Esse e o gargalo</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção 7: Diagnóstico -->
+        <section id="diagnostico" class="reveal">
+            <h2 class="text-2xl font-bold mb-6">7. Guia de Diagnostico</h2>
+            
+            <p class="text-[#7a8599] mb-6">
+                Agora voce tem conhecimento para diagnosticar problemas de desempenho. Esta secao 
+                apresenta um metodo sistematico para relacionar sintomas com componentes e propor solucoes.
+            </p>
+            
+            <div class="professor-box mb-8">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-full bg-[#22c997]/20 flex items-center justify-center flex-shrink-0">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c997" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-[#22c997] mb-2">Orientacao do Professor</p>
+                        <p class="text-[#7a8599] text-sm leading-relaxed">
+                            O diagnostico nao e advinhacao. E um processo logico: cada sintoma tem causas 
+                            especificas relacionadas ao funcionamento de cada componente. Pense sempre: 
+                            "Qual componente e responsavel por essa tarefa?" e "O que pode fazer ele falhar?".
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <h3 class="text-xl font-semibold mb-4">Diagnostico por Sintoma</h3>
+            
+            <div class="space-y-4 mb-8">
+                <!-- Acordeão 1 -->
+                <div class="accordion">
+                    <button class="accordion-header">
+                        <div>
+                            <div class="font-semibold">Inicializacao lenta</div>
+                            <div class="text-sm text-[#7a8599]">Boot demorando mais de 1 minuto</div>
+                        </div>
+                        <svg class="accordion-icon w-5 h-5 text-[#7a8599]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-6 border-t border-[#252d3a]">
+                            <div class="mb-4">
+                                <span class="text-xs font-mono text-[#22c997]">COMPONENTE PRINCIPAL</span>
+                                <h4 class="font-semibold text-lg">Armazenamento (Disco)</h4>
+                            </div>
+                            
+                            <p class="text-sm text-[#7a8599] mb-4">
+                                Durante a inicializacao, o sistema operacional precisa carregar milhares de 
+                                arquivos: drivers, servicos, programas de inicializacao, configuracoes. 
+                                Tudo isso precisa ser lido do disco.
+                            </p>
+                            
+                            <p class="text-sm text-[#7a8599] mb-4">
+                                Um HDD mecanico de 5400 RPM consegue ler apenas ~100 MB/s, com tempo de 
+                                acesso de 5-10ms entre cada arquivo. O SSD le a 3500 MB/s com acesso 
+                                instantaneo (0.1ms).
+                            </p>
+                            
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div class="bg-[#e85858]/10 p-3 rounded border border-[#e85858]/30">
+                                    <div class="text-sm font-medium text-[#e85858]">HDD 5400 RPM</div>
+                                    <div class="text-xs text-[#7a8599] mt-1">Boot: 2-4 minutos</div>
+                                </div>
+                                <div class="bg-[#22c997]/10 p-3 rounded border border-[#22c997]/30">
+                                    <div class="text-sm font-medium text-[#22c997]">SSD NVMe</div>
+                                    <div class="text-xs text-[#7a8599] mt-1">Boot: 10-15 segundos</div>
+                                </div>
+                            </div>
+                            
+                            <div class="highlight-box">
+                                <p class="text-sm"><strong>Solucao:</strong> Substituir HDD por SSD. 
+                                Este e o upgrade de maior impacto no tempo de boot.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Acordeão 2 -->
+                <div class="accordion">
+                    <button class="accordion-header">
+                        <div>
+                            <div class="font-semibold">Travamentos ao abrir varios arquivos</div>
+                            <div class="text-sm text-[#7a8599]">Sistema congela com multitarefa</div>
+                        </div>
+                        <svg class="accordion-icon w-5 h-5 text-[#7a8599]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-6 border-t border-[#252d3a]">
+                            <div class="mb-4">
+                                <span class="text-xs font-mono text-[#22c997]">COMPONENTE PRINCIPAL</span>
+                                <h4 class="font-semibold text-lg">Memoria RAM</h4>
+                            </div>
+                            
+                            <p class="text-sm text-[#7a8599] mb-4">
+                                Cada arquivo aberto, cada programa em execucao, cada aba do navegador 
+                                consome memoria RAM. Quando a RAM se esgota, o sistema comeca a usar 
+                                o disco como memoria virtual (swap).
+                            </p>
+                            
+                            <p class="text-sm text-[#7a8599] mb-4">
+                                O problema e que o disco e ~250x mais lento que a RAM. Quando o sistema 
+                                precisa constantemente mover dados entre RAM e disco, ocorrem travamentos 
+                                perceptiveis.
+                            </p>
+                            
+                            <div class="bg-[#e85858]/10 p-4 rounded border border-[#e85858]/30 mb-4">
+                                <p class="text-sm text-[#7a8599]">
+                                    <strong class="text-[#e85858]">Cenario problematico:</strong> 
+                                    Designer com Photoshop (2GB), Illustrator (1.5GB), navegador com 20 abas (2GB), 
+                                    Spotify (500MB), Windows (2GB) = ~8GB. Com apenas 4GB de RAM, 
+                                    o sistema esta constantemente usando swap.
+                                </p>
+                            </div>
+                            
+                            <div class="highlight-box">
+                                <p class="text-sm"><strong>Solucao:</strong> Aumentar a RAM para 8GB (minimo) 
+                                ou 16GB (recomendado para trabalho profissional).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Acordeão 3 -->
+                <div class="accordion">
+                    <button class="accordion-header">
+                        <div>
+                            <div class="font-semibold">Renderizacao lenta</div>
+                            <div class="text-sm text-[#7a8599]">Projetos demoram para processar</div>
+                        </div>
+                        <svg class="accordion-icon w-5 h-5 text-[#7a8599]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-6 border-t border-[#252d3a]">
+                            <div class="mb-4">
+                                <span class="text-xs font-mono text-[#22c997]">COMPONENTES ENVOLVIDOS</span>
+                                <h4 class="font-semibold text-lg">CPU e GPU</h4>
+                            </div>
+                            
+                            <p class="text-sm text-[#7a8599] mb-4">
+                                Renderizacao e o processo de calcular como cada pixel de uma imagem ou video 
+                                deve aparecer. Isso exige bilhoes de calculos matematicos.
+                            </p>
+                            
+                            <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                <div class="bg-[#1a222e] p-4 rounded">
+                                    <h5 class="font-medium text-[#e8a838] mb-2">Funcao da CPU</h5>
+                                    <p class="text-xs text-[#7a8599]">
+                                        Coordena o processo, prepara dados, executa logica do software. 
+                                        Processadores com poucos nucleos limitam a paralelizacao.
+                                    </p>
+                                </div>
+                                <div class="bg-[#1a222e] p-4 rounded">
+                                    <h5 class="font-medium text-[#22c997] mb-2">Funcao da GPU</h5>
+                                    <p class="text-xs text-[#7a8599]">
+                                        Processa milhoes de pixels simultaneamente. GPU dedicada tem 
+                                        milhares de nucleos otimizados para esse tipo de calculo.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <p class="text-sm text-[#7a8599] mb-4">
+                                Uma GPU integrada usa a CPU para processamento grafico e compartilha a RAM 
+                                do sistema. Isso cria dois gargalos: processamento grafico limitado E 
+                                menos RAM disponivel.
+                            </p>
+                            
+                            <div class="highlight-box">
+                                <p class="text-sm"><strong>Solucao:</strong> Para trabalho grafico, 
+                                uma GPU dedicada de entrada/medio porte oferece o melhor custo-beneficio. 
+                                Uma GTX 1650 ou similar ja faz grande diferenca.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Acordeão 4 -->
+                <div class="accordion">
+                    <button class="accordion-header">
+                        <div>
+                            <div class="font-semibold">Sistema lento no geral</div>
+                            <div class="text-sm text-[#7a8599]">Tudo parece demorar</div>
+                        </div>
+                        <svg class="accordion-icon w-5 h-5 text-[#7a8599]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-6 border-t border-[#252d3a]">
+                            <div class="mb-4">
+                                <span class="text-xs font-mono text-[#22c997]">CAUSA MAIS PROVAVEL</span>
+                                <h4 class="font-semibold text-lg">HDD (Disco Rigido Mecanico)</h4>
+                            </div>
+                            
+                            <p class="text-sm text-[#7a8599] mb-4">
+                                O disco e usado em praticamente todas as operacoes do computador. 
+                                Um HDD lento afeta:
+                            </p>
+                            
+                            <ul class="concept-list text-sm text-[#7a8599] mb-4">
+                                <li>Inicializacao do sistema</li>
+                                <li>Abertura de programas</li>
+                                <li>Carregamento de arquivos</li>
+                                <li>Memoria virtual (swap)</li>
+                                <li>Cache de navegadores e aplicativos</li>
+                                <li>Atualizacoes do sistema</li>
+                            </ul>
+                            
+                            <p class="text-sm text-[#7a8599] mb-4">
+                                Quando o disco e o gargalo, todo o sistema parece lento, mesmo que 
+                                CPU e RAM tenham capacidade ociosa.
+                            </p>
+                            
+                            <div class="highlight-box">
+                                <p class="text-sm"><strong>Solucao prioritaria:</strong> SSD NVMe. 
+                                E o upgrade de maior impacto geral, transformando completamente 
+                                a experiencia de uso. Um computador de 10 anos com SSD pode parecer 
+                                mais responsivo que um novo com HDD.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <h3 class="text-xl font-semibold mb-4">Priorizacao de Upgrades</h3>
+            
+            <div class="card p-6 mb-8">
+                <p class="text-sm text-[#7a8599] mb-6">
+                    Nem todos os upgrades tem o mesmo impacto. Aqui esta a ordem recomendada 
+                    baseada em custo-beneficio:
+                </p>
+                
+                <div class="space-y-4">
+                    <div class="flex items-start gap-4 p-4 bg-[#22c997]/10 rounded-lg border border-[#22c997]/30">
+                        <div class="w-10 h-10 rounded-full bg-[#22c997] text-[#0c1017] flex items-center justify-center font-bold flex-shrink-0">1</div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="font-semibold">SSD (Solid State Drive)</h4>
+                                <span class="text-sm text-[#22c997] font-mono">R$ 150-400</span>
+                            </div>
+                            <p class="text-sm text-[#7a8599] mb-2">Maior impacto imediato em todo o sistema</p>
+                            <div class="flex gap-4 text-xs text-[#7a8599]">
+                                <span>Custo: Baixo</span>
+                                <span>Dificuldade: Facil</span>
+                                <span>Impacto: Altissimo</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start gap-4 p-4 bg-[#e8a838]/10 rounded-lg border border-[#e8a838]/30">
+                        <div class="w-10 h-10 rounded-full bg-[#e8a838] text-[#0c1017] flex items-center justify-center font-bold flex-shrink-0">2</div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="font-semibold">Memoria RAM</h4>
+                                <span class="text-sm text-[#e8a838] font-mono">R$ 100-300</span>
+                            </div>
+                            <p class="text-sm text-[#7a8599] mb-2">Resolve travamentos por falta de memoria</p>
+                            <div class="flex gap-4 text-xs text-[#7a8599]">
+                                <span>Custo: Baixo</span>
+                                <span>Dificuldade: Facil</span>
+                                <span>Impacto: Alto (se RAM era insuficiente)</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start gap-4 p-4 bg-[#1a222e] rounded-lg border border-[#252d3a]">
+                        <div class="w-10 h-10 rounded-full bg-[#4a9fd4] text-[#0c1017] flex items-center justify-center font-bold flex-shrink-0">3</div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="font-semibold">GPU Dedicada</h4>
+                                <span class="text-sm text-[#4a9fd4] font-mono">R$ 800-2000</span>
+                            </div>
+                            <p class="text-sm text-[#7a8599] mb-2">Essencial para trabalho grafico e jogos</p>
+                            <div class="flex gap-4 text-xs text-[#7a8599]">
+                                <span>Custo: Medio</span>
+                                <span>Dificuldade: Media</span>
+                                <span>Impacto: Alto (para graficos)</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start gap-4 p-4 bg-[#1a222e] rounded-lg border border-[#252d3a] opacity-80">
+                        <div class="w-10 h-10 rounded-full bg-[#7a8599] text-[#0c1017] flex items-center justify-center font-bold flex-shrink-0">4</div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="font-semibold">CPU (Processador)</h4>
+                                <span class="text-sm text-[#7a8599] font-mono">R$ 800-3000+</span>
+                            </div>
+                            <p class="text-sm text-[#7a8599] mb-2">Pode exigir troca de placa-mae e RAM</p>
+                            <div class="flex gap-4 text-xs text-[#7a8599]">
+                                <span>Custo: Alto</span>
+                                <span>Dificuldade: Alta</span>
+                                <span>Impacto: Variavel</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <p class="font-medium text-[#4a9fd4] mb-2">Nota importante</p>
+                <p class="text-sm text-[#7a8599]">
+                    A ordem pode variar dependendo do caso especifico. Sempre faca o diagnostico 
+                    antes de decidir. Nao adianta comprar mais RAM se o gargalo e o disco, ou 
+                    comprar GPU se falta RAM para carregar as texturas.
+                </p>
+            </div>
+        </section>
+
+        <!-- Síntese Final -->
+        <section id="sintese" class="reveal">
+            <h2 class="text-2xl font-bold mb-6">Sintese Final</h2>
+            
+            <div class="professor-box mb-8">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-full bg-[#22c997]/20 flex items-center justify-center flex-shrink-0">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c997" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-[#22c997] mb-2">Orientacao Final do Professor</p>
+                        <p class="text-[#7a8599] text-sm leading-relaxed">
+                            Voce agora tem o conhecimento necessario para diagnosticar problemas de desempenho. 
+                            Lembre-se: o diagnostico e um processo logico, nao uma advinhacao. Pergunte-se: 
+                            "Qual componente executa essa tarefa?", "O que pode limitar esse componente?", 
+                            "Como verificar isso?". Use o Gerenciador de Tarefas para confirmar suas hipoteses. 
+                            E, acima de tudo, pense em custo-beneficio: resolver o maior gargalo primeiro 
+                            geralmente oferece o melhor resultado com menor investimento.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card p-8 mb-8">
+                <h3 class="text-lg font-semibold mb-6 text-center">Resumo dos Conceitos</h3>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="p-4 bg-[#1a222e] rounded-lg">
+                        <h4 class="font-semibold text-[#22c997] mb-2">CPU</h4>
+                        <p class="text-sm text-[#7a8599]">
+                            Processa instrucoes. Desempenho depende de clock, nucleos e geracao da arquitetura. 
+                            E o gargalo quando atinge 100% em calculos intensivos.
+                        </p>
+                    </div>
+                    
+                    <div class="p-4 bg-[#1a222e] rounded-lg">
+                        <h4 class="font-semibold text-[#e8a838] mb-2">RAM</h4>
+                        <p class="text-sm text-[#7a8599]">
+                            Armazena dados em uso. Insuficiente gera uso de swap (disco), que e muito lento. 
+                            E o gargalo quando o uso passa de 85% e o disco tem atividade constante.
+                        </p>
+                    </div>
+                    
+                    <div class="p-4 bg-[#1a222e] rounded-lg">
+                        <h4 class="font-semibold text-[#e85858] mb-2">Armazenamento</h4>
+                        <p class="text-sm text-[#7a8599]">
+                            HDD e muito lento comparado ao SSD. Afeta boot, abertura de programas e memoria virtual. 
+                            E frequentemente o gargalo em sistemas antigos.
+                        </p>
+                    </div>
+                    
+                    <div class="p-4 bg-[#1a222e] rounded-lg">
+                        <h4 class="font-semibold text-[#4a9fd4] mb-2">GPU</h4>
+                        <p class="text-sm text-[#7a8599]">
+                            Processa graficos. Integrada e limitada e usa RAM do sistema. Dedicada tem VRAM propria. 
+                            E o gargalo em tarefas graficas pesadas.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="highlight-box">
+                <p class="font-medium mb-2 text-center">Conceito Central</p>
+                <p class="text-center text-[#7a8599]">
+                    <strong class="text-[#e4e8ee]">O gargalo determina o desempenho do sistema.</strong><br>
+                    Um componente lento limita todos os outros, independente de quao rapidos sejam.
+                </p>
+            </div>
+            
+            <div class="mt-8 p-6 card bg-gradient-to-br from-[#141a24] to-[#1a222e]">
+                <h3 class="font-semibold mb-4 text-center">Metodo de Diagnostico</h3>
+                <div class="flex flex-col md:flex-row items-center justify-center gap-4 text-center">
+                    <div class="p-4">
+                        <div class="w-10 h-10 mx-auto rounded-full bg-[#22c997]/10 flex items-center justify-center text-[#22c997] font-bold mb-2">1</div>
+                        <p class="text-sm text-[#7a8599]">Identificar o sintoma</p>
+                    </div>
+                    <svg class="w-6 h-6 text-[#7a8599]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                    <div class="p-4">
+                        <div class="w-10 h-10 mx-auto rounded-full bg-[#22c997]/10 flex items-center justify-center text-[#22c997] font-bold mb-2">2</div>
+                        <p class="text-sm text-[#7a8599]">Relacionar ao componente</p>
+                    </div>
+                    <svg class="w-6 h-6 text-[#7a8599]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                    <div class="p-4">
+                        <div class="w-10 h-10 mx-auto rounded-full bg-[#22c997]/10 flex items-center justify-center text-[#22c997] font-bold mb-2">3</div>
+                        <p class="text-sm text-[#7a8599]">Confirmar com monitoramento</p>
+                    </div>
+                    <svg class="w-6 h-6 text-[#7a8599]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                    <div class="p-4">
+                        <div class="w-10 h-10 mx-auto rounded-full bg-[#22c997]/10 flex items-center justify-center text-[#22c997] font-bold mb-2">4</div>
+                        <p class="text-sm text-[#7a8599]">Propor solucao</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Initialize all elements
+        const navSidebar = document.getElementById('nav-sidebar');
+        const navToggle = document.getElementById('nav-toggle');
+        const navOverlay = document.getElementById('nav-overlay');
+        const navItems = document.querySelectorAll('.nav-item');
+        const sections = document.querySelectorAll('section[id]');
+        const accordions = document.querySelectorAll('.accordion');
+        const revealElements = document.querySelectorAll('.reveal');
+        const readingProgress = document.getElementById('reading-progress');
+        
+        // Mobile nav toggle
+        function toggleNav() {
+            navSidebar.classList.toggle('open');
+            navOverlay.classList.toggle('visible');
+        }
+        
+        navToggle.addEventListener('click', toggleNav);
+        navOverlay.addEventListener('click', toggleNav);
+        
+        // Close nav on link click (mobile)
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.innerWidth < 1200) {
+                    toggleNav();
+                }
+            });
+        });
+        
+        // Active nav on scroll
+        function updateActiveNav() {
+            const scrollY = window.scrollY;
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.offsetHeight;
+                const sectionId = section.getAttribute('id');
+                
+                if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                    navItems.forEach(item => {
+                        item.classList.remove('active');
+                        if (item.getAttribute('href') === '#' + sectionId) {
+                            item.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }
+        
+        // Reading progress
+        function updateReadingProgress() {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (scrollTop / docHeight) * 100;
+            readingProgress.style.width = progress + '%';
+        }
+        
+        window.addEventListener('scroll', () => {
+            updateActiveNav();
+            updateReadingProgress();
+        });
+        
+        // Scroll reveal
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        revealElements.forEach(el => revealObserver.observe(el));
+        
+        // Accordions
+        accordions.forEach(accordion => {
+            const header = accordion.querySelector('.accordion-header');
+            
+            header.addEventListener('click', () => {
+                const isOpen = accordion.classList.contains('open');
+                
+                // Close all
+                accordions.forEach(a => a.classList.remove('open'));
+                
+                // Open if was closed
+                if (!isOpen) {
+                    accordion.classList.add('open');
+                }
+            });
+        });
+        
+        // Initial calls
+        updateActiveNav();
+        updateReadingProgress();
+    </script>
+</body>
+</html>
