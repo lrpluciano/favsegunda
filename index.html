@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Portal de Estudos - Pera Educacional. Materiais de Segurança da Informação com orientações pedagógicas.">
+    <meta name="description" content="Portal de Estudos - Pera Educacional. Materiais de Segurança da Informação com orientações do Professor Luciano.">
     <meta name="author" content="Professor Luciano">
     <title>Pera Educacional - Trilha de Aprendizagem</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
@@ -38,7 +38,7 @@
         }
 
         .container {
-            width: 90%;
+            width: 95%;
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
@@ -118,7 +118,7 @@
 
         .drives-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
             gap: 30px;
         }
 
@@ -149,14 +149,30 @@
             flex-direction: column; 
         }
 
-        .instruction-text {
-            background-color: #f9fafb;
+        /* Estilo para a explicação do professor */
+        .professor-note {
+            background-color: #f0fdfa;
             border-left: 4px solid var(--secondary-color);
-            padding: 10px;
-            margin-bottom: 15px;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            font-style: italic;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: var(--primary-dark);
+            border-radius: 0 8px 8px 0;
+            position: relative;
+        }
+
+        .professor-note i {
+            color: var(--secondary-color);
+            margin-right: 8px;
+        }
+
+        .professor-label {
+            display: block;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--secondary-color);
+            margin-bottom: 5px;
         }
 
         .drive-card-body p { 
@@ -217,7 +233,7 @@
         <section class="hero" id="home">
             <div class="container">
                 <h2>Segurança da Informação</h2>
-                <p>Domine os pilares da proteção de dados através desta jornada guiada.</p>
+                <p>Bem-vindos à nossa jornada de aprendizado. Aqui, a teoria encontra a prática.</p>
             </div>
         </section>
 
@@ -225,7 +241,7 @@
             <div class="container">
                 <div class="section-title">
                     <h2>Trilha de Aprendizagem</h2>
-                    <p>Siga as orientações em cada etapa para uma formação completa.</p>
+                    <p>Siga a sequência proposta e leia as orientações antes de cada material.</p>
                 </div>
 
                 <div class="drives-grid">
@@ -235,10 +251,11 @@
                             <h3>Unidade de Estudo</h3>
                         </div>
                         <div class="drive-card-body">
-                            <div class="instruction-text">
-                                <i class="fas fa-info-circle"></i> Comece por aqui para ter uma visão geral técnica e normativa dos pilares da segurança.
+                            <div class="professor-note">
+                                <span class="professor-label">Explicação do Professor</span>
+                                <i class="fas fa-chalkboard-teacher"></i> "Olá pessoal! Começamos por aqui. Este documento traz a base técnica da nossa unidade. É fundamental que vocês compreendam que a segurança vai muito além de senhas; ela envolve processos estruturados e gestão estratégica."
                             </div>
-                            <p><i class="fas fa-file-pdf"></i> <strong>Conteúdo Técnico Principal</strong><br>Aborda a gestão estratégica e os fundamentos fundamentais.</p>
+                            <p><i class="fas fa-file-pdf"></i> <strong>Conteúdo Técnico Principal</strong><br>Fundamentos e diretrizes essenciais da disciplina.</p>
                             <a href="https://drive.google.com/file/d/1x0mGpzOo3JWw1LgGYaJHDUSygeHai7B9/view?usp=drive_link" target="_blank" class="drive-btn">Acessar Unidade</a>
                         </div>
                     </div>
@@ -249,10 +266,11 @@
                             <h3>Apostila de Apoio</h3>
                         </div>
                         <div class="drive-card-body">
-                            <div class="instruction-text">
-                                <i class="fas fa-info-circle"></i> Utilize este material para aprofundar os conceitos de Gestão, Políticas e Cultura.
+                            <div class="professor-note">
+                                <span class="professor-label">Explicação do Professor</span>
+                                <i class="fas fa-chalkboard-teacher"></i> "Nesta apostila, eu preparei um detalhamento sobre os aspectos humanos e culturais. Lembrem-se: o elo mais forte (ou mais fraco) da segurança são as pessoas. Leiam com atenção a parte de Políticas de Segurança."
                             </div>
-                            <p><i class="fas fa-book"></i> <strong>Material de Aprofundamento</strong><br>Leitura essencial para entender o papel das pessoas e processos.</p>
+                            <p><i class="fas fa-book"></i> <strong>Gestão, Política e Cultura</strong><br>Material focado no ecossistema de proteção organizacional.</p>
                             <a href="https://drive.google.com/file/d/1RAH-c8WEZS9yIbU1JjSozAPVDvGYdpaY/view?usp=drive_link" target="_blank" class="drive-btn">Ler Apostila</a>
                         </div>
                     </div>
@@ -263,10 +281,11 @@
                             <h3>Podcast Informativo</h3>
                         </div>
                         <div class="drive-card-body">
-                            <div class="instruction-text">
-                                <i class="fas fa-info-circle"></i> Ouça casos reais de invasões e como novas tecnologias (como IA) mudam o cenário de ameaças.
+                            <div class="professor-note">
+                                <span class="professor-label">Explicação do Professor</span>
+                                <i class="fas fa-chalkboard-teacher"></i> "Para descontrair sem perder o foco, ouçam este áudio. Eu comento sobre como ataques modernos, como os Deepfakes e invasões via IoT, estão mudando as regras do jogo. É um excelente estudo de caso real!"
                             </div>
-                            <p><i class="fas fa-headphones"></i> <strong>Do Aquário ao Deepfake</strong><br>Uma conversa dinâmica sobre a quebra do perímetro de segurança.</p>
+                            <p><i class="fas fa-headphones"></i> <strong>Casos Reais e IA</strong><br>Análise dinâmica sobre as novas fronteiras das ameaças digitais.</p>
                             <a href="https://drive.google.com/file/d/1bA-CKWftplcKK9A_Ug7Lg_FhA379uqE5/view?usp=drive_link" target="_blank" class="drive-btn">Ouvir Podcast</a>
                         </div>
                     </div>
@@ -277,10 +296,11 @@
                             <h3>Slides de Aula</h3>
                         </div>
                         <div class="drive-card-body">
-                            <div class="instruction-text">
-                                <i class="fas fa-info-circle"></i> Revise os pontos chave de forma visual para fixar os conceitos da Tríade CID e PDCA.
+                            <div class="professor-note">
+                                <span class="professor-label">Explicação do Professor</span>
+                                <i class="fas fa-chalkboard-teacher"></i> "Use estes slides para revisar os pontos principais. Eles são ótimos para fixar conceitos visuais, como a Tríade CID e o ciclo PDCA, que discutimos em sala. Ideal para uma revisão rápida."
                             </div>
-                            <p><i class="fas fa-file-powerpoint"></i> <strong>Fundamentos e Estratégias</strong><br>Resumo esquemático dos principais tópicos da disciplina.</p>
+                            <p><i class="fas fa-file-powerpoint"></i> <strong>Resumo Visual da Disciplina</strong><br>Principais tópicos estruturados em formato de apresentação.</p>
                             <a href="https://docs.google.com/presentation/d/17aoX7INxgtmBRmQ0-9wCOaqRgUPkK2iZ/edit?usp=drive_link&ouid=102873094272380115850&rtpof=true&sd=true" target="_blank" class="drive-btn">Ver Slides</a>
                         </div>
                     </div>
@@ -291,10 +311,11 @@
                             <h3>Material Adicional</h3>
                         </div>
                         <div class="drive-card-body">
-                            <div class="instruction-text">
-                                <i class="fas fa-info-circle"></i> Finalize sua trilha com normativas avançadas, ISOs e controles de acesso.
+                            <div class="professor-note">
+                                <span class="professor-label">Explicação do Professor</span>
+                                <i class="fas fa-chalkboard-teacher"></i> "Para quem quer ir além: este material traz normas técnicas e controles de acesso avançados. É o fechamento perfeito para consolidar seu conhecimento e se preparar para os desafios do mercado."
                             </div>
-                            <p><i class="fas fa-folder-open"></i> <strong>Consolidação Técnica</strong><br>Recursos finais focado em políticas e auditoria de sistemas.</p>
+                            <p><i class="fas fa-folder-open"></i> <strong>Consolidação e Normas</strong><br>Aprofundamento técnico e referências para consulta futura.</p>
                             <a href="https://drive.google.com/file/d/1NX4q1nQwhW7OHRqGpgeA6Kc8rrn4zPhX/view?usp=drive_link" target="_blank" class="drive-btn">Acessar Conteúdo</a>
                         </div>
                     </div>
@@ -305,7 +326,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 Pera Educacional. Transformando conhecimento em proteção.</p>
+            <p>&copy; 2026 Pera Educacional. Construindo o futuro da cibersegurança.</p>
         </div>
     </footer>
 
