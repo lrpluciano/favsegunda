@@ -3,1540 +3,290 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AVA — Segurança e Auditoria de Sistemas</title>
-    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <meta name="description" content="Portal de Estudos - Pera Educacional. Materiais de Segurança da Informação.">
+    <meta name="author" content="Professor Luciano">
+    <title>Pera Educacional - Trilha de Aprendizagem</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
     <style>
         :root {
-            --bg: #f5f7f6;
-            --bg-white: #ffffff;
-            --bg-subtle: #eef1f0;
-            --card: #ffffff;
-            --card-hover: #f9fafb;
-            --border: #e2e6e4;
-            --border-light: #d1d8d5;
-            --fg: #1a2e23;
-            --fg-secondary: #4a5e52;
-            --muted: #7a8f82;
-            --accent: #0d7c5f;
-            --accent-light: #10a37f;
-            --accent-dim: rgba(13,124,95,0.08);
-            --accent-glow: rgba(13,124,95,0.12);
-            --accent2: #0284c7;
-            --accent2-dim: rgba(2,132,199,0.08);
-            --danger: #dc2626;
-            --danger-dim: rgba(220,38,38,0.07);
-            --warning: #d97706;
-            --warning-dim: rgba(217,119,6,0.07);
-            --info: #0284c7;
-            --info-dim: rgba(2,132,199,0.07);
-            --success: #16a34a;
-            --success-dim: rgba(22,163,74,0.07);
-            --purple: #7c3aed;
-            --purple-dim: rgba(124,58,237,0.07);
-            --sidebar-w: 290px;
-            --topbar-h: 60px;
-            --radius: 14px;
-            --radius-sm: 10px;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-            --shadow-md: 0 4px 12px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
-            --shadow-lg: 0 10px 30px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04);
-            --font-display: 'Chakra Petch', sans-serif;
-            --font-body: 'DM Sans', sans-serif;
-            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --primary-color: #374151;
+            --primary-dark: #1F2A44;
+            --bg-color: #F3F4F6;
+            --secondary-color: #06B6D4;
+            --accent-color: #F87171;
+            --accent-hover: #EF4444;
+            --text-primary: #111827;
+            --text-secondary: #4B5563;
+            --border-color: #D1D5DB;
+            --shadow-color: rgba(0, 0, 0, 0.15);
         }
 
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; font-size: 16px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
         body {
-            font-family: var(--font-body);
-            background: var(--bg);
-            color: var(--fg);
-            line-height: 1.7;
-            overflow-x: hidden;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
             min-height: 100vh;
         }
-        a { color: var(--accent); text-decoration: none; transition: var(--transition); }
-        a:hover { color: var(--accent2); }
-        ::selection { background: var(--accent); color: #fff; }
-        ::-webkit-scrollbar { width: 7px; }
-        ::-webkit-scrollbar-track { background: var(--bg-subtle); }
-        ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
 
-        /* ========== FUNDO ========== */
-        .bg-effects {
-            position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
-        }
-        .bg-orb {
-            position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.35;
-            animation: orbFloat 25s ease-in-out infinite;
-        }
-        .bg-orb:nth-child(1) {
-            width: 500px; height: 500px; background: rgba(13,124,95,0.1);
-            top: -8%; right: -5%; animation-duration: 28s;
-        }
-        .bg-orb:nth-child(2) {
-            width: 400px; height: 400px; background: rgba(2,132,199,0.08);
-            bottom: -10%; left: -5%; animation-duration: 32s; animation-delay: -12s;
-        }
-        .bg-orb:nth-child(3) {
-            width: 300px; height: 300px; background: rgba(13,124,95,0.06);
-            top: 40%; left: 40%; animation-duration: 22s; animation-delay: -6s;
-        }
-        .bg-grid {
-            position: absolute; inset: 0;
-            background-image:
-                linear-gradient(rgba(13,124,95,0.025) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(13,124,95,0.025) 1px, transparent 1px);
-            background-size: 50px 50px;
-        }
-        @keyframes orbFloat {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -25px) scale(1.05); }
-            66% { transform: translate(-15px, 15px) scale(0.97); }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
 
-        /* ========== PROGRESSO GLOBAL ========== */
-        .progress-bar-global {
-            position: fixed; top: 0; left: 0; height: 3px; z-index: 1001;
-            background: linear-gradient(90deg, var(--accent), var(--accent2));
-            transition: width 0.5s ease; width: 0%;
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 4px 12px var(--shadow-color);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
         }
 
-        /* ========== SIDEBAR ========== */
-        .sidebar {
-            position: fixed; top: 0; left: 0; width: var(--sidebar-w); height: 100vh;
-            background: var(--bg-white); border-right: 1px solid var(--border);
-            z-index: 100; display: flex; flex-direction: column;
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: var(--shadow-sm);
-        }
-        .sidebar-header {
-            padding: 22px 20px; border-bottom: 1px solid var(--border);
-        }
-        .sidebar-logo {
-            display: flex; align-items: center; gap: 10px; margin-bottom: 6px;
-        }
-        .sidebar-logo i {
-            font-size: 20px; color: var(--accent);
-            background: var(--accent-dim); padding: 9px; border-radius: var(--radius-sm);
-        }
-        .sidebar-logo span {
-            font-family: var(--font-display); font-weight: 700; font-size: 13.5px;
-            color: var(--fg); letter-spacing: 0.3px; line-height: 1.3;
-        }
-        .sidebar-subtitle {
-            font-size: 10.5px; color: var(--muted); text-transform: uppercase;
-            letter-spacing: 1.5px; padding-left: 40px;
-        }
-        .sidebar-progress {
-            padding: 14px 20px; border-bottom: 1px solid var(--border);
-        }
-        .sidebar-progress-label {
-            font-size: 10.5px; color: var(--muted); text-transform: uppercase;
-            letter-spacing: 1px; margin-bottom: 7px; display: flex;
-            justify-content: space-between; align-items: center;
-        }
-        .sidebar-progress-label strong { color: var(--accent); font-size: 12.5px; }
-        .progress-track {
-            width: 100%; height: 5px; background: var(--bg-subtle);
-            border-radius: 3px; overflow: hidden;
-        }
-        .progress-fill {
-            height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2));
-            border-radius: 3px; transition: width 0.6s ease; width: 0%;
-        }
-        .sidebar-nav { flex: 1; overflow-y: auto; padding: 10px 0; }
-        .nav-section-label {
-            font-size: 10px; color: var(--muted); text-transform: uppercase;
-            letter-spacing: 1.5px; padding: 14px 20px 6px; font-weight: 600;
-        }
-        .nav-item {
-            display: flex; align-items: center; gap: 11px; padding: 9px 20px;
-            cursor: pointer; transition: var(--transition); position: relative;
-            font-size: 13px; color: var(--fg-secondary); border-left: 3px solid transparent;
-        }
-        .nav-item:hover { background: var(--bg-subtle); color: var(--fg); }
-        .nav-item.active {
-            background: var(--accent-dim); color: var(--accent);
-            border-left-color: var(--accent); font-weight: 500;
-        }
-        .nav-item.completed .nav-icon { color: var(--success); background: var(--success-dim); }
-        .nav-item.completed::after {
-            content: '\f058'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
-            position: absolute; right: 16px; font-size: 11px; color: var(--success);
-        }
-        .nav-icon {
-            width: 26px; height: 26px; display: flex; align-items: center;
-            justify-content: center; border-radius: 6px; font-size: 11px;
-            background: var(--bg-subtle); color: var(--muted); flex-shrink: 0;
-            transition: var(--transition);
-        }
-        .nav-item.active .nav-icon { background: var(--accent-glow); color: var(--accent); }
-        .sidebar-footer {
-            padding: 14px 20px; border-top: 1px solid var(--border);
-            font-size: 10.5px; color: var(--muted); text-align: center;
-        }
-        .sidebar-footer i { color: var(--accent); margin-right: 4px; }
-
-        /* ========== TOPBAR MOBILE ========== */
-        .topbar {
-            display: none; position: fixed; top: 0; left: 0; right: 0;
-            height: var(--topbar-h); background: var(--bg-white);
-            border-bottom: 1px solid var(--border); z-index: 99;
-            align-items: center; padding: 0 16px; gap: 12px;
-            box-shadow: var(--shadow-sm);
-        }
-        .hamburger {
-            width: 38px; height: 38px; display: flex; align-items: center;
-            justify-content: center; background: none; border: 1px solid var(--border);
-            border-radius: var(--radius-sm); color: var(--fg); cursor: pointer;
-            font-size: 16px; transition: var(--transition);
-        }
-        .hamburger:hover { border-color: var(--accent); color: var(--accent); }
-        .topbar-title {
-            font-family: var(--font-display); font-weight: 600; font-size: 13px;
-        }
-        .overlay {
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.25);
-            z-index: 99; backdrop-filter: blur(3px);
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        /* ========== CONTEÚDO PRINCIPAL ========== */
-        .main {
-            margin-left: var(--sidebar-w); padding: 32px 48px 80px;
-            position: relative; z-index: 1; min-height: 100vh;
+        .logo {
+            display: flex;
+            align-items: center;
         }
 
-        /* ========== HERO ========== */
-        .hero {
-            padding: 52px 48px; margin-bottom: 36px;
-            background: var(--bg-white); border: 1px solid var(--border);
-            border-radius: 16px; position: relative; overflow: hidden;
-            box-shadow: var(--shadow-md);
-        }
-        .hero::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
-            background: linear-gradient(90deg, var(--accent), var(--accent2));
-        }
-        .hero::after {
-            content: ''; position: absolute; top: -60%; right: -15%;
-            width: 380px; height: 380px; background: var(--accent);
-            filter: blur(140px); opacity: 0.04; border-radius: 50%;
-        }
-        .hero-badge {
-            display: inline-flex; align-items: center; gap: 6px;
-            background: var(--accent-dim); border: 1px solid rgba(13,124,95,0.15);
-            padding: 5px 14px; border-radius: 20px; font-size: 11px;
-            color: var(--accent); font-weight: 600; margin-bottom: 18px;
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-        .hero h1 {
-            font-family: var(--font-display); font-size: clamp(26px, 3.5vw, 38px);
-            font-weight: 700; line-height: 1.15; margin-bottom: 14px;
-            color: var(--fg);
-        }
-        .hero p {
-            font-size: 16px; color: var(--fg-secondary); max-width: 620px;
-            line-height: 1.8; margin-bottom: 12px;
-        }
-        .hero-stats {
-            display: flex; gap: 28px; flex-wrap: wrap; margin-top: 20px;
-        }
-        .hero-stat { display: flex; align-items: center; gap: 9px; }
-        .hero-stat i { font-size: 15px; color: var(--accent); }
-        .hero-stat span { font-size: 13px; color: var(--fg-secondary); }
-        .hero-stat strong { color: var(--fg); font-weight: 600; }
-
-        /* ========== SEÇÕES ========== */
-        .section {
-            margin-bottom: 44px; opacity: 0; transform: translateY(24px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-        .section.visible { opacity: 1; transform: translateY(0); }
-        .section-header {
-            display: flex; align-items: center; gap: 14px;
-            margin-bottom: 22px; padding-bottom: 14px;
-            border-bottom: 2px solid var(--border);
-        }
-        .section-number {
-            width: 38px; height: 38px; display: flex; align-items: center;
-            justify-content: center; border-radius: var(--radius-sm);
-            font-family: var(--font-display); font-weight: 700; font-size: 15px;
-            background: var(--accent); color: #fff; flex-shrink: 0;
-        }
-        .section-title {
-            font-family: var(--font-display); font-size: 22px; font-weight: 700;
-            color: var(--fg); line-height: 1.2;
-        }
-
-        /* ========== CARDS ========== */
-        .card {
-            background: var(--bg-white); border: 1px solid var(--border);
-            border-radius: var(--radius); padding: 26px; margin-bottom: 18px;
-            transition: var(--transition); box-shadow: var(--shadow-sm);
-        }
-        .card:hover { box-shadow: var(--shadow-md); }
-        .card-label {
-            display: inline-flex; align-items: center; gap: 6px;
-            font-size: 10.5px; text-transform: uppercase; letter-spacing: 1.2px;
-            font-weight: 600; margin-bottom: 10px;
-        }
-        .card-label.green { color: var(--accent); }
-        .card-label.cyan { color: var(--accent2); }
-        .card-label.red { color: var(--danger); }
-        .card-label.yellow { color: var(--warning); }
-        .card h3 {
-            font-family: var(--font-display); font-size: 18px; font-weight: 600;
-            color: var(--fg); margin-bottom: 10px; line-height: 1.3;
-        }
-        .card p, .card li {
-            font-size: 14.5px; color: var(--fg-secondary); line-height: 1.8;
-        }
-        .card ul { padding-left: 20px; margin-top: 6px; }
-        .card ul li { margin-bottom: 5px; }
-        .card ul li::marker { color: var(--accent); }
-
-        /* ========== PILARES EXPANSÍVEIS ========== */
-        .pillars-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-            gap: 16px; margin-bottom: 22px;
-        }
-        .pillar-card {
-            background: var(--bg-white); border: 1px solid var(--border);
-            border-radius: var(--radius); padding: 0; cursor: pointer;
-            transition: var(--transition); overflow: hidden; position: relative;
-            box-shadow: var(--shadow-sm);
-        }
-        .pillar-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
-        .pillar-card.expanded { border-color: var(--accent); box-shadow: var(--shadow-md); }
-        .pillar-header {
-            padding: 22px; display: flex; align-items: flex-start; gap: 13px;
-        }
-        .pillar-icon {
-            width: 46px; height: 46px; border-radius: var(--radius-sm);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 19px; flex-shrink: 0;
-        }
-        .pillar-icon.confidencialidade { background: var(--accent-dim); color: var(--accent); }
-        .pillar-icon.integridade { background: var(--accent2-dim); color: var(--accent2); }
-        .pillar-icon.disponibilidade { background: var(--warning-dim); color: var(--warning); }
-        .pillar-icon.autenticidade { background: var(--purple-dim); color: var(--purple); }
-        .pillar-title { font-family: var(--font-display); font-size: 16px; font-weight: 600; color: var(--fg); }
-        .pillar-brief { font-size: 12.5px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
-        .pillar-expand-icon {
-            position: absolute; top: 22px; right: 18px;
-            color: var(--muted); font-size: 11px; transition: var(--transition);
-        }
-        .pillar-card.expanded .pillar-expand-icon { transform: rotate(180deg); color: var(--accent); }
-        .pillar-body {
-            max-height: 0; overflow: hidden; transition: max-height 0.45s ease;
-        }
-        .pillar-card.expanded .pillar-body { max-height: 600px; }
-        .pillar-content {
-            padding: 0 22px 22px; border-top: 1px solid var(--border);
-            padding-top: 18px;
-        }
-        .pillar-content p { font-size: 13.5px; color: var(--fg-secondary); line-height: 1.8; margin-bottom: 10px; }
-        .pillar-content ul { padding-left: 18px; margin-bottom: 10px; }
-        .pillar-content ul li { font-size: 13px; color: var(--fg-secondary); margin-bottom: 4px; }
-        .pillar-content ul li::marker { color: var(--accent); }
-        .pillar-example {
-            background: var(--bg-subtle); border-left: 3px solid var(--accent);
-            padding: 12px 16px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-            font-size: 12.5px; color: var(--fg-secondary); line-height: 1.7;
-        }
-        .pillar-example strong { color: var(--accent); }
-
-        /* ========== CALLOUTS ========== */
-        .callout {
-            display: flex; gap: 12px; padding: 16px 20px;
-            border-radius: var(--radius-sm); margin: 18px 0;
-            border: 1px solid;
-        }
-        .callout i { font-size: 16px; margin-top: 2px; flex-shrink: 0; }
-        .callout p { font-size: 13.5px; line-height: 1.7; }
-        .callout.tip { background: var(--accent-dim); border-color: rgba(13,124,95,0.15); }
-        .callout.tip i { color: var(--accent); }
-        .callout.warning { background: var(--warning-dim); border-color: rgba(217,119,6,0.15); }
-        .callout.warning i { color: var(--warning); }
-        .callout.danger { background: var(--danger-dim); border-color: rgba(220,38,38,0.12); }
-        .callout.danger i { color: var(--danger); }
-        .callout.info { background: var(--info-dim); border-color: rgba(2,132,199,0.12); }
-        .callout.info i { color: var(--info); }
-
-        /* ========== TABELA DE RISCOS ========== */
-        .risk-table-wrap {
-            overflow-x: auto; border: 1px solid var(--border);
-            border-radius: var(--radius); margin: 18px 0;
-            box-shadow: var(--shadow-sm);
-        }
-        .risk-table {
-            width: 100%; border-collapse: collapse; font-size: 13px;
-            background: var(--bg-white);
-        }
-        .risk-table thead { background: var(--bg-subtle); }
-        .risk-table th {
-            padding: 12px 14px; text-align: left; font-family: var(--font-display);
-            font-weight: 600; font-size: 11px; text-transform: uppercase;
-            letter-spacing: 0.7px; color: var(--muted); border-bottom: 2px solid var(--border);
-            white-space: nowrap;
-        }
-        .risk-table td {
-            padding: 12px 14px; border-bottom: 1px solid var(--border);
-            color: var(--fg-secondary); vertical-align: top;
-        }
-        .risk-table tbody tr { transition: var(--transition); }
-        .risk-table tbody tr:hover { background: var(--accent-dim); }
-        .risk-table tbody tr:last-child td { border-bottom: none; }
-        .risk-badge {
-            display: inline-block; padding: 3px 10px; border-radius: 20px;
-            font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+        /* Ajuste do Logo para comportar o nome Pera Educacional */
+        .logo-icon {
+            background: var(--accent-color);
+            color: var(--primary-dark);
+            padding: 5px 15px;
+            border-radius: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+            font-size: 16px;
+            margin-right: 15px;
+            text-transform: uppercase;
             letter-spacing: 0.5px;
-        }
-        .risk-badge.insignificante { background: var(--success-dim); color: var(--success); }
-        .risk-badge.baixo { background: var(--accent-dim); color: var(--accent); }
-        .risk-badge.medio { background: var(--warning-dim); color: var(--warning); }
-        .risk-badge.alto { background: var(--danger-dim); color: var(--danger); }
-        .risk-badge.extremo { background: rgba(220,38,38,0.12); color: #b91c1c; }
-        .cid-tag {
-            display: inline-block; padding: 2px 7px; border-radius: 4px;
-            font-size: 10px; font-weight: 700; text-transform: uppercase;
-            letter-spacing: 0.5px; margin-right: 3px; margin-top: 3px;
-        }
-        .cid-tag.c { background: var(--accent-dim); color: var(--accent); }
-        .cid-tag.i { background: var(--accent2-dim); color: var(--accent2); }
-        .cid-tag.d { background: var(--warning-dim); color: var(--warning); }
-        .cid-tag.a { background: var(--purple-dim); color: var(--purple); }
-
-        /* ========== FORMULÁRIO ========== */
-        .form-group { margin-bottom: 18px; }
-        .form-label {
-            display: block; font-size: 12.5px; font-weight: 600;
-            color: var(--fg); margin-bottom: 5px;
-        }
-        .form-label .required { color: var(--danger); margin-left: 2px; }
-        .form-input, .form-select, .form-textarea {
-            width: 100%; padding: 11px 14px; background: var(--bg-white);
-            border: 1.5px solid var(--border); border-radius: var(--radius-sm);
-            color: var(--fg); font-family: var(--font-body); font-size: 13.5px;
-            transition: var(--transition); outline: none;
-        }
-        .form-input:focus, .form-select:focus, .form-textarea:focus {
-            border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim);
-        }
-        .form-input::placeholder, .form-textarea::placeholder { color: var(--muted); }
-        .form-textarea { resize: vertical; min-height: 76px; line-height: 1.6; }
-        .form-select {
-            cursor: pointer; appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%237a8f82' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat; background-position: right 14px center;
-        }
-        .form-select option { background: var(--bg-white); color: var(--fg); }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
-        .form-hint { font-size: 11.5px; color: var(--muted); margin-top: 3px; }
-
-        /* ========== BOTÕES ========== */
-        .btn {
-            display: inline-flex; align-items: center; gap: 7px;
-            padding: 11px 22px; border: none; border-radius: var(--radius-sm);
-            font-family: var(--font-display); font-size: 13px; font-weight: 600;
-            cursor: pointer; transition: var(--transition); text-transform: uppercase;
-            letter-spacing: 0.4px;
-        }
-        .btn:active { transform: scale(0.97); }
-        .btn-primary {
-            background: var(--accent); color: #fff;
-            box-shadow: 0 2px 10px rgba(13,124,95,0.25);
-        }
-        .btn-primary:hover { background: var(--accent-light); box-shadow: 0 4px 16px rgba(13,124,95,0.3); }
-        .btn-secondary {
-            background: var(--bg-white); color: var(--fg); border: 1.5px solid var(--border);
-        }
-        .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
-        .btn-danger {
-            background: var(--danger-dim); color: var(--danger); border: 1px solid rgba(220,38,38,0.15);
-        }
-        .btn-danger:hover { background: rgba(220,38,38,0.12); }
-        .btn-sm { padding: 7px 13px; font-size: 11.5px; }
-        .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
-
-        /* ========== QUIZ ========== */
-        .quiz-card {
-            background: var(--bg-white); border: 1px solid var(--border);
-            border-radius: var(--radius); padding: 26px; margin: 22px 0;
-            box-shadow: var(--shadow-sm);
-        }
-        .quiz-question {
-            font-size: 14.5px; font-weight: 600; color: var(--fg);
-            margin-bottom: 14px; line-height: 1.6;
-        }
-        .quiz-options { display: flex; flex-direction: column; gap: 7px; }
-        .quiz-option {
-            display: flex; align-items: center; gap: 11px;
-            padding: 11px 15px; border: 1.5px solid var(--border);
-            border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition);
-            font-size: 13.5px; color: var(--fg-secondary); background: var(--bg-white);
-        }
-        .quiz-option:hover { border-color: var(--border-light); background: var(--bg-subtle); }
-        .quiz-option.selected { border-color: var(--accent); background: var(--accent-dim); color: var(--fg); }
-        .quiz-option.correct { border-color: var(--success); background: var(--success-dim); color: var(--success); }
-        .quiz-option.wrong { border-color: var(--danger); background: var(--danger-dim); color: var(--danger); }
-        .quiz-option .opt-letter {
-            width: 26px; height: 26px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-family: var(--font-display); font-weight: 700; font-size: 11px;
-            background: var(--bg-subtle); color: var(--muted); flex-shrink: 0;
-            transition: var(--transition);
-        }
-        .quiz-option.selected .opt-letter { background: var(--accent); color: #fff; }
-        .quiz-option.correct .opt-letter { background: var(--success); color: #fff; }
-        .quiz-option.wrong .opt-letter { background: var(--danger); color: #fff; }
-        .quiz-feedback {
-            margin-top: 12px; padding: 12px 16px; border-radius: var(--radius-sm);
-            font-size: 12.5px; line-height: 1.6; display: none;
-        }
-        .quiz-feedback.show { display: flex; align-items: flex-start; gap: 8px; }
-        .quiz-feedback.correct-fb { background: var(--success-dim); color: var(--success); border: 1px solid rgba(22,163,74,0.15); }
-        .quiz-feedback.wrong-fb { background: var(--danger-dim); color: var(--danger); border: 1px solid rgba(220,38,38,0.12); }
-
-        /* ========== MATRIZ DE RISCOS ========== */
-        .risk-matrix {
-            display: grid; grid-template-columns: 90px repeat(4, 1fr);
-            grid-template-rows: auto repeat(3, 54px); gap: 3px;
-            max-width: 480px; margin: 22px auto;
-        }
-        .matrix-cell {
-            display: flex; align-items: center; justify-content: center;
-            font-size: 10.5px; font-weight: 600; border-radius: 6px;
-            text-align: center; padding: 4px;
-        }
-        .matrix-header { background: var(--bg-subtle); color: var(--muted); font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .matrix-label { background: var(--bg-subtle); color: var(--muted); font-size: 9.5px; }
-        .matrix-cell.insignificante { background: var(--success-dim); color: var(--success); }
-        .matrix-cell.baixo { background: var(--accent-dim); color: var(--accent); }
-        .matrix-cell.medio { background: var(--warning-dim); color: var(--warning); }
-        .matrix-cell.alto { background: var(--danger-dim); color: var(--danger); }
-        .matrix-cell.extremo { background: rgba(220,38,38,0.1); color: #b91c1c; }
-
-        /* ========== CENÁRIO ========== */
-        .scenario-box {
-            background: var(--bg-white); border: 1px solid var(--border);
-            border-radius: var(--radius); padding: 30px; margin: 22px 0;
-            position: relative; box-shadow: var(--shadow-md);
-        }
-        .scenario-box::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
-            background: linear-gradient(90deg, var(--accent), var(--accent2));
-        }
-        .scenario-box h3 {
-            font-family: var(--font-display); font-size: 19px; font-weight: 700;
-            color: var(--fg); margin-bottom: 14px;
-            display: flex; align-items: center; gap: 10px;
-        }
-        .scenario-box h3 i { color: var(--accent); }
-        .scenario-box p { font-size: 14.5px; color: var(--fg-secondary); line-height: 1.8; margin-bottom: 10px; }
-        .scenario-assets {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-            gap: 10px; margin: 18px 0;
-        }
-        .asset-item {
-            display: flex; align-items: center; gap: 9px;
-            padding: 12px 14px; background: var(--bg-subtle); border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-        }
-        .asset-item i { color: var(--accent2); font-size: 15px; flex-shrink: 0; }
-        .asset-item span { font-size: 12.5px; color: var(--fg-secondary); }
-
-        /* ========== STEPS ========== */
-        .steps { display: flex; gap: 0; margin: 24px 0; position: relative; }
-        .step {
-            flex: 1; text-align: center; position: relative; padding-top: 38px;
-        }
-        .step::before {
-            content: ''; position: absolute; top: 15px; left: 50%;
-            width: 100%; height: 2px; background: var(--border);
-        }
-        .step:last-child::before { display: none; }
-        .step-dot {
-            width: 30px; height: 30px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-family: var(--font-display); font-weight: 700; font-size: 12px;
-            background: var(--bg-white); border: 2px solid var(--border);
-            color: var(--muted); position: absolute; top: 0; left: 50%;
-            transform: translateX(-50%); z-index: 2; transition: var(--transition);
-        }
-        .step.active .step-dot { background: var(--accent); border-color: var(--accent); color: #fff; }
-        .step.done .step-dot { background: var(--success); border-color: var(--success); color: #fff; }
-        .step-label { font-size: 10.5px; color: var(--muted); margin-top: 7px; line-height: 1.3; }
-        .step.active .step-label { color: var(--accent); font-weight: 600; }
-        .step.done .step-label { color: var(--success); }
-
-        /* ========== ELEMENTOS AUXILIARES ========== */
-        .empty-state { text-align: center; padding: 44px 24px; color: var(--muted); }
-        .empty-state i { font-size: 36px; margin-bottom: 10px; opacity: 0.35; }
-        .empty-state p { font-size: 13.5px; }
-        .subsection-title {
-            font-family: var(--font-display); font-size: 17px; font-weight: 600;
-            color: var(--fg); margin: 28px 0 12px; display: flex;
-            align-items: center; gap: 9px;
-        }
-        .subsection-title i { color: var(--accent); font-size: 15px; }
-        .divider { border: none; height: 1px; background: var(--border); margin: 28px 0; }
-        .legend { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0; }
-        .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11.5px; color: var(--fg-secondary); }
-        .legend-dot { width: 9px; height: 9px; border-radius: 50%; }
-        .legend-dot.insignificante { background: var(--success); }
-        .legend-dot.baixo { background: var(--accent); }
-        .legend-dot.medio { background: var(--warning); }
-        .legend-dot.alto { background: var(--danger); }
-        .legend-dot.extremo { background: #b91c1c; }
-        .risk-counter {
-            display: flex; align-items: center; gap: 14px;
-            padding: 14px 18px; background: var(--bg-white);
-            border: 1px solid var(--border); border-radius: var(--radius-sm);
-            margin-bottom: 18px; box-shadow: var(--shadow-sm);
-        }
-        .risk-counter-num {
-            font-family: var(--font-display); font-size: 26px; font-weight: 700; color: var(--accent);
-        }
-        .risk-counter-text { font-size: 12.5px; color: var(--muted); line-height: 1.4; }
-        .risk-counter-text strong { color: var(--fg-secondary); display: block; }
-        .ref-list { list-style: none; padding: 0; }
-        .ref-list li {
-            padding: 10px 0; border-bottom: 1px solid var(--border);
-            font-size: 12.5px; color: var(--fg-secondary); line-height: 1.6;
-            display: flex; gap: 9px; align-items: flex-start;
-        }
-        .ref-list li:last-child { border-bottom: none; }
-        .ref-list li i { color: var(--accent); margin-top: 3px; flex-shrink: 0; font-size: 8px; }
-        code {
-            background: var(--bg-subtle); border: 1px solid var(--border);
-            padding: 1px 6px; border-radius: 4px; font-size: 12.5px;
-            font-family: 'Courier New', monospace; color: var(--accent);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
-        /* ========== TOAST ========== */
-        .toast-container {
-            position: fixed; bottom: 24px; right: 24px; z-index: 2000;
-            display: flex; flex-direction: column; gap: 7px;
+        nav ul {
+            display: flex;
+            list-style: none;
         }
-        .toast {
-            display: flex; align-items: center; gap: 9px;
-            padding: 12px 18px; border-radius: var(--radius-sm);
-            font-size: 12.5px; font-weight: 500; color: var(--fg);
-            background: var(--bg-white); border: 1px solid var(--border);
-            box-shadow: var(--shadow-lg);
-            animation: toastIn 0.35s ease; min-width: 260px;
-        }
-        .toast.success { border-color: rgba(22,163,74,0.25); }
-        .toast.success i { color: var(--success); }
-        .toast.error { border-color: rgba(220,38,38,0.25); }
-        .toast.error i { color: var(--danger); }
-        .toast.warning { border-color: rgba(217,119,6,0.25); }
-        .toast.warning i { color: var(--warning); }
-        .toast.info { border-color: rgba(2,132,199,0.25); }
-        .toast.info i { color: var(--info); }
-        @keyframes toastIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
-        .toast.removing { animation: toastOut 0.25s ease forwards; }
-        @keyframes toastOut { to { opacity: 0; transform: translateX(30px); } }
 
-        /* ========== MODAL ========== */
-        .modal-overlay {
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3);
-            z-index: 1500; align-items: center; justify-content: center;
-            backdrop-filter: blur(4px); padding: 24px;
+        nav ul li {
+            margin-left: 25px;
         }
-        .modal-overlay.show { display: flex; }
-        .modal {
-            background: var(--bg-white); border: 1px solid var(--border);
-            border-radius: 16px; max-width: 480px; width: 100%;
-            padding: 32px; animation: modalIn 0.3s ease;
-            position: relative; box-shadow: var(--shadow-lg);
-        }
-        @keyframes modalIn {
-            from { opacity: 0; transform: scale(0.92) translateY(16px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        .modal-close {
-            position: absolute; top: 14px; right: 14px;
-            width: 30px; height: 30px; border: none; background: var(--bg-subtle);
-            border-radius: 50%; color: var(--muted); cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 13px; transition: var(--transition);
-        }
-        .modal-close:hover { color: var(--danger); background: var(--danger-dim); }
-        .modal h2 { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--fg); margin-bottom: 10px; }
-        .modal p { font-size: 13.5px; color: var(--fg-secondary); line-height: 1.7; margin-bottom: 18px; }
-        .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
 
-        /* ========== BOTÃO VOLTAR TOPO ========== */
-        .back-to-top {
-            position: fixed; bottom: 24px; left: calc(var(--sidebar-w) + 24px);
-            width: 40px; height: 40px; border-radius: 50%;
-            background: var(--bg-white); border: 1px solid var(--border);
-            color: var(--accent); display: flex; align-items: center;
-            justify-content: center; cursor: pointer; z-index: 50;
-            opacity: 0; pointer-events: none; transition: var(--transition);
-            font-size: 14px; box-shadow: var(--shadow-sm);
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
         }
-        .back-to-top.show { opacity: 1; pointer-events: auto; }
-        .back-to-top:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-        /* ========== RESPONSIVO ========== */
-        @media (max-width: 1024px) {
-            .main { padding: 24px; }
-            .hero { padding: 36px 26px; }
-            .form-row { grid-template-columns: 1fr; }
+        nav ul li a:hover, nav ul li a.active {
+            color: var(--accent-color);
         }
+
+        .hero {
+            background: linear-gradient(rgba(55, 65, 81, 0.9), rgba(31, 42, 68, 0.8)), url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80') no-repeat center center/cover;
+            color: white;
+            padding: 140px 0 80px;
+            text-align: center;
+        }
+
+        .hero h2 { font-size: 38px; margin-bottom: 20px; }
+
+        .drives-section { padding: 60px 0; }
+
+        .section-title { text-align: center; margin-bottom: 50px; }
+        .section-title h2 { font-size: 34px; color: var(--primary-color); margin-bottom: 10px; }
+
+        .drives-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .drive-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 18px var(--shadow-color);
+            transition: 0.3s;
+            border-top: 5px solid var(--primary-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .drive-card:hover { transform: translateY(-10px); }
+
+        .drive-card-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .drive-card-body { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .drive-card-body p { margin-bottom: 20px; color: var(--text-secondary); font-size: 0.95rem; }
+
+        .drive-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .drive-btn:hover { transform: scale(1.05); }
+
+        footer {
+            background: var(--primary-dark);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            margin-top: auto;
+        }
+
         @media (max-width: 768px) {
-            .sidebar { transform: translateX(-100%); }
-            .sidebar.open { transform: translateX(0); }
-            .topbar { display: flex; }
-            .overlay.show { display: block; }
-            .main { margin-left: 0; padding: calc(var(--topbar-h) + 14px) 14px 70px; }
-            .hero { padding: 26px 18px; }
-            .hero-stats { flex-direction: column; gap: 14px; }
-            .pillars-grid { grid-template-columns: 1fr; }
-            .steps { flex-direction: column; gap: 6px; }
-            .step::before { display: none; }
-            .step { padding-top: 0; text-align: left; display: flex; align-items: center; gap: 10px; }
-            .step-dot { position: static; transform: none; }
-            .step-label { margin-top: 0; }
-            .risk-table { font-size: 11px; }
-            .risk-table th, .risk-table td { padding: 8px 7px; }
-            .scenario-assets { grid-template-columns: 1fr; }
-            .back-to-top { left: 20px; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                transition-duration: 0.01ms !important;
-            }
+            .header-content { flex-direction: column; }
+            nav ul { margin-top: 15px; }
+            .hero h2 { font-size: 28px; }
+            .logo-icon { margin-bottom: 10px; margin-right: 0; }
         }
     </style>
 </head>
 <body>
 
-<div class="bg-effects">
-    <div class="bg-orb"></div>
-    <div class="bg-orb"></div>
-    <div class="bg-orb"></div>
-    <div class="bg-grid"></div>
-</div>
-
-<div class="progress-bar-global" id="globalProgress"></div>
-
-<div class="overlay" id="overlay"></div>
-
-<header class="topbar">
-    <button class="hamburger" id="hamburgerBtn" aria-label="Abrir menu"><i class="fas fa-bars"></i></button>
-    <span class="topbar-title">Seguranca e Auditoria de Sistemas</span>
-</header>
-
-<nav class="sidebar" id="sidebar" aria-label="Navegacao principal">
-    <div class="sidebar-header">
-        <div class="sidebar-logo">
-            <i class="fas fa-shield-halved"></i>
-            <span>Seguranca e Auditoria de Sistemas</span>
-        </div>
-        <div class="sidebar-subtitle">Unidade 1 — Fundamentos</div>
-    </div>
-    <div class="sidebar-progress">
-        <div class="sidebar-progress-label">
-            <span>Seu progresso</span>
-            <strong id="progressPercent">0%</strong>
-        </div>
-        <div class="progress-track">
-            <div class="progress-fill" id="progressFill"></div>
-        </div>
-    </div>
-    <div class="sidebar-nav" id="sidebarNav">
-        <div class="nav-section-label">Introducao</div>
-        <div class="nav-item active" data-target="sec-welcome">
-            <span class="nav-icon"><i class="fas fa-home"></i></span> Bem-vindo
-        </div>
-        <div class="nav-section-label">Conteudo</div>
-        <div class="nav-item" data-target="sec-pilares">
-            <span class="nav-icon"><i class="fas fa-lock"></i></span> Pilares CID+A
-        </div>
-        <div class="nav-item" data-target="sec-riscos">
-            <span class="nav-icon"><i class="fas fa-chart-bar"></i></span> Gestao de Riscos
-        </div>
-        <div class="nav-item" data-target="sec-ameacas">
-            <span class="nav-icon"><i class="fas fa-bug"></i></span> Ameacas e Vulnerabilidades
-        </div>
-        <div class="nav-item" data-target="sec-contramedidas">
-            <span class="nav-icon"><i class="fas fa-hard-hat"></i></span> Contramedidas
-        </div>
-        <div class="nav-section-label">Atividade</div>
-        <div class="nav-item" data-target="sec-cenario">
-            <span class="nav-icon"><i class="fas fa-building"></i></span> Cenario TechStore
-        </div>
-        <div class="nav-item" data-target="sec-atividade">
-            <span class="nav-icon"><i class="fas fa-pen-to-square"></i></span> Mapeamento de Riscos
-        </div>
-        <div class="nav-section-label">Complementar</div>
-        <div class="nav-item" data-target="sec-referencias">
-            <span class="nav-icon"><i class="fas fa-book"></i></span> Referencias
-        </div>
-    </div>
-    <div class="sidebar-footer">
-        <i class="fas fa-graduation-cap"></i> Desenvolvimento de Sistemas — 1o Semestre
-    </div>
-</nav>
-
-<main class="main" id="mainContent">
-
-    <!-- HERO -->
-    <section class="section visible" id="sec-welcome">
-        <div class="hero">
-            <div class="hero-badge"><i class="fas fa-rocket"></i> Unidade 1</div>
-            <h1>Fundamentos da Seguranca da Informacao</h1>
-            <p>
-                Bem-vindo(a) a esta unidade de estudo. Aqui voce vai construir uma base solida sobre os principios
-                que sustentam a seguranca da informacao, entender como identificar e classificar riscos, conhecer
-                as ameacas mais comuns e propor contramedidas reais. Tudo isso sera aplicado em um estudo de caso
-                pratico da empresa TechStore Ltda.
-            </p>
-            <p>
-                <strong>Seja protagonista do seu aprendizado:</strong> leia com atencao, explore os cards interativos,
-                responda aos check-points de conhecimento e, ao final, realize a atividade de mapeamento de riscos.
-            </p>
-            <div class="hero-stats">
-                <div class="hero-stat"><i class="fas fa-book-open"></i><span><strong>4</strong> modulos teoricos</span></div>
-                <div class="hero-stat"><i class="fas fa-question-circle"></i><span><strong>3</strong> check-points de conhecimento</span></div>
-                <div class="hero-stat"><i class="fas fa-tasks"></i><span><strong>1</strong> atividade pratica avaliativa</span></div>
-                <div class="hero-stat"><i class="fas fa-clock"></i><span><strong>~2h</strong> de estudo autonomo</span></div>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <div class="logo-icon">Pera Educacional</div>
+                <h1>Portal de Estudos</h1>
             </div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Início</a></li>
+                    <li><a href="#trilha">Trilha de Estudos</a></li>
+                </ul>
+            </nav>
         </div>
-        <div class="callout tip">
-            <i class="fas fa-lightbulb"></i>
-            <p><strong>Como usar este ambiente:</strong> Navegue pelas secoes no menu lateral. Cada modulo possui conteudo explicativo seguido de um check-point. Seu progresso e salvo automaticamente no navegador. Ao final, acesse a secao de atividade para realizar o mapeamento de riscos da TechStore.</p>
-        </div>
-    </section>
+    </header>
 
-    <!-- PILARES CID+A -->
-    <section class="section" id="sec-pilares">
-        <div class="section-header">
-            <div class="section-number">1</div>
-            <h2 class="section-title">Pilares da Seguranca da Informacao (CID+A)</h2>
-        </div>
-        <div class="card">
-            <p>
-                A seguranca da informacao (SI) e construida sobre um conjunto de principios fundamentais que visam
-                proteger os ativos de informacao de uma organizacao. Tradicionalmente conhecidos como a
-                <strong>Triade CID</strong> — Confidencialidade, Integridade e Disponibilidade —, o modelo evoluiu
-                para incluir a <strong>Autenticidade</strong>, formando o chamado <strong style="color:var(--accent);">CID+A</strong>,
-                que e o padrao ouro para auditorias e conformidade legal moderna.
-            </p>
-        </div>
-        <div class="callout info">
-            <i class="fas fa-info-circle"></i>
-            <p><strong>Por que o "+A"?</strong> A evolucao das ameacas digitais exigiu que a seguranca fosse alem da protecao dos dados, focando tambem na validacao de quem os acessa. A autenticidade tornou-se indispensavel em um mundo onde acessos remotos, APIs e integracoes entre sistemas sao a regra.</p>
-        </div>
-        <p class="subsection-title"><i class="fas fa-hand-pointer"></i> Clique em cada pilar para explorar</p>
-        <div class="pillars-grid">
-            <div class="pillar-card" onclick="togglePillar(this)">
-                <div class="pillar-header">
-                    <div class="pillar-icon confidencialidade"><i class="fas fa-eye-slash"></i></div>
-                    <div><div class="pillar-title">Confidencialidade</div><div class="pillar-brief">Acesso restrito a informacao</div></div>
+    <main>
+        <section class="hero" id="home">
+            <div class="container">
+                <h2>Segurança da Informação</h2>
+                <p>Acompanhe a trilha de aprendizagem abaixo para dominar os fundamentos de cibersegurança.</p>
+            </div>
+        </section>
+
+        <section class="drives-section" id="trilha">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Trilha de Aprendizagem</h2>
+                    <p>Materiais organizados sequencialmente para o seu desenvolvimento.</p>
                 </div>
-                <i class="fas fa-chevron-down pillar-expand-icon"></i>
-                <div class="pillar-body"><div class="pillar-content">
-                    <p>A Confidencialidade assegura que a informacao seja acessivel apenas por pessoas, entidades ou processos autorizados. Protege os dados contra acesso nao autorizado. A violacao pode levar a exposicao de informacoes sensiveis como dados pessoais e segredos comerciais.</p>
-                    <p><strong>Mecanismos de protecao:</strong></p>
-                    <ul>
-                        <li><strong>Criptografia de ponta a ponta</strong> — dados cifrados em transito (TLS/SSL) e em repouso (AES)</li>
-                        <li><strong>Controle de acesso rigoroso</strong> — permissoes baseadas em funcao (RBAC)</li>
-                        <li><strong>Politicas de classificacao de dados</strong> — publico, interno, confidencial, restrito</li>
-                    </ul>
-                    <div class="pillar-example"><strong>TechStore:</strong> Dados de cartao de credito e CPF dos clientes devem ser invisíveis para funcionarios que nao precisam deles. A criptografia do banco de dados garante que, mesmo em caso de vazamento, os dados nao sejam legíveis.</div>
-                </div></div>
-            </div>
-            <div class="pillar-card" onclick="togglePillar(this)">
-                <div class="pillar-header">
-                    <div class="pillar-icon integridade"><i class="fas fa-fingerprint"></i></div>
-                    <div><div class="pillar-title">Integridade</div><div class="pillar-brief">Precisao e nao-alteracao dos dados</div></div>
-                </div>
-                <i class="fas fa-chevron-down pillar-expand-icon"></i>
-                <div class="pillar-body"><div class="pillar-content">
-                    <p>A Integridade assegura que a informacao seja precisa, completa e nao tenha sido alterada de forma nao autorizada ou acidental. Qualquer modificacao — por erro humano, falha ou ataque — compromete a integridade.</p>
-                    <p><strong>Mecanismos de protecao:</strong></p>
-                    <ul>
-                        <li><strong>Funcoes de Hash</strong> — ex.: SHA-256 para verificar integridade de arquivos</li>
-                        <li><strong>Assinaturas Digitais</strong> — garantem autor real e conteudo nao alterado</li>
-                        <li><strong>Logs de Auditoria e Versionamento</strong> — rastreamento completo de mudancas</li>
-                    </ul>
-                    <div class="pillar-example"><strong>TechStore:</strong> O preco de um produto, o estoque e os detalhes dos pedidos nao podem ser alterados indevidamente. Se um atacante modificar o preco de um notebook de R$ 5.000 para R$ 50, a integridade foi violada.</div>
-                </div></div>
-            </div>
-            <div class="pillar-card" onclick="togglePillar(this)">
-                <div class="pillar-header">
-                    <div class="pillar-icon disponibilidade"><i class="fas fa-server"></i></div>
-                    <div><div class="pillar-title">Disponibilidade</div><div class="pillar-brief">Sistemas acessíveis quando necessario</div></div>
-                </div>
-                <i class="fas fa-chevron-down pillar-expand-icon"></i>
-                <div class="pillar-body"><div class="pillar-content">
-                    <p>A Disponibilidade garante que os sistemas e dados estejam acessíveis e utilizáveis por usuarios autorizados sempre que necessario. A perda gera interrupcoes, prejuízos financeiros e danos a reputacao.</p>
-                    <p><strong>Mecanismos de protecao:</strong></p>
-                    <ul>
-                        <li><strong>Redundancia</strong> — servidores espelhados para evitar pontos unicos de falha</li>
-                        <li><strong>Backups</strong> — copias de seguranca regulares e testadas</li>
-                        <li><strong>Mitigacao DDoS</strong> — protecao contra ataques de sobrecarga</li>
-                    </ul>
-                    <div class="pillar-example"><strong>TechStore:</strong> Um site de vendas fora do ar durante a Black Friday falha neste pilar. A TechStore ficou 6 horas fora do ar por DDoS, perdendo vendas e credibilidade.</div>
-                </div></div>
-            </div>
-            <div class="pillar-card" onclick="togglePillar(this)">
-                <div class="pillar-header">
-                    <div class="pillar-icon autenticidade"><i class="fas fa-user-shield"></i></div>
-                    <div><div class="pillar-title">Autenticidade</div><div class="pillar-brief">Confirmacao real de identidade</div></div>
-                </div>
-                <i class="fas fa-chevron-down pillar-expand-icon"></i>
-                <div class="pillar-body"><div class="pillar-content">
-                    <p>A Autenticidade confirma que a entidade (usuario ou sistema) e realmente quem afirma ser, garantindo o controle real sobre as operacoes. Fundamental para controlar o acesso aos recursos protegidos.</p>
-                    <p><strong>Mecanismos de protecao:</strong></p>
-                    <ul>
-                        <li><strong>Autenticacao de Dois Fatores (2FA/MFA)</strong> — algo que voce sabe + algo que voce tem</li>
-                        <li><strong>Biometria</strong> — identificacao unica por traços fisicos</li>
-                        <li><strong>Certificados Digitais</strong> — identidade eletronica com validade juridica</li>
-                    </ul>
-                    <div class="pillar-example"><strong>TechStore:</strong> O login administrativo exige 2FA para garantir que o gestor e o proprio e nao um invasor com a senha. O acesso VPN tambem deve exigir MFA.</div>
-                </div></div>
-            </div>
-        </div>
-        <div class="callout tip">
-            <i class="fas fa-lightbulb"></i>
-            <p><strong>Dica do professor:</strong> Quando for analisar o caso TechStore, o primeiro passo e identificar qual pilar CID+A esta comprometido em cada risco. Cada contramedida deve estar ligada a protecao de um pilar específico. Isso demonstra entendimento profundo.</p>
-        </div>
 
-        <div class="quiz-card" id="quiz1">
-            <div class="card-label green"><i class="fas fa-clipboard-check"></i> Check-point de Conhecimento 1</div>
-            <div class="quiz-question">Qual pilar da seguranca da informacao garante que apenas pessoas autorizadas tenham acesso aos dados, como os dados de cartao de credito dos clientes da TechStore?</div>
-            <div class="quiz-options">
-                <div class="quiz-option" onclick="selectQuizOption(this,'quiz1','a')"><span class="opt-letter">A</span> Integridade</div>
-                <div class="quiz-option" onclick="selectQuizOption(this,'quiz1','b')"><span class="opt-letter">B</span> Disponibilidade</div>
-                <div class="quiz-option" onclick="selectQuizOption(this,'quiz1','c')"><span class="opt-letter">C</span> Confidencialidade</div>
-                <div class="quiz-option" onclick="selectQuizOption(this,'quiz1','d')"><span class="opt-letter">D</span> Autenticidade</div>
-            </div>
-            <div class="quiz-feedback" id="quiz1-feedback"></div>
-        </div>
-    </section>
-
-    <!-- GESTÃO DE RISCOS -->
-    <section class="section" id="sec-riscos">
-        <div class="section-header">
-            <div class="section-number">2</div>
-            <h2 class="section-title">Gestao e Analise de Riscos</h2>
-        </div>
-        <div class="card">
-            <p>A Gestao de Riscos e um processo sistemico para <strong>identificar, analisar, avaliar, tratar e monitorar</strong> os riscos de seguranca da informacao. O objetivo e proteger os ativos da organizacao, minimizando a probabilidade de incidentes e o impacto caso acontecam.</p>
-        </div>
-        <h3 class="subsection-title"><i class="fas fa-search"></i> Identificacao de Riscos</h3>
-        <div class="card">
-            <p>A primeira etapa e mapear possíveis <strong>ameacas</strong> (o que pode causar dano) e <strong>vulnerabilidades</strong> (fragilidades exploráveis) que afetam os <strong>ativos</strong> de informacao. Um ativo e qualquer coisa de valor: dados, hardware, software, pessoas ou reputacao.</p>
-            <p style="margin-top:10px;"><strong>Na TechStore, os ativos criticos incluem:</strong></p>
-            <ul>
-                <li>Banco de dados de clientes (nome, CPF, cartao de credito)</li>
-                <li>Servidor web (site de e-commerce)</li>
-                <li>Sistema de processamento de pagamentos</li>
-                <li>Sistema de e-mail corporativo</li>
-                <li>Acesso VPN para funcionarios remotos</li>
-                <li>A marca e a reputacao da empresa</li>
-            </ul>
-        </div>
-        <h3 class="subsection-title"><i class="fas fa-calculator"></i> Analise Quantitativa de Riscos</h3>
-        <div class="card">
-            <p>Apos identificar os riscos, atribuimos valores numericos para calcular o <strong>Nível de Risco (NR)</strong>:</p>
-            <div style="text-align:center;margin:22px 0;padding:18px;background:var(--bg-subtle);border-radius:var(--radius-sm);border:1px solid var(--border);">
-                <span style="font-family:var(--font-display);font-size:26px;font-weight:700;color:var(--accent);">NR = P &times; I</span>
-            </div>
-            <p><strong>Probabilidade (P)</strong> — Chance do risco ocorrer:</p>
-            <ul>
-                <li><strong>1 — Baixa:</strong> muito improvavel que ocorra</li>
-                <li><strong>2 — Media:</strong> possivel que ocorra em algum momento</li>
-                <li><strong>3 — Alta:</strong> muito provavel, ja ocorreu ou ocorre com frequencia</li>
-            </ul>
-            <p style="margin-top:10px;"><strong>Impacto (I)</strong> — Gravidade das consequencias:</p>
-            <ul>
-                <li><strong>1 — Baixo:</strong> consequencias minimas, facil recuperacao</li>
-                <li><strong>2 — Medio:</strong> consequencias moderadas, requer esforco</li>
-                <li><strong>3 — Alto:</strong> consequencias significativas, danos financeiros ou legais</li>
-                <li><strong>4 — Extremo:</strong> consequencias catastroficas, possibilidade de encerramento</li>
-            </ul>
-        </div>
-        <h3 class="subsection-title"><i class="fas fa-table-cells"></i> Matriz de Classificacao de Riscos</h3>
-        <div class="card">
-            <p style="margin-bottom:14px;">A tabela abaixo mostra como P x I define a classificacao do risco:</p>
-            <div class="risk-matrix">
-                <div class="matrix-cell matrix-header"></div>
-                <div class="matrix-cell matrix-header">I=1 Baixo</div>
-                <div class="matrix-cell matrix-header">I=2 Medio</div>
-                <div class="matrix-cell matrix-header">I=3 Alto</div>
-                <div class="matrix-cell matrix-header">I=4 Extremo</div>
-                <div class="matrix-cell matrix-label">P=3 Alta</div>
-                <div class="matrix-cell baixo">3 — Baixo</div>
-                <div class="matrix-cell medio">6 — Medio</div>
-                <div class="matrix-cell alto">9 — Alto</div>
-                <div class="matrix-cell extremo">12 — Extremo</div>
-                <div class="matrix-cell matrix-label">P=2 Media</div>
-                <div class="matrix-cell baixo">2 — Baixo</div>
-                <div class="matrix-cell medio">4 — Medio</div>
-                <div class="matrix-cell alto">8 — Alto</div>
-                <div class="matrix-cell alto">8 — Alto</div>
-                <div class="matrix-cell matrix-label">P=1 Baixa</div>
-                <div class="matrix-cell insignificante">1 — Insignificante</div>
-                <div class="matrix-cell baixo">2 — Baixo</div>
-                <div class="matrix-cell baixo">3 — Baixo</div>
-                <div class="matrix-cell medio">4 — Medio</div>
-            </div>
-            <div class="legend">
-                <div class="legend-item"><span class="legend-dot insignificante"></span> Insignificante</div>
-                <div class="legend-item"><span class="legend-dot baixo"></span> Baixo</div>
-                <div class="legend-item"><span class="legend-dot medio"></span> Medio</div>
-                <div class="legend-item"><span class="legend-dot alto"></span> Alto</div>
-                <div class="legend-item"><span class="legend-dot extremo"></span> Extremo</div>
-            </div>
-        </div>
-        <div class="callout warning">
-            <i class="fas fa-exclamation-triangle"></i>
-            <p><strong>Atencao:</strong> Riscos classificados como "Alto" ou "Extremo" exigem acao imediata. Riscos "Medios" precisam de planejamento. Riscos "Baixos" e "Insignificantes" podem ser monitorados.</p>
-        </div>
-        <div class="quiz-card" id="quiz2">
-            <div class="card-label green"><i class="fas fa-clipboard-check"></i> Check-point de Conhecimento 2</div>
-            <div class="quiz-question">Um risco com Probabilidade Alta (P=3) e Impacto Alto (I=3) resulta em qual classificacao?</div>
-            <div class="quiz-options">
-                <div class="quiz-option" onclick="selectQuizOption(this,'quiz2','a')"><span class="opt-letter">A</span> Medio (6)</div>
-                <div class="quiz-option" onclick="selectQuizOption(this,'quiz2','b')"><span class="opt-letter">B</span> Alto (9)</div>
-                <div class="quiz-option" onclick="selectQuizOption(this,'quiz2','c')"><span class="opt-letter">C</span> Extremo (12)</div>
-                <div class="quiz-option" onclick="selectQuizOption(this,'quiz2','d')"><span class="opt-letter">D</span> Baixo (3)</div>
-            </div>
-            <div class="quiz-feedback" id="quiz2-feedback"></div>
-        </div>
-    </section>
-
-    <!-- AMEAÇAS -->
-    <section class="section" id="sec-ameacas">
-        <div class="section-header">
-            <div class="section-number">3</div>
-            <h2 class="section-title">Ameacas e Vulnerabilidades Comuns</h2>
-        </div>
-        <div class="card">
-            <p>No ambiente digital, as organizacoes estao constantemente expostas a diversas ameacas e vulnerabilidades. Compreender como elas se manifestam e essencial para propor contramedidas eficazes. O caso TechStore ilustra cenarios muito reais.</p>
-        </div>
-        <h3 class="subsection-title"><i class="fas fa-user-secret"></i> Ameacas Internas</h3>
-        <div class="card">
-            <div class="card-label red"><i class="fas fa-circle-exclamation"></i> Risco Critico</div>
-            <p>Ameacas internas originam-se dentro da propria organizacao: funcionarios, ex-funcionarios, contratados com algum nivel de acesso. Podem ser <strong>intencionais</strong> (ma-fe, espionagem) ou <strong>nao intencionais</strong> (erros, negligencia, falta de treinamento).</p>
-            <div class="pillar-example" style="margin-top:14px;"><strong>TechStore:</strong> Um funcionario acessou dados de clientes (CPF, cartao) sem autorizacao. Isso revela ausencia de segregacao de funcoes e falta de monitoramento de acessos.</div>
-        </div>
-        <h3 class="subsection-title"><i class="fas fa-burst"></i> Ataques de Negacao de Servico (DDoS)</h3>
-        <div class="card">
-            <div class="card-label red"><i class="fas fa-circle-exclamation"></i> Risco Critico</div>
-            <p>Ataques DDoS sobrecarregam o servidor com volume massivo de trafego de multiplas fontes comprometidas (bots), impedindo que usuarios legítimos acessem o servico. Atacam diretamente o pilar da <strong>Disponibilidade</strong>.</p>
-            <div class="pillar-example" style="margin-top:14px;"><strong>TechStore:</strong> O site ficou fora do ar por 6 horas. Para uma loja virtual, isso significa perda direta de receita, insatisfacao dos clientes e danos a reputacao.</div>
-        </div>
-        <h3 class="subsection-title"><i class="fas fa-network-wired"></i> Seguranca em Infraestrutura</h3>
-        <div class="card">
-            <ul>
-                <li><strong>Servidores Web:</strong> Softwares desatualizados, configuracoes inadequadas ou falhas em aplicacoes web podem ser explorados.</li>
-                <li><strong>Bancos de Dados:</strong> Falta de criptografia, controles fracos ou vulnerabilidades de injecao SQL podem expor dados sensiveis.</li>
-                <li><strong>Acesso Remoto (VPN):</strong> Credenciais comprometidas permitem que um atacante contorne as defesas e acesse a rede interna.</li>
-            </ul>
-        </div>
-        <div class="callout danger">
-            <i class="fas fa-skull-crossbones"></i>
-            <p><strong>Atencao:</strong> O fator humano e, na maioria das vezes, o elo mais fraco. Phishing, senhas fracas e falta de conscientizacao sao responsáveis pela maior parte dos incidentes. Tecnologia sozinha nao resolve — e necessario treinar pessoas.</p>
-        </div>
-        <div class="quiz-card" id="quiz3">
-            <div class="card-label green"><i class="fas fa-clipboard-check"></i> Check-point de Conhecimento 3</div>
-            <div class="quiz-question">Qual tipo de ataque derrubou o site da TechStore por 6 horas, impedindo que clientes realizassem compras?</div>
-            <div class="quiz-options">
-                <div class="quiz-option" onclick="selectQuizOption(this,'quiz3','a')"><span class="opt-letter">A</span> Phishing</div>
-                <div class="quiz-option" onclick="selectQuizOption(this,'quiz3','b')"><span class="opt-letter">B</span> Injecao SQL</div>
-                <div class="quiz-option" onclick="selectQuizOption(this,'quiz3','c')"><span class="opt-letter">C</span> DDoS (Negacao de Servico Distribuido)</div>
-                <div class="quiz-option" onclick="selectQuizOption(this,'quiz3','d')"><span class="opt-letter">D</span> Ransomware</div>
-            </div>
-            <div class="quiz-feedback" id="quiz3-feedback"></div>
-        </div>
-    </section>
-
-    <!-- CONTRAMEDIDAS -->
-    <section class="section" id="sec-contramedidas">
-        <div class="section-header">
-            <div class="section-number">4</div>
-            <h2 class="section-title">Contramedidas e Controles de Seguranca</h2>
-        </div>
-        <div class="card">
-            <p>Apos identificar e analisar os riscos, o proximo passo e implementar <strong>contramedidas</strong> — acoes que visam reduzir a probabilidade de um incidente ou minimizar seu impacto.</p>
-        </div>
-        <h3 class="subsection-title"><i class="fas fa-shield-alt"></i> Contramedidas Preventivas</h3>
-        <div class="card">
-            <div class="card-label green"><i class="fas fa-check-circle"></i> Agem ANTES do incidente</div>
-            <p>Reduzem a <strong>probabilidade</strong> do risco:</p>
-            <ul>
-                <li>Treinamento de conscientizacao em seguranca</li>
-                <li>Firewalls e sistemas IDS/IPS</li>
-                <li>Criptografia de dados em transito e em repouso</li>
-                <li>Politicas de senhas fortes e segregacao de funcoes</li>
-                <li>Filtros antispam/antiphishing no e-mail corporativo</li>
-            </ul>
-        </div>
-        <h3 class="subsection-title"><i class="fas fa-wrench"></i> Contramedidas Corretivas</h3>
-        <div class="card">
-            <div class="card-label yellow"><i class="fas fa-tools"></i> Agem DEPOIS do incidente</div>
-            <p>Reduzem o <strong>impacto</strong> do risco:</p>
-            <ul>
-                <li>Planos de recuperacao de desastres (DRP)</li>
-                <li>Backups regulares e testados</li>
-                <li>Equipes de resposta a incidentes</li>
-                <li>Antivírus e patches de seguranca</li>
-            </ul>
-        </div>
-        <h3 class="subsection-title"><i class="fas fa-key"></i> Controles de Acesso (AAA)</h3>
-        <div class="card">
-            <ul>
-                <li><strong>Autenticacao:</strong> Verificar a identidade (senhas, biometria, tokens)</li>
-                <li><strong>Autorizacao:</strong> Definir permissoes (RBAC, principio do menor privilegio)</li>
-                <li><strong>Auditoria:</strong> Registrar atividades para rastrear acessos (logs)</li>
-            </ul>
-        </div>
-        <h3 class="subsection-title"><i class="fas fa-rotate-right"></i> Continuidade de Negocio</h3>
-        <div class="card">
-            <ul>
-                <li><strong>Plano de Recuperacao de Desastres (DRP):</strong> procedimentos detalhados para restauracao</li>
-                <li><strong>Backups regulares:</strong> copias frequentes e testadas</li>
-                <li><strong>Infraestrutura redundante:</strong> servidores espelhados com failover automatico</li>
-                <li><strong>Servicos de mitigacao DDoS:</strong> filtragem de trafego malicioso em tempo real</li>
-            </ul>
-        </div>
-        <div class="callout tip">
-            <i class="fas fa-lightbulb"></i>
-            <p><strong>Dica do professor:</strong> Na atividade, ao propor uma contramedida, pergunte-se: "Ela e preventiva ou corretiva? Qual pilar CID+A protege? Reduz probabilidade ou impacto?". Responder essas tres perguntas demonstra maturidade na analise.</p>
-        </div>
-    </section>
-
-    <!-- CENÁRIO TECHSTORE -->
-    <section class="section" id="sec-cenario">
-        <div class="section-header">
-            <div class="section-number">5</div>
-            <h2 class="section-title">Estudo de Caso — TechStore Ltda.</h2>
-        </div>
-        <div class="card">
-            <div class="card-label cyan"><i class="fas fa-bullseye"></i> Objetivo da Atividade</div>
-            <h3>Mapear, classificar e propor contramedidas para os riscos de seguranca da informacao</h3>
-            <p style="margin-top:6px;">Voce analisara o cenario abaixo e construira uma tabela completa. Serao necessarios pelo menos <strong style="color:var(--accent);">5 riscos</strong> identificados, com probabilidade, impacto, classificacao e contramedidas.</p>
-        </div>
-        <div class="scenario-box">
-            <h3><i class="fas fa-building"></i> Cenario: TechStore Ltda.</h3>
-            <p>A empresa <strong>TechStore Ltda.</strong> e uma loja virtual de medio porte que comercializa eletronicos pela internet. Ela possui um servidor web proprio, banco de dados com informacoes de clientes (nome, CPF, endereco, dados de cartao de credito), sistema de e-mail corporativo e acesso remoto via VPN para funcionarios.</p>
-            <p>Recentemente, a empresa passou por <strong style="color:var(--danger);">dois incidentes graves</strong>:</p>
-            <ul style="list-style:none;padding:0;">
-                <li style="padding:8px 0;display:flex;align-items:flex-start;gap:9px;">
-                    <i class="fas fa-times-circle" style="color:var(--danger);margin-top:4px;"></i>
-                    <span>Um funcionario acessou dados de clientes <strong>sem autorizacao</strong></span>
-                </li>
-                <li style="padding:8px 0;display:flex;align-items:flex-start;gap:9px;">
-                    <i class="fas fa-times-circle" style="color:var(--danger);margin-top:4px;"></i>
-                    <span>O site ficou fora do ar por <strong>6 horas</strong> devido a um ataque DDoS</span>
-                </li>
-            </ul>
-            <p>A diretoria decidiu realizar um levantamento formal dos riscos para <strong style="color:var(--accent);">prevenir novos incidentes</strong>.</p>
-        </div>
-        <h3 class="subsection-title"><i class="fas fa-database"></i> Ativos de Informacao da TechStore</h3>
-        <div class="scenario-assets">
-            <div class="asset-item"><i class="fas fa-globe"></i><span>Servidor Web (e-commerce)</span></div>
-            <div class="asset-item"><i class="fas fa-database"></i><span>Banco de dados de clientes</span></div>
-            <div class="asset-item"><i class="fas fa-envelope"></i><span>E-mail corporativo</span></div>
-            <div class="asset-item"><i class="fas fa-lock"></i><span>Acesso remoto via VPN</span></div>
-        </div>
-        <h3 class="subsection-title"><i class="fas fa-list-check"></i> Etapas para Realizacao</h3>
-        <div class="steps">
-            <div class="step active" id="step1"><div class="step-dot">1</div><div class="step-label">Identificar pelo menos 5 riscos</div></div>
-            <div class="step" id="step2"><div class="step-dot">2</div><div class="step-label">Atribuir Probabilidade e Impacto</div></div>
-            <div class="step" id="step3"><div class="step-dot">3</div><div class="step-label">Calcular e classificar o risco</div></div>
-            <div class="step" id="step4"><div class="step-dot">4</div><div class="step-label">Propor contramedidas</div></div>
-        </div>
-        <div class="callout info">
-            <i class="fas fa-info-circle"></i>
-            <p>Lembre-se: cada contramedida deve indicar qual principio CID protege (Confidencialidade, Integridade, Disponibilidade ou Autenticidade). Justifique sua escolha.</p>
-        </div>
-    </section>
-
-    <!-- ATIVIDADE PRÁTICA -->
-    <section class="section" id="sec-atividade">
-        <div class="section-header">
-            <div class="section-number">6</div>
-            <h2 class="section-title">Atividade — Mapeamento de Riscos</h2>
-        </div>
-        <div class="risk-counter">
-            <div class="risk-counter-num" id="riskCount">0</div>
-            <div class="risk-counter-text"><strong>riscos mapeados</strong>Minimo necessario: 5 riscos</div>
-        </div>
-        <div class="card" style="border-color:var(--border-light);">
-            <div class="card-label cyan"><i class="fas fa-plus-circle"></i> Adicionar Novo Risco</div>
-            <h3>Identifique e classifique um risco</h3>
-            <form id="riskForm" onsubmit="return false;">
-                <div class="form-group">
-                    <label class="form-label">Risco Identificado <span class="required">*</span></label>
-                    <input type="text" class="form-input" id="riskDesc" placeholder="Ex.: Acesso indevido a dados de clientes por funcionario" maxlength="150">
-                    <div class="form-hint">Descreva o risco de forma clara e objetiva.</div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Probabilidade (P) <span class="required">*</span></label>
-                        <select class="form-select" id="riskProb">
-                            <option value="">Selecione...</option>
-                            <option value="1">1 — Baixa</option>
-                            <option value="2">2 — Media</option>
-                            <option value="3">3 — Alta</option>
-                        </select>
+                <div class="drives-grid">
+                    <div class="drive-card">
+                        <div class="drive-card-header">
+                            <small>PASSO 01</small>
+                            <h3>Introdução</h3>
+                        </div>
+                        <div class="drive-card-body">
+                            <p><i class="fas fa-video"></i> <strong>Vídeo: Fundamentos</strong><br>Entenda o ecossistema: Pessoas, Processos e Tecnologia.</p>
+                            <a href="https://drive.google.com/file/d/1ogN8rWu-VJM1jYmVf2tFPoQd_sbdyMth/view?usp=drive_link" target="_blank" class="drive-btn">Assistir Aula</a>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Impacto (I) <span class="required">*</span></label>
-                        <select class="form-select" id="riskImpact">
-                            <option value="">Selecione...</option>
-                            <option value="1">1 — Baixo</option>
-                            <option value="2">2 — Medio</option>
-                            <option value="3">3 — Alto</option>
-                            <option value="4">4 — Extremo</option>
-                        </select>
+
+                    <div class="drive-card">
+                        <div class="drive-card-header">
+                            <small>PASSO 02</small>
+                            <h3>Contextualização</h3>
+                        </div>
+                        <div class="drive-card-body">
+                            <p><i class="fas fa-headphones"></i> <strong>Podcast: Casos Reais</strong><br>Do aquário hackeado aos ataques de Deepfake.</p>
+                            <a href="https://drive.google.com/file/d/1RAH-c8WEZS9yIbU1JjSozAPVDvGYdpaY/view?usp=drive_link" target="_blank" class="drive-btn">Ouvir Podcast</a>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">P x I (calculado)</label>
-                        <input type="text" class="form-input" id="riskCalc" readonly placeholder="—" style="color:var(--muted);background:var(--bg-subtle);">
+
+                    <div class="drive-card">
+                        <div class="drive-card-header">
+                            <small>PASSO 03</small>
+                            <h3>Fundamentação</h3>
+                        </div>
+                        <div class="drive-card-body">
+                            <p><i class="fas fa-file-pdf"></i> <strong>Apostila de Estudo</strong><br>Gestão, Política e Cultura de Segurança da Informação.</p>
+                            <a href="https://drive.google.com/file/d/1bA-CKWftplcKK9A_Ug7Lg_FhA379uqE5/view?usp=drive_link" target="_blank" class="drive-btn">Ler Material</a>
+                        </div>
+                    </div>
+
+                    <div class="drive-card">
+                        <div class="drive-card-header">
+                            <small>PASSO 04</small>
+                            <h3>Estratégia Visual</h3>
+                        </div>
+                        <div class="drive-card-body">
+                            <p><i class="fas fa-file-powerpoint"></i> <strong>Slides de Cibersegurança</strong><br>Apresentação visual dos conceitos da unidade.</p>
+                            <a href="https://docs.google.com/presentation/d/17aoX7INxgtmBRmQ0-9wCOaqRgUPkK2iZ/edit?usp=drive_link" target="_blank" class="drive-btn">Ver Slides</a>
+                        </div>
+                    </div>
+
+                    <div class="drive-card" style="border-top-color: var(--secondary-color);">
+                        <div class="drive-card-header" style="background: var(--secondary-color);">
+                            <small>PASSO 05</small>
+                            <h3>Aprofundamento</h3>
+                        </div>
+                        <div class="drive-card-body">
+                            <p><i class="fas fa-shield-alt"></i> <strong>Unidade 02: Políticas</strong><br>Normas técnicas, ISOs e controles de acesso avançados.</p>
+                            <a href="https://drive.google.com/file/d/1NX4q1nQwhW7OHRqGpgeA6Kc8rrn4zPhX/view?usp=drive_link" target="_blank" class="drive-btn">Acessar Conteúdo</a>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Contramedida Proposta <span class="required">*</span></label>
-                    <textarea class="form-textarea" id="riskCounter" placeholder="Descreva a acao preventiva ou corretiva para reduzir o risco..." rows="3"></textarea>
-                    <div class="form-hint">A contramedida deve ser pratica e aplicavel ao cenario da TechStore.</div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Principio CID protegido <span class="required">*</span></label>
-                    <select class="form-select" id="riskCID">
-                        <option value="">Selecione...</option>
-                        <option value="C">Confidencialidade</option>
-                        <option value="I">Integridade</option>
-                        <option value="D">Disponibilidade</option>
-                        <option value="A">Autenticidade</option>
-                    </select>
-                    <div class="form-hint">Qual pilar CID+A esta sendo protegido por essa contramedida?</div>
-                </div>
-                <div style="display:flex;gap:10px;margin-top:6px;">
-                    <button type="button" class="btn btn-primary" onclick="addRisk()"><i class="fas fa-plus"></i> Adicionar Risco</button>
-                    <button type="button" class="btn btn-secondary" onclick="clearForm()"><i class="fas fa-eraser"></i> Limpar</button>
-                </div>
-            </form>
-        </div>
-        <div id="riskTableArea">
-            <div class="empty-state" id="emptyState"><i class="fas fa-shield-halved"></i><p>Nenhum risco mapeado ainda. Use o formulario acima para comecar.</p></div>
-        </div>
-        <div id="finalActions" style="display:none;margin-top:22px;">
-            <hr class="divider">
-            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-                <button class="btn btn-primary" onclick="submitActivity()" id="submitBtn"><i class="fas fa-paper-plane"></i> Entregar Atividade</button>
-                <button class="btn btn-secondary" onclick="clearAllRisks()"><i class="fas fa-trash-alt"></i> Limpar Todos</button>
-                <span style="font-size:12px;color:var(--muted);margin-left:auto;" id="autoSaveHint"><i class="fas fa-cloud-arrow-up"></i> Salvo automaticamente no navegador</span>
             </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Pera Educacional. Todos os direitos reservados.</p>
         </div>
-    </section>
+    </footer>
 
-    <!-- REFERÊNCIAS -->
-    <section class="section" id="sec-referencias">
-        <div class="section-header">
-            <div class="section-number"><i class="fas fa-book" style="font-size:13px;"></i></div>
-            <h2 class="section-title">Referencias Bibliograficas</h2>
-        </div>
-        <div class="card">
-            <ul class="ref-list">
-                <li><i class="fas fa-circle"></i>Gov.br. Os quatro pilares da seguranca da informacao. Disponivel em: gov.br/lncc/pt-br/centrais-de-conteudo/campanhas-de-conscientizacao/gestao-de-seguranca-da-informacao</li>
-                <li><i class="fas fa-circle"></i>Protiviti. Conheca os Pilares da Seguranca da Informacao. Disponivel em: protiviti.com.br/cybersecurity/pilares-seguranca-da-informacao/</li>
-                <li><i class="fas fa-circle"></i>MainSafe. Os 3 pilares da Seguranca da Informacao. Disponivel em: mainsafe.com.br</li>
-                <li><i class="fas fa-circle"></i>Linkana. Matriz de probabilidade e impacto. Disponivel em: linkana.com/blog/matriz-de-probabilidade-e-impacto</li>
-                <li><i class="fas fa-circle"></i>Ferramentas da Qualidade. Matriz de Riscos. Disponivel em: ferramentasdaqualidade.org</li>
-                <li><i class="fas fa-circle"></i>RNP. 10 principais ameacas a seguranca da informacao corporativa. Disponivel em: esr.rnp.br/seguranca</li>
-                <li><i class="fas fa-circle"></i>NSFocus. Ameacas virtuais: tipos e quais estao presentes na WEB. Disponivel em: nsfocusglobal.com/pt-br</li>
-            </ul>
-        </div>
-    </section>
-
-</main>
-
-<button class="back-to-top" id="backToTop" aria-label="Voltar ao topo"><i class="fas fa-arrow-up"></i></button>
-<div class="toast-container" id="toastContainer"></div>
-<div class="modal-overlay" id="modalOverlay">
-    <div class="modal" id="modal">
-        <button class="modal-close" onclick="closeModal()" aria-label="Fechar"><i class="fas fa-times"></i></button>
-        <h2 id="modalTitle">Confirmar</h2>
-        <p id="modalMessage"></p>
-        <div class="modal-actions">
-            <button class="btn btn-secondary btn-sm" onclick="closeModal()">Cancelar</button>
-            <button class="btn btn-primary btn-sm" id="modalConfirmBtn"><i class="fas fa-check"></i> Confirmar</button>
-        </div>
-    </div>
-</div>
-
-<script>
-    // ========== ESTADO ==========
-    let risks = [];
-    const quizAnswers = { quiz1: 'c', quiz2: 'b', quiz3: 'c' };
-    const quizFeedbacks = {
-        quiz1: {
-            correct: 'Correto! A Confidencialidade garante acesso restrito aos dados sensiveis, como cartao de credito. Foi exatamente o que foi violado na TechStore.',
-            wrong: 'Incorreto. A Confidencialidade e o pilar que garante acesso restrito. Integridade refere-se a nao-alteracao, Disponibilidade a acessibilidade e Autenticidade a confirmacao de identidade.'
-        },
-        quiz2: {
-            correct: 'Correto! P=3 x I=3 = 9, que na escala corresponde a "Alto". Riscos nessa faixa exigem acao imediata.',
-            wrong: 'Incorreto. A multiplicacao 3 x 3 = 9. Na matriz, valores 8 e 9 sao classificados como "Alto". Revise a tabela de classificacao.'
-        },
-        quiz3: {
-            correct: 'Correto! O ataque DDoS sobrecarrega o servidor com trafego massivo, tornando o servico indisponível — exatamente o que ocorreu na TechStore por 6 horas.',
-            wrong: 'Incorreto. O cenario descreve um ataque de "negacao de servico (DDoS)" que derrubou o site por 6 horas. Phishing, SQL Injection e Ransomware sao outros tipos de ataque.'
-        }
-    };
-    let completedSections = new Set();
-    let answeredQuizzes = new Set();
-
-    // ========== NAVEGAÇÃO ==========
-    const navItems = document.querySelectorAll('.nav-item');
-    const sections = document.querySelectorAll('.section');
-    const sidebar = document.getElementById('sidebar');
-    const overlayEl = document.getElementById('overlay');
-
-    navItems.forEach(item => {
-        item.addEventListener('click', () => {
-            const t = document.getElementById(item.dataset.target);
-            if (t) { t.scrollIntoView({ behavior: 'smooth', block: 'start' }); closeSidebar(); }
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
         });
-    });
-    document.getElementById('hamburgerBtn').addEventListener('click', () => {
-        sidebar.classList.toggle('open'); overlayEl.classList.toggle('show');
-    });
-    overlayEl.addEventListener('click', closeSidebar);
-    function closeSidebar() { sidebar.classList.remove('open'); overlayEl.classList.remove('show'); }
-
-    // ========== SCROLL OBSERVER ==========
-    const obs = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-            if (e.isIntersecting) {
-                e.target.classList.add('visible');
-                navItems.forEach(n => n.classList.remove('active'));
-                const a = document.querySelector(`.nav-item[data-target="${e.target.id}"]`);
-                if (a) a.classList.add('active');
-                completedSections.add(e.target.id);
-                updateProgress();
-            }
-        });
-    }, { threshold: 0.12, rootMargin: '-40px 0px' });
-    sections.forEach(s => obs.observe(s));
-
-    // ========== VOLTAR TOPO ==========
-    const btt = document.getElementById('backToTop');
-    window.addEventListener('scroll', () => btt.classList.toggle('show', window.scrollY > 350));
-    btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-
-    // ========== PILARES ==========
-    function togglePillar(card) {
-        const was = card.classList.contains('expanded');
-        document.querySelectorAll('.pillar-card').forEach(c => c.classList.remove('expanded'));
-        if (!was) card.classList.add('expanded');
-    }
-
-    // ========== QUIZ ==========
-    function selectQuizOption(el, qid, ans) {
-        if (answeredQuizzes.has(qid)) return;
-        answeredQuizzes.add(qid);
-        const opts = el.parentElement.querySelectorAll('.quiz-option');
-        const fb = document.getElementById(qid + '-feedback');
-        const ok = ans === quizAnswers[qid];
-        el.classList.add('selected');
-        setTimeout(() => {
-            opts.forEach(o => o.style.pointerEvents = 'none');
-            if (ok) {
-                el.classList.remove('selected'); el.classList.add('correct');
-                fb.className = 'quiz-feedback show correct-fb';
-                fb.innerHTML = '<i class="fas fa-check-circle"></i> ' + quizFeedbacks[qid].correct;
-                showToast('Resposta correta! Parabens.', 'success');
-            } else {
-                el.classList.remove('selected'); el.classList.add('wrong');
-                const ci = { a: 0, b: 1, c: 2, d: 3 }[quizAnswers[qid]];
-                opts[ci].classList.add('correct');
-                fb.className = 'quiz-feedback show wrong-fb';
-                fb.innerHTML = '<i class="fas fa-times-circle"></i> ' + quizFeedbacks[qid].wrong;
-                showToast('Resposta incorreta. Revise o conteudo.', 'error');
-            }
-            updateProgress();
-        }, 350);
-    }
-
-    // ========== CALC AUTO ==========
-    const pS = document.getElementById('riskProb');
-    const iS = document.getElementById('riskImpact');
-    const cI = document.getElementById('riskCalc');
-    function upCalc() {
-        const p = parseInt(pS.value), i = parseInt(iS.value);
-        if (!isNaN(p) && !isNaN(i)) {
-            const r = p * i, c = getClass(r);
-            cI.value = r + ' — ' + c;
-            cI.style.color = getClr(c);
-        } else { cI.value = '—'; cI.style.color = 'var(--muted)'; }
-    }
-    pS.addEventListener('change', upCalc); iS.addEventListener('change', upCalc);
-
-    // ========== HELPERS ==========
-    function getClass(v) {
-        if (v === 1) return 'Insignificante'; if (v <= 3) return 'Baixo';
-        if (v <= 6) return 'Medio'; if (v <= 9) return 'Alto'; return 'Extremo';
-    }
-    function getCC(v) {
-        if (v === 1) return 'insignificante'; if (v <= 3) return 'baixo';
-        if (v <= 6) return 'medio'; if (v <= 9) return 'alto'; return 'extremo';
-    }
-    function getClr(c) {
-        return { Insignificante: '#16a34a', Baixo: '#0d7c5f', Medio: '#d97706', Alto: '#dc2626', Extremo: '#b91c1c' }[c] || 'var(--muted)';
-    }
-    function getPL(p) { return { 1: 'Baixa', 2: 'Media', 3: 'Alta' }[p] || ''; }
-    function getIL(i) { return { 1: 'Baixo', 2: 'Medio', 3: 'Alto', 4: 'Extremo' }[i] || ''; }
-    function getCIDL(c) { return { C: 'Confidencialidade', I: 'Integridade', D: 'Disponibilidade', A: 'Autenticidade' }[c] || ''; }
-    function getCIDC(c) { return { C: 'c', I: 'i', D: 'd', A: 'a' }[c] || ''; }
-    function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
-
-    // ========== ADD RISCO ==========
-    function addRisk() {
-        const desc = document.getElementById('riskDesc').value.trim();
-        const prob = parseInt(pS.value);
-        const imp = parseInt(iS.value);
-        const ctr = document.getElementById('riskCounter').value.trim();
-        const cid = document.getElementById('riskCID').value;
-        if (!desc) { showToast('Preencha a descricao do risco.', 'warning'); document.getElementById('riskDesc').focus(); return; }
-        if (!prob) { showToast('Selecione a probabilidade.', 'warning'); pS.focus(); return; }
-        if (!imp) { showToast('Selecione o impacto.', 'warning'); iS.focus(); return; }
-        if (!ctr) { showToast('Descreva a contramedida proposta.', 'warning'); document.getElementById('riskCounter').focus(); return; }
-        if (!cid) { showToast('Selecione o principio CID protegido.', 'warning'); document.getElementById('riskCID').focus(); return; }
-        risks.push({ id: Date.now(), desc, prob, impact: imp, result: prob * imp, counter: ctr, cid });
-        save(); render(); clearForm();
-        showToast('Risco adicionado com sucesso!', 'success');
-        upSteps(); updateProgress();
-    }
-
-    function removeRisk(id) {
-        risks = risks.filter(r => r.id !== id); save(); render();
-        showToast('Risco removido.', 'info'); upSteps(); updateProgress();
-    }
-
-    function clearForm() {
-        document.getElementById('riskDesc').value = ''; pS.value = ''; iS.value = '';
-        document.getElementById('riskCounter').value = ''; document.getElementById('riskCID').value = '';
-        cI.value = '—'; cI.style.color = 'var(--muted)';
-    }
-
-    function clearAllRisks() {
-        if (!risks.length) return;
-        showModal('Limpar todos os riscos', 'Tem certeza que deseja remover todos os riscos mapeados? Esta acao nao pode ser desfeita.', () => {
-            risks = []; save(); render(); closeModal();
-            showToast('Todos os riscos foram removidos.', 'info'); upSteps(); updateProgress();
-        });
-    }
-
-    // ========== RENDER TABELA ==========
-    function render() {
-        const area = document.getElementById('riskTableArea');
-        const fa = document.getElementById('finalActions');
-        document.getElementById('riskCount').textContent = risks.length;
-        if (!risks.length) {
-            area.innerHTML = '<div class="empty-state"><i class="fas fa-shield-halved"></i><p>Nenhum risco mapeado ainda. Use o formulario acima para comecar.</p></div>';
-            fa.style.display = 'none'; return;
-        }
-        fa.style.display = 'block';
-        document.getElementById('submitBtn').disabled = risks.length < 5;
-        let h = '<div class="risk-table-wrap"><table class="risk-table"><thead><tr><th style="width:28px;">#</th><th>Risco Identificado</th><th style="width:55px;">P</th><th style="width:55px;">I</th><th style="width:55px;">P x I</th><th style="width:100px;">Classificacao</th><th>Contramedida</th><th style="width:115px;">CID</th><th style="width:44px;"></th></tr></thead><tbody>';
-        risks.forEach((r, i) => {
-            const cc = getCC(r.result), cl = getClass(r.result);
-            h += `<tr><td style="color:var(--muted);font-weight:600;">${i + 1}</td><td style="color:var(--fg);font-weight:500;">${esc(r.desc)}</td><td style="text-align:center;">${r.prob} <span style="font-size:9.5px;color:var(--muted);">(${getPL(r.prob)})</span></td><td style="text-align:center;">${r.impact} <span style="font-size:9.5px;color:var(--muted);">(${getIL(r.impact)})</span></td><td style="text-align:center;font-weight:700;color:${getClr(cl)};">${r.result}</td><td><span class="risk-badge ${cc}">${cl}</span></td><td style="font-size:12.5px;">${esc(r.counter)}</td><td><span class="cid-tag ${getCIDC(r.cid)}">${r.cid} — ${getCIDL(r.cid)}</span></td><td><button class="btn btn-danger btn-sm" onclick="removeRisk(${r.id})" title="Remover" style="padding:5px 9px;"><i class="fas fa-trash"></i></button></td></tr>`;
-        });
-        h += '</tbody></table></div>';
-        if (risks.length < 5) {
-            h += `<div class="callout warning" style="margin-top:14px;"><i class="fas fa-exclamation-triangle"></i><p>Voce mapeou ${risks.length} de no minimo 5 riscos necessarios. Continue identificando riscos do cenario TechStore.</p></div>`;
-        } else {
-            h += `<div class="callout tip" style="margin-top:14px;"><i class="fas fa-check-circle"></i><p>Voce ja mapeou os ${risks.length} riscos minimos. Revise cada um e entregue a atividade quando estiver confiante.</p></div>`;
-        }
-        area.innerHTML = h;
-    }
-
-    // ========== LOCALSTORAGE ==========
-    function save() { try { localStorage.setItem('techstore_risks', JSON.stringify(risks)); } catch (e) {} }
-    function load() { try { const d = localStorage.getItem('techstore_risks'); if (d) { risks = JSON.parse(d); render(); upSteps(); } } catch (e) { risks = []; } }
-
-    // ========== SUBMIT ==========
-    function submitActivity() {
-        if (risks.length < 5) { showToast('Voce precisa mapear pelo menos 5 riscos.', 'warning'); return; }
-        if (risks.some(r => !r.desc || !r.prob || !r.impact || !r.counter || !r.cid)) {
-            showToast('Existem riscos com campos incompletos.', 'warning'); return;
-        }
-        showModal('Entregar Atividade', `Voce mapeou ${risks.length} riscos. Apos a entrega, podera continuar editando. Deseja confirmar?`, () => {
-            closeModal(); showToast('Atividade entregue com sucesso! Bom trabalho.', 'success');
-            completedSections.add('sec-atividade'); updateProgress();
-            document.getElementById('sec-atividade').scrollIntoView({ behavior: 'smooth' });
-        });
-    }
-
-    // ========== STEPS ==========
-    function upSteps() {
-        const s1 = document.getElementById('step1'), s2 = document.getElementById('step2');
-        const s3 = document.getElementById('step3'), s4 = document.getElementById('step4');
-        const has = risks.length > 0, full = risks.length >= 5;
-        s1.className = 'step' + (has ? ' done' : ' active');
-        s2.className = 'step' + (has ? ' done' : '');
-        s3.className = 'step' + (full ? ' done' : (has ? ' active' : ''));
-        s4.className = 'step' + (full ? ' active' : '');
-    }
-
-    // ========== PROGRESSO ==========
-    function updateProgress() {
-        let c = 0;
-        sections.forEach(s => { if (completedSections.has(s.id)) c++; });
-        c += answeredQuizzes.size * 0.3;
-        c += Math.min(risks.length / 5, 1) * 2;
-        const mx = sections.length + 0.9 * 3 + 2;
-        const pct = Math.min(Math.round((c / mx) * 100), 100);
-        document.getElementById('progressFill').style.width = pct + '%';
-        document.getElementById('progressPercent').textContent = pct + '%';
-        document.getElementById('globalProgress').style.width = pct + '%';
-    }
-
-    // ========== TOAST ==========
-    function showToast(msg, type) {
-        const ct = document.getElementById('toastContainer');
-        const icons = { success: 'fas fa-check-circle', error: 'fas fa-times-circle', warning: 'fas fa-exclamation-triangle', info: 'fas fa-info-circle' };
-        const t = document.createElement('div');
-        t.className = 'toast ' + type;
-        t.innerHTML = `<i class="${icons[type]}"></i> ${msg}`;
-        ct.appendChild(t);
-        setTimeout(() => { t.classList.add('removing'); setTimeout(() => t.remove(), 250); }, 3200);
-    }
-
-    // ========== MODAL ==========
-    let mcb = null;
-    function showModal(title, msg, cb) {
-        document.getElementById('modalTitle').textContent = title;
-        document.getElementById('modalMessage').textContent = msg;
-        mcb = cb;
-        document.getElementById('modalOverlay').classList.add('show');
-        document.getElementById('modalConfirmBtn').onclick = () => { if (mcb) mcb(); };
-    }
-    function closeModal() { document.getElementById('modalOverlay').classList.remove('show'); mcb = null; }
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeSidebar(); } });
-
-    // ========== INIT ==========
-    document.addEventListener('DOMContentLoaded', () => {
-        load(); upSteps(); updateProgress();
-        setTimeout(() => document.getElementById('sec-welcome').classList.add('visible'), 80);
-    });
-    window.addEventListener('scroll', () => requestAnimationFrame(updateProgress));
-</script>
+    </script>
 </body>
 </html>
