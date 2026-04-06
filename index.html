@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Portal de Estudos - Pera Educacional. Materiais de Segurança da Informação.">
+    <meta name="description" content="Portal de Estudos - Pera Educacional. Materiais de Segurança da Informação com orientações pedagógicas.">
     <meta name="author" content="Professor Luciano">
     <title>Pera Educacional - Trilha de Aprendizagem</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
@@ -18,7 +18,6 @@
             --accent-hover: #EF4444;
             --text-primary: #111827;
             --text-secondary: #4B5563;
-            --border-color: #D1D5DB;
             --shadow-color: rgba(0, 0, 0, 0.15);
         }
 
@@ -67,20 +66,19 @@
             align-items: center;
         }
 
-        /* Ajuste do Logo para comportar o nome Pera Educacional */
         .logo-icon {
             background: var(--accent-color);
             color: var(--primary-dark);
-            padding: 5px 15px;
+            padding: 5px 18px;
             border-radius: 25px;
             display: flex;
             justify-content: center;
             align-items: center;
             font-weight: 700;
-            font-size: 16px;
+            font-size: 14px;
             margin-right: 15px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
@@ -100,7 +98,7 @@
             transition: 0.3s;
         }
 
-        nav ul li a:hover, nav ul li a.active {
+        nav ul li a:hover {
             color: var(--accent-color);
         }
 
@@ -120,7 +118,7 @@
 
         .drives-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 30px;
         }
 
@@ -144,8 +142,28 @@
             text-align: center;
         }
 
-        .drive-card-body { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
-        .drive-card-body p { margin-bottom: 20px; color: var(--text-secondary); font-size: 0.95rem; }
+        .drive-card-body { 
+            padding: 25px; 
+            flex-grow: 1; 
+            display: flex; 
+            flex-direction: column; 
+        }
+
+        .instruction-text {
+            background-color: #f9fafb;
+            border-left: 4px solid var(--secondary-color);
+            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .drive-card-body p { 
+            margin-bottom: 20px; 
+            color: var(--text-primary); 
+            font-size: 0.95rem; 
+        }
 
         .drive-btn {
             display: block;
@@ -158,11 +176,10 @@
             border-radius: 8px;
             font-weight: 600;
             transition: 0.3s;
-            border: none;
-            cursor: pointer;
+            margin-top: auto;
         }
 
-        .drive-btn:hover { transform: scale(1.05); }
+        .drive-btn:hover { filter: brightness(1.1); }
 
         footer {
             background: var(--primary-dark);
@@ -173,9 +190,8 @@
         }
 
         @media (max-width: 768px) {
-            .header-content { flex-direction: column; }
+            .header-content { flex-direction: column; text-align: center; }
             nav ul { margin-top: 15px; }
-            .hero h2 { font-size: 28px; }
             .logo-icon { margin-bottom: 10px; margin-right: 0; }
         }
     </style>
@@ -201,7 +217,7 @@
         <section class="hero" id="home">
             <div class="container">
                 <h2>Segurança da Informação</h2>
-                <p>Acompanhe a trilha de aprendizagem abaixo para dominar os fundamentos de cibersegurança.</p>
+                <p>Domine os pilares da proteção de dados através desta jornada guiada.</p>
             </div>
         </section>
 
@@ -209,61 +225,76 @@
             <div class="container">
                 <div class="section-title">
                     <h2>Trilha de Aprendizagem</h2>
-                    <p>Materiais organizados sequencialmente para o seu desenvolvimento.</p>
+                    <p>Siga as orientações em cada etapa para uma formação completa.</p>
                 </div>
 
                 <div class="drives-grid">
                     <div class="drive-card">
                         <div class="drive-card-header">
                             <small>PASSO 01</small>
-                            <h3>Introdução</h3>
+                            <h3>Unidade de Estudo</h3>
                         </div>
                         <div class="drive-card-body">
-                            <p><i class="fas fa-video"></i> <strong>Vídeo: Fundamentos</strong><br>Entenda o ecossistema: Pessoas, Processos e Tecnologia.</p>
-                            <a href="https://drive.google.com/file/d/1ogN8rWu-VJM1jYmVf2tFPoQd_sbdyMth/view?usp=drive_link" target="_blank" class="drive-btn">Assistir Aula</a>
+                            <div class="instruction-text">
+                                <i class="fas fa-info-circle"></i> Comece por aqui para ter uma visão geral técnica e normativa dos pilares da segurança.
+                            </div>
+                            <p><i class="fas fa-file-pdf"></i> <strong>Conteúdo Técnico Principal</strong><br>Aborda a gestão estratégica e os fundamentos fundamentais.</p>
+                            <a href="https://drive.google.com/file/d/1x0mGpzOo3JWw1LgGYaJHDUSygeHai7B9/view?usp=drive_link" target="_blank" class="drive-btn">Acessar Unidade</a>
                         </div>
                     </div>
 
                     <div class="drive-card">
                         <div class="drive-card-header">
                             <small>PASSO 02</small>
-                            <h3>Contextualização</h3>
+                            <h3>Apostila de Apoio</h3>
                         </div>
                         <div class="drive-card-body">
-                            <p><i class="fas fa-headphones"></i> <strong>Podcast: Casos Reais</strong><br>Do aquário hackeado aos ataques de Deepfake.</p>
-                            <a href="https://drive.google.com/file/d/1RAH-c8WEZS9yIbU1JjSozAPVDvGYdpaY/view?usp=drive_link" target="_blank" class="drive-btn">Ouvir Podcast</a>
+                            <div class="instruction-text">
+                                <i class="fas fa-info-circle"></i> Utilize este material para aprofundar os conceitos de Gestão, Políticas e Cultura.
+                            </div>
+                            <p><i class="fas fa-book"></i> <strong>Material de Aprofundamento</strong><br>Leitura essencial para entender o papel das pessoas e processos.</p>
+                            <a href="https://drive.google.com/file/d/1RAH-c8WEZS9yIbU1JjSozAPVDvGYdpaY/view?usp=drive_link" target="_blank" class="drive-btn">Ler Apostila</a>
                         </div>
                     </div>
 
                     <div class="drive-card">
                         <div class="drive-card-header">
                             <small>PASSO 03</small>
-                            <h3>Fundamentação</h3>
+                            <h3>Podcast Informativo</h3>
                         </div>
                         <div class="drive-card-body">
-                            <p><i class="fas fa-file-pdf"></i> <strong>Apostila de Estudo</strong><br>Gestão, Política e Cultura de Segurança da Informação.</p>
-                            <a href="https://drive.google.com/file/d/1bA-CKWftplcKK9A_Ug7Lg_FhA379uqE5/view?usp=drive_link" target="_blank" class="drive-btn">Ler Material</a>
+                            <div class="instruction-text">
+                                <i class="fas fa-info-circle"></i> Ouça casos reais de invasões e como novas tecnologias (como IA) mudam o cenário de ameaças.
+                            </div>
+                            <p><i class="fas fa-headphones"></i> <strong>Do Aquário ao Deepfake</strong><br>Uma conversa dinâmica sobre a quebra do perímetro de segurança.</p>
+                            <a href="https://drive.google.com/file/d/1bA-CKWftplcKK9A_Ug7Lg_FhA379uqE5/view?usp=drive_link" target="_blank" class="drive-btn">Ouvir Podcast</a>
                         </div>
                     </div>
 
                     <div class="drive-card">
                         <div class="drive-card-header">
                             <small>PASSO 04</small>
-                            <h3>Estratégia Visual</h3>
+                            <h3>Slides de Aula</h3>
                         </div>
                         <div class="drive-card-body">
-                            <p><i class="fas fa-file-powerpoint"></i> <strong>Slides de Cibersegurança</strong><br>Apresentação visual dos conceitos da unidade.</p>
-                            <a href="https://docs.google.com/presentation/d/17aoX7INxgtmBRmQ0-9wCOaqRgUPkK2iZ/edit?usp=drive_link" target="_blank" class="drive-btn">Ver Slides</a>
+                            <div class="instruction-text">
+                                <i class="fas fa-info-circle"></i> Revise os pontos chave de forma visual para fixar os conceitos da Tríade CID e PDCA.
+                            </div>
+                            <p><i class="fas fa-file-powerpoint"></i> <strong>Fundamentos e Estratégias</strong><br>Resumo esquemático dos principais tópicos da disciplina.</p>
+                            <a href="https://docs.google.com/presentation/d/17aoX7INxgtmBRmQ0-9wCOaqRgUPkK2iZ/edit?usp=drive_link&ouid=102873094272380115850&rtpof=true&sd=true" target="_blank" class="drive-btn">Ver Slides</a>
                         </div>
                     </div>
 
                     <div class="drive-card" style="border-top-color: var(--secondary-color);">
                         <div class="drive-card-header" style="background: var(--secondary-color);">
                             <small>PASSO 05</small>
-                            <h3>Aprofundamento</h3>
+                            <h3>Material Adicional</h3>
                         </div>
                         <div class="drive-card-body">
-                            <p><i class="fas fa-shield-alt"></i> <strong>Unidade 02: Políticas</strong><br>Normas técnicas, ISOs e controles de acesso avançados.</p>
+                            <div class="instruction-text">
+                                <i class="fas fa-info-circle"></i> Finalize sua trilha com normativas avançadas, ISOs e controles de acesso.
+                            </div>
+                            <p><i class="fas fa-folder-open"></i> <strong>Consolidação Técnica</strong><br>Recursos finais focado em políticas e auditoria de sistemas.</p>
                             <a href="https://drive.google.com/file/d/1NX4q1nQwhW7OHRqGpgeA6Kc8rrn4zPhX/view?usp=drive_link" target="_blank" class="drive-btn">Acessar Conteúdo</a>
                         </div>
                     </div>
@@ -274,7 +305,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 Pera Educacional. Todos os direitos reservados.</p>
+            <p>&copy; 2026 Pera Educacional. Transformando conhecimento em proteção.</p>
         </div>
     </footer>
 
@@ -282,9 +313,13 @@
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
             });
         });
     </script>
