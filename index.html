@@ -1,348 +1,513 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Portal de Estudos - Pera Educacional. Materiais de Segurança da Informação com orientações do Professor Luciano.">
-    <meta name="author" content="Professor Luciano">
-    <title>Pera Educacional - Trilha de Aprendizagem</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Auditoria de Sistemas | Material de Apoio</title>
     <style>
-        :root {
-            --primary-color: #374151;
-            --primary-dark: #1F2A44;
-            --bg-color: #F3F4F6;
-            --secondary-color: #06B6D4;
-            --accent-color: #F87171;
-            --accent-hover: #EF4444;
-            --text-primary: #111827;
-            --text-secondary: #4B5563;
-            --shadow-color: rgba(0, 0, 0, 0.15);
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-primary);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+            color: #1a1a2e;
+            background-color: #f0f4f8;
+        }
+
+        .top-bar {
+            background: linear-gradient(135deg, #0b2b2b, #1a4a4a, #0f3b3b);
+            color: white;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .top-bar h1 {
+            font-size: 1.5rem;
+            display: inline-block;
+        }
+
+        .top-bar h1 span {
+            font-weight: 300;
+            color: #ffc857;
+        }
+
+        .nav-links {
+            float: right;
+            margin-top: 8px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 1.5rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #ffc857;
         }
 
         .container {
-            width: 95%;
-            max-width: 1200px;
+            display: flex;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 20px;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
         }
 
-        header {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-            color: white;
-            padding: 15px 0;
-            box-shadow: 0 4px 12px var(--shadow-color);
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
+        .sidebar {
+            width: 280px;
+            background: #f9fafb;
+            border-right: 1px solid #e2e8f0;
+            padding: 2rem 1rem;
+            position: sticky;
+            top: 70px;
+            height: calc(100vh - 70px);
+            overflow-y: auto;
         }
 
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .sidebar h3 {
+            font-size: 1.1rem;
+            color: #0b2b2b;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #ffc857;
+            display: inline-block;
         }
 
-        .logo {
-            display: flex;
-            align-items: center;
-        }
-
-        .logo-icon {
-            background: var(--accent-color);
-            color: var(--primary-dark);
-            padding: 5px 18px;
-            border-radius: 25px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: 700;
-            font-size: 14px;
-            margin-right: 15px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        nav ul {
-            display: flex;
+        .sidebar ul {
             list-style: none;
+            margin-top: 1rem;
         }
 
-        nav ul li {
-            margin-left: 25px;
+        .sidebar li {
+            margin: 0.8rem 0;
         }
 
-        nav ul li a {
-            color: white;
+        .sidebar a {
             text-decoration: none;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-
-        nav ul li a:hover {
-            color: var(--accent-color);
-        }
-
-        .hero {
-            background: linear-gradient(rgba(55, 65, 81, 0.9), rgba(31, 42, 68, 0.8)), url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80') no-repeat center center/cover;
-            color: white;
-            padding: 140px 0 80px;
-            text-align: center;
-        }
-
-        .hero h2 { font-size: 38px; margin-bottom: 20px; }
-
-        .drives-section { padding: 60px 0; }
-
-        .section-title { text-align: center; margin-bottom: 50px; }
-        .section-title h2 { font-size: 34px; color: var(--primary-color); margin-bottom: 10px; }
-
-        .drives-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 30px;
-        }
-
-        .drive-card {
-            background-color: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 6px 18px var(--shadow-color);
-            transition: 0.3s;
-            border-top: 5px solid var(--primary-color);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .drive-card:hover { transform: translateY(-10px); }
-
-        .drive-card-header {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .drive-card-body { 
-            padding: 25px; 
-            flex-grow: 1; 
-            display: flex; 
-            flex-direction: column; 
-        }
-
-        /* Estilo para a explicação do professor */
-        .professor-note {
-            background-color: #f0fdfa;
-            border-left: 4px solid var(--secondary-color);
-            padding: 15px;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-            color: var(--primary-dark);
-            border-radius: 0 8px 8px 0;
-            position: relative;
-        }
-
-        .professor-note i {
-            color: var(--secondary-color);
-            margin-right: 8px;
-        }
-
-        .professor-label {
+            color: #2d4a4a;
+            font-weight: 500;
             display: block;
-            font-weight: 700;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            color: var(--secondary-color);
-            margin-bottom: 5px;
-        }
-
-        .drive-card-body p { 
-            margin-bottom: 20px; 
-            color: var(--text-primary); 
-            font-size: 0.95rem; 
-        }
-
-        .drive-btn {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
-            color: white;
-            text-align: center;
-            text-decoration: none;
+            padding: 0.4rem 0.6rem;
             border-radius: 8px;
-            font-weight: 600;
-            transition: 0.3s;
-            margin-top: auto;
+            transition: all 0.2s;
         }
 
-        .drive-btn:hover { filter: brightness(1.1); }
+        .sidebar a:hover, .sidebar a.active {
+            background: #ffc857;
+            color: #0b2b2b;
+        }
 
-        footer {
-            background: var(--primary-dark);
-            color: white;
-            padding: 30px 0;
+        .main-content {
+            flex: 1;
+            padding: 2rem 2.5rem;
+            overflow-x: auto;
+        }
+
+        .modulo {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .modulo.active-modulo {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modulo h2 {
+            font-size: 1.8rem;
+            color: #0b2b2b;
+            margin-bottom: 0.5rem;
+            border-left: 5px solid #ffc857;
+            padding-left: 1rem;
+        }
+
+        .modulo h3 {
+            margin: 1.5rem 0 0.8rem 0;
+            color: #1a5c5c;
+        }
+
+        .modulo h4 {
+            margin: 1rem 0 0.5rem;
+            color: #2c7a7a;
+        }
+
+        .card-dica {
+            background: #fef9e6;
+            border-left: 4px solid #ffc857;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+        }
+
+        .card-exemplo {
+            background: #e6f4f1;
+            border-left: 4px solid #1a5c5c;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+        }
+
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            margin: 1rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        th, td {
+            border: 1px solid #cbd5e1;
+            padding: 0.6rem;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: #e2e8f0;
+            color: #0b2b2b;
+        }
+
+        .footer {
+            background: #0b2b2b;
+            color: #bbb;
             text-align: center;
-            margin-top: auto;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            font-size: 0.85rem;
         }
 
-        @media (max-width: 768px) {
-            .header-content { flex-direction: column; text-align: center; }
-            nav ul { margin-top: 15px; }
-            .logo-icon { margin-bottom: 10px; margin-right: 0; }
+        @media (max-width: 800px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                position: relative;
+                top: 0;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid #ddd;
+            }
+            .nav-links {
+                float: none;
+                display: flex;
+                justify-content: center;
+                margin-top: 10px;
+                flex-wrap: wrap;
+            }
+            .top-bar h1 {
+                display: block;
+                text-align: center;
+            }
+            .main-content {
+                padding: 1rem;
+            }
+        }
+
+        .badge {
+            background: #ffc857;
+            color: #0b2b2b;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 0.5rem;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="container header-content">
-            <div class="logo">
-                <div class="logo-icon">Pera Educacional</div>
-                <h1>Portal de Estudos</h1>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="#home">Início</a></li>
-                    <li><a href="#trilha">Trilha de Estudos</a></li>
-                </ul>
-            </nav>
+<div class="top-bar">
+    <h1>📘 Auditoria de Sistemas <span>| Material de Apoio</span></h1>
+    <div class="nav-links">
+        <a href="#" onclick="showModulo('modulo1'); return false;">Planejamento</a>
+        <a href="#" onclick="showModulo('modulo4'); return false;">Evidências</a>
+        <a href="#" onclick="showModulo('modulo5'); return false;">Recomendações</a>
+    </div>
+</div>
+
+<div class="container">
+    <aside class="sidebar">
+        <h3>📚 Conteúdo de Estudo</h3>
+        <ul>
+            <li><a href="#" onclick="showModulo('modulo1'); return false;" id="link-modulo1">🎯 1. Planejamento de Auditoria</a></li>
+            <li><a href="#" onclick="showModulo('modulo2'); return false;" id="link-modulo2">⚠️ 2. Avaliação e Priorização de Riscos</a></li>
+            <li><a href="#" onclick="showModulo('modulo3'); return false;" id="link-modulo3">🔐 3. Controles Internos (ISO 27001)</a></li>
+            <li><a href="#" onclick="showModulo('modulo4'); return false;" id="link-modulo4">🔍 4. Coleta de Evidências</a></li>
+            <li><a href="#" onclick="showModulo('modulo5'); return false;" id="link-modulo5">📋 5. Recomendações e Melhorias</a></li>
+        </ul>
+        <div class="card-dica" style="margin-top: 2rem;">
+            💡 <strong>Dica do Especialista</strong><br>
+            Para uma boa auditoria: defina escopo, priorize riscos, colete evidências sólidas e proponha controles factíveis.
         </div>
-    </header>
+    </aside>
 
-    <main>
-        <section class="hero" id="home">
-            <div class="container">
-                <h2>Segurança da Informação</h2>
-                <p>Bem-vindos à nossa jornada de aprendizado. Aqui, a teoria encontra a prática.</p>
+    <main class="main-content">
+        <!-- MÓDULO 1: PLANEJAMENTO -->
+        <div id="modulo1" class="modulo active-modulo">
+            <h2>🎯 Módulo 1: Planejamento de Auditoria de Sistemas</h2>
+            
+            <h3>O que é o planejamento em auditoria?</h3>
+            <p>É a fase inicial onde se define <strong>escopo</strong> (o que será auditado) e <strong>objetivos</strong> (por que e para quê). Um bom planejamento evita desperdício de tempo e foca nos riscos reais.</p>
+
+            <h3>Definição de Escopo</h3>
+            <p>O escopo delimita os sistemas, processos, áreas geográficas ou unidades organizacionais que serão avaliados. Exemplos comuns:</p>
+            <ul>
+                <li>Sistemas críticos (internet banking, ERP, banco de dados de clientes)</li>
+                <li>Processos específicos (gestão de acessos, geração de logs, resposta a incidentes)</li>
+                <li>Período de análise (últimos 6 meses, por exemplo)</li>
+            </ul>
+
+            <h3>Definição de Objetivos</h3>
+            <p>Os objetivos respondem: <em>"O que queremos verificar e por quê?"</em>. Eles devem estar alinhados aos objetivos de negócio e aos riscos identificados.</p>
+            
+            <div class="card-exemplo">
+                <strong>📌 Exemplo de objetivo de auditoria:</strong><br>
+                "Verificar se os controles de acesso ao sistema de internet banking são eficazes para prevenir acessos não autorizados, conforme a política de segurança da informação e a ISO 27001."
             </div>
-        </section>
 
-        <section class="drives-section" id="trilha">
-            <div class="container">
-                <div class="section-title">
-                    <h2>Trilha de Aprendizagem</h2>
-                    <p>Siga a sequência proposta e leia as orientações antes de cada material.</p>
-                </div>
+            <h3>Tríade CID como base dos objetivos</h3>
+            <ul>
+                <li><strong>Integridade:</strong> Os dados não foram alterados sem autorização?</li>
+                <li><strong>Confidencialidade:</strong> O acesso é restrito a quem realmente precisa?</li>
+                <li><strong>Disponibilidade:</strong> Os sistemas estão acessíveis quando necessários?</li>
+            </ul>
 
-                <div class="drives-grid">
-                    <div class="drive-card">
-                        <div class="drive-card-header">
-                            <small>PASSO 01</small>
-                            <h3>Unidade de Estudo</h3>
-                        </div>
-                        <div class="drive-card-body">
-                            <div class="professor-note">
-                                <span class="professor-label">Explicação do Professor</span>
-                                <i class="fas fa-chalkboard-teacher"></i> "Olá pessoal! Começamos por aqui. Este documento traz a base técnica da nossa unidade. É fundamental que vocês compreendam que a segurança vai muito além de senhas; ela envolve processos estruturados e gestão estratégica."
-                            </div>
-                            <p><i class="fas fa-file-pdf"></i> <strong>Conteúdo Técnico Principal</strong><br>Fundamentos e diretrizes essenciais da disciplina.</p>
-                            <a href="https://drive.google.com/file/d/1ogN8rWu-VJM1jYmVf2tFPoQd_sbdyMth/view?usp=drivesdk " target="_blank" class="drive-btn">Acessar Unidade</a>
-                        </div>
-                    </div>
-
-                    <div class="drive-card">
-                        <div class="drive-card-header">
-                            <small>PASSO 02</small>
-                            <h3>Apostila de Apoio</h3>
-                        </div>
-                        <div class="drive-card-body">
-                            <div class="professor-note">
-                                <span class="professor-label">Explicação do Professor</span>
-                                <i class="fas fa-chalkboard-teacher"></i> "Nesta apostila, eu preparei um detalhamento sobre os aspectos humanos e culturais. Lembrem-se: o elo mais forte (ou mais fraco) da segurança são as pessoas. Leiam com atenção a parte de Políticas de Segurança."
-                            </div>
-                            <p><i class="fas fa-book"></i> <strong>Gestão, Política e Cultura</strong><br>Material focado no ecossistema de proteção organizacional.</p>
-                            <a href="https://drive.google.com/file/d/1RAH-c8WEZS9yIbU1JjSozAPVDvGYdpaY/view?usp=drive_link" target="_blank" class="drive-btn">Ler Apostila</a>
-                        </div>
-                    </div>
-
-                    <div class="drive-card">
-                        <div class="drive-card-header">
-                            <small>PASSO 03</small>
-                            <h3>Podcast Informativo</h3>
-                        </div>
-                        <div class="drive-card-body">
-                            <div class="professor-note">
-                                <span class="professor-label">Explicação do Professor</span>
-                                <i class="fas fa-chalkboard-teacher"></i> "Para descontrair sem perder o foco, ouçam este áudio. Eu comento sobre como ataques modernos, como os Deepfakes e invasões via IoT, estão mudando as regras do jogo. É um excelente estudo de caso real!"
-                            </div>
-                            <p><i class="fas fa-headphones"></i> <strong>Casos Reais e IA</strong><br>Análise dinâmica sobre as novas fronteiras das ameaças digitais.</p>
-                            <a href="https://drive.google.com/file/d/1bA-CKWftplcKK9A_Ug7Lg_FhA379uqE5/view?usp=drive_link" target="_blank" class="drive-btn">Ouvir Podcast</a>
-                        </div>
-                    </div>
-
-                    <div class="drive-card">
-                        <div class="drive-card-header">
-                            <small>PASSO 04</small>
-                            <h3>Slides de Aula</h3>
-                        </div>
-                        <div class="drive-card-body">
-                            <div class="professor-note">
-                                <span class="professor-label">Explicação do Professor</span>
-                                <i class="fas fa-chalkboard-teacher"></i> "Use estes slides para revisar os pontos principais. Eles são ótimos para fixar conceitos visuais, como a Tríade CID e o ciclo PDCA, que discutimos em sala. Ideal para uma revisão rápida."
-                            </div>
-                            <p><i class="fas fa-file-powerpoint"></i> <strong>Resumo Visual da Disciplina</strong><br>Principais tópicos estruturados em formato de apresentação.</p>
-                            <a href="https://docs.google.com/presentation/d/17aoX7INxgtmBRmQ0-9wCOaqRgUPkK2iZ/edit?usp=drive_link&ouid=102873094272380115850&rtpof=true&sd=true" target="_blank" class="drive-btn">Ver Slides</a>
-                        </div>
-                    </div>
-
-                    <div class="drive-card" style="border-top-color: var(--secondary-color);">
-                        <div class="drive-card-header" style="background: var(--secondary-color);">
-                            <small>PASSO 05</small>
-                            <h3>Material Adicional</h3>
-                        </div>
-                        <div class="drive-card-body">
-                            <div class="professor-note">
-                                <span class="professor-label">Explicação do Professor</span>
-                                <i class="fas fa-chalkboard-teacher"></i> "Para quem quer ir além: este material traz normas técnicas e controles de acesso avançados. É o fechamento perfeito para consolidar seu conhecimento e se preparar para os desafios do mercado."
-                            </div>
-                            <p><i class="fas fa-folder-open"></i> <strong>Consolidação e Normas</strong><br>Aprofundamento técnico e referências para consulta futura.</p>
-                            <a href="https://drive.google.com/file/d/1NX4q1nQwhW7OHRqGpgeA6Kc8rrn4zPhX/view?usp=drive_link" target="_blank" class="drive-btn">Acessar Conteúdo</a>
-                        </div>
-                    </div>
-                </div>
+            <div class="card-dica">
+                💡 <strong>Na prática:</strong> Ao definir objetivos, sempre vincule a uma ocorrência ou risco. Ex: "Devido à falha de logs, verificaremos se o sistema de auditoria está configurado corretamente."
             </div>
-        </section>
+        </div>
+
+        <!-- MÓDULO 2: RISCOS -->
+        <div id="modulo2" class="modulo">
+            <h2>⚠️ Módulo 2: Avaliação e Priorização de Riscos</h2>
+            
+            <h3>Conceitos fundamentais</h3>
+            <ul>
+                <li><strong>Ameaça:</strong> Algo que pode causar dano (ex: hacker, ex-funcionário malicioso).</li>
+                <li><strong>Vulnerabilidade:</strong> Falha que permite a ameaça se concretizar (ex: credencial ativa de ex-funcionário, falta de logs).</li>
+                <li><strong>Risco:</strong> Probabilidade de uma ameaça explorar uma vulnerabilidade, causando impacto ao negócio.</li>
+                <li><strong>Impacto:</strong> Consequência financeira, reputacional, legal ou operacional.</li>
+            </ul>
+
+            <h3>Como priorizar riscos?</h3>
+            <p>Utilize a matriz de risco (impacto x probabilidade). Riscos com <strong>alto impacto e alta probabilidade</strong> são prioritários.</p>
+            
+            <table>
+                <thead>
+                    <tr><th>Probabilidade / Impacto</th><th>Baixo Impacto</th><th>Alto Impacto</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Alta Probabilidade</td><td>Médio</td><td style="background:#ffc857;">CRÍTICO (prioridade 1)</td></tr>
+                    <tr><td>Baixa Probabilidade</td><td>Baixo</td><td>Médio-Alto</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Exemplos de riscos em instituições financeiras</h3>
+            <ul>
+                <li><strong>Acesso não autorizado a contas de clientes</strong> → risco de fraude, perda financeira, dano reputacional.</li>
+                <li><strong>Credenciais ativas de ex-funcionários</strong> → risco de vazamento de dados ou ações maliciosas internas.</li>
+                <li><strong>Falha na geração de logs de auditoria</strong> → impossibilidade de rastrear ações suspeitas, violação de conformidade (LGPD, ISO 27001).</li>
+            </ul>
+
+            <div class="card-dica">
+                🎯 <strong>Priorização:</strong> Em geral, riscos que afetam diretamente dados sensíveis de clientes ou compliance regulatório são os mais críticos.
+            </div>
+        </div>
+
+        <!-- MÓDULO 3: CONTROLES INTERNOS -->
+        <div id="modulo3" class="modulo">
+            <h2>🔐 Módulo 3: Controles Internos e ISO 27001</h2>
+            
+            <h3>O que são controles internos?</h3>
+            <p>São medidas (políticas, processos, ferramentas) que reduzem riscos. Podem ser preventivos, detectivos ou corretivos.</p>
+
+            <h3>Principais controles para auditoria de sistemas</h3>
+            
+            <h4>🔑 Controles de Acesso</h4>
+            <ul>
+                <li><strong>RBAC (Role-Based Access Control):</strong> Acesso baseado em função.</li>
+                <li><strong>Revogação imediata de credenciais:</strong> Ao desligar um funcionário, o acesso deve ser removido em até 24h (ideal: imediato).</li>
+                <li><strong>MFA (Autenticação Multifator):</strong> Exige mais que senha para acessar sistemas críticos.</li>
+                <li><strong>Revisão periódica de acessos:</strong> A cada 3 ou 6 meses.</li>
+            </ul>
+
+            <h4>📝 Controles de Logging e Monitoramento</h4>
+            <ul>
+                <li><strong>Geração obrigatória de logs:</strong> Quem, quando, o que fez, de onde.</li>
+                <li><strong>Proteção contra alteração de logs:</strong> Logs imutáveis (WORM - Write Once Read Many).</li>
+                <li><strong>Centralização de logs (SIEM):</strong> Ferramentas como Splunk, ELK.</li>
+                <li><strong>Alertas automáticos:</strong> Para atividades suspeitas (ex: múltiplas tentativas de acesso falhas).</li>
+            </ul>
+
+            <h4>📄 ISO 27001 – Anexo A (controles relevantes)</h4>
+            <table>
+                <thead><tr><th>Controle</th><th>Descrição</th></tr></thead>
+                <tbody>
+                    <tr><td>A.9.2.3</td><td>Gestão de direitos de acesso privilegiado</td></tr>
+                    <tr><td>A.9.2.5</td><td>Revisão de direitos de acesso dos usuários</td></tr>
+                    <tr><td>A.9.2.6</td><td>Remoção ou ajuste de direitos de acesso</td></tr>
+                    <tr><td>A.12.4.1</td><td>Registro de eventos (logs)</td></tr>
+                    <tr><td>A.12.4.3</td><td>Proteção dos registros de log</td></tr>
+                </tbody>
+            </table>
+
+            <div class="card-exemplo">
+                <strong>✅ Exemplo de controle eficaz:</strong> "Todo acesso ao banco de dados de clientes deve ser registrado em log imutável e revisado semanalmente pela equipe de segurança."
+            </div>
+        </div>
+
+        <!-- MÓDULO 4: COLETA DE EVIDÊNCIAS -->
+        <div id="modulo4" class="modulo">
+            <h2>🔍 Módulo 4: Coleta de Evidências em Auditoria</h2>
+            
+            <h3>Tipos de métodos de coleta</h3>
+            <ul>
+                <li><strong>📄 Revisão documental:</strong> Políticas, procedimentos, contratos, relatórios anteriores.</li>
+                <li><strong>💬 Entrevistas:</strong> Com gestores, administradores de sistema, equipe de segurança.</li>
+                <li><strong>📊 Análise de logs:</strong> Verificar se logs existem, estão completos e protegidos.</li>
+                <li><strong>🧪 Testes técnicos:</strong> Simulações, varreduras, scripts de validação.</li>
+                <li><strong>👀 Observação direta:</strong> Acompanhar processos em tempo real.</li>
+            </ul>
+
+            <h3>Exemplos práticos de evidências</h3>
+            <table>
+                <thead><tr><th>Risco / Pergunta</th><th>Evidência adequada</th></tr></thead>
+                <tbody>
+                    <tr><td>Ex-funcionário ainda tem acesso?</td><td>Lista de usuários ativos x lista de desligados (entrevista RH + consulta técnica)</td></tr>
+                    <tr><td>Logs estão sendo gerados?</td><td>Extração de registros de log de 72h + verificação de falhas de configuração</td></tr>
+                    <tr><td>Acessos não autorizados?</td><td>Análise de logs de acesso com SQL/Python, buscando padrões anômalos</td></tr>
+                </tbody>
+            </table>
+
+            <div class="code-block">
+                # Exemplo: consulta SQL para identificar acessos suspeitos em horário noturno
+                SELECT usuario, data_hora, acao, ip_origem
+                FROM logs_acesso
+                WHERE data_hora BETWEEN '2025-01-01 00:00:00' AND '2025-01-01 06:00:00'
+                AND sistema = 'internet_banking'
+                ORDER BY data_hora DESC;
+            </div>
+
+            <h3>Ferramentas úteis para coleta</h3>
+            <ul>
+                <li><strong>Splunk / ELK Stack:</strong> Análise centralizada de logs</li>
+                <li><strong>Wireshark:</strong> Monitoramento de tráfego de rede</li>
+                <li><strong>Nessus / Qualys:</strong> Varredura de vulnerabilidades</li>
+                <li><strong>Python + Pandas:</strong> Análise de grandes volumes de dados</li>
+            </ul>
+
+            <div class="card-dica">
+                🧠 <strong>Lembre-se:</strong> A evidência precisa ser <strong>suficiente, relevante, confiável e tempestiva</strong>.
+            </div>
+        </div>
+
+        <!-- MÓDULO 5: RECOMENDAÇÕES -->
+        <div id="modulo5" class="modulo">
+            <h2>📋 Módulo 5: Recomendações e Planos de Melhoria</h2>
+            
+            <h3>Como elaborar uma boa recomendação?</h3>
+            <p>Uma recomendação deve ser:</p>
+            <ul>
+                <li><strong>Específica:</strong> O que exatamente deve ser feito?</li>
+                <li><strong>Factível:</strong> Dentro da realidade da organização.</li>
+                <li><strong>Vinculada a um risco:</strong> Mostrar o "porquê".</li>
+                <li><strong>Priorizada:</strong> O que fazer primeiro.</li>
+            </ul>
+
+            <h3>Estrutura de uma recomendação</h3>
+            <div class="card-exemplo">
+                <strong>📌 Exemplo de recomendação:</strong><br>
+                <strong>Risco identificado:</strong> Credenciais de ex-funcionários ativas no sistema.<br>
+                <strong>Recomendação:</strong> Implementar processo automatizado de revogação de acessos integrado ao RH, com prazo máximo de 24h após desligamento, e realizar revisão trimestral de usuários ativos.<br>
+                <strong>Controle esperado:</strong> Procedimento de desligamento (offboarding) documentado e auditável.
+            </div>
+
+            <h3>Tipos de controles para recomendar</h3>
+            <ul>
+                <li><strong>Preventivos:</strong> Impedem que o erro ocorra (ex: MFA, revogação automática).</li>
+                <li><strong>Detectivos:</strong> Identificam quando o erro ocorre (ex: alertas de acesso de ex-funcionários).</li>
+                <li><strong>Corretivos:</strong> Minimizam o impacto após o erro (ex: plano de resposta a incidentes).</li>
+            </ul>
+
+            <h3>Exemplos de recomendações para riscos comuns</h3>
+            <table>
+                <thead><tr><th>Risco</th><th>Recomendação</th><th>Controle</th></tr></thead>
+                <tbody>
+                    <tr><td>Acesso não autorizado a contas</td><td>Implementar MFA obrigatório para todos os acessos externos e revisar regras de firewall</td><td>Autenticação multifator + segmentação de rede</td></tr>
+                    <tr><td>Credenciais de ex-funcionários ativas</td><td>Criar fluxo de revogação automática via integração RH-AD/LDAP</td><td>Provisionamento/desprovisionamento automatizado</td></tr>
+                    <tr><td>Falha na geração de logs</td><td>Configurar alerta de falha no serviço de logs e implementar redundância (forwarding para SIEM)</td><td>Monitoramento de integridade de logs + SIEM</td></tr>
+                </tbody>
+            </table>
+
+            <div class="card-dica">
+                🚀 <strong>Dica final:</strong> Sempre que possível, priorize recomendações que automatizem controles manuais e que gerem evidências para futuras auditorias.
+            </div>
+        </div>
     </main>
+</div>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2026 Pera Educacional. Construindo o futuro da cibersegurança.</p>
-        </div>
-    </footer>
+<div class="footer">
+    <p>📘 Material de apoio para disciplina de Segurança e Auditoria de Sistemas</p>
+    <p>Conteúdo baseado em ISO 27001, COBIT, ISACA e boas práticas de auditoria de TI</p>
+</div>
 
-    <script>
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    window.scrollTo({
-                        top: target.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
-            });
+<script>
+    function showModulo(moduloId) {
+        var modulos = document.querySelectorAll('.modulo');
+        modulos.forEach(function(modulo) {
+            modulo.classList.remove('active-modulo');
         });
-    </script>
+        var activeDiv = document.getElementById(moduloId);
+        if (activeDiv) {
+            activeDiv.classList.add('active-modulo');
+        }
+        
+        var links = document.querySelectorAll('.sidebar a');
+        links.forEach(function(link) {
+            link.classList.remove('active');
+        });
+        var activeLink = document.getElementById('link-' + moduloId);
+        if (activeLink) {
+            activeLink.classList.add('active');
+        }
+        
+        localStorage.setItem('moduloAtual', moduloId);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var ultimoModulo = localStorage.getItem('moduloAtual');
+        if (ultimoModulo && document.getElementById(ultimoModulo)) {
+            showModulo(ultimoModulo);
+        } else {
+            showModulo('modulo1');
+        }
+    });
+</script>
+
 </body>
 </html>
