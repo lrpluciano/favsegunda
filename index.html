@@ -1,513 +1,813 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Auditoria de Sistemas | Material de Apoio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estudo Autônomo: Interface e Usabilidade</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #0f172a;
+            --accent: #f59e0b;
+            --bg-light: #f8fafc;
+            --bg-white: #ffffff;
+            --text-main: #334155;
+            --text-light: #64748b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --border-radius: 12px;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             line-height: 1.6;
-            color: #1a1a2e;
-            background-color: #f0f4f8;
+            color: var(--text-main);
+            background-color: var(--bg-light);
+            scroll-behavior: smooth;
         }
 
-        .top-bar {
-            background: linear-gradient(135deg, #0b2b2b, #1a4a4a, #0f3b3b);
+        /* --- Header & Nav --- */
+        header {
+            background-color: var(--secondary);
             color: white;
-            padding: 1rem 2rem;
+            padding: 1rem 0;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
-        .top-bar h1 {
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo h1 {
             font-size: 1.5rem;
-            display: inline-block;
+            font-weight: 700;
+        }
+        
+        .logo span {
+            color: var(--accent);
         }
 
-        .top-bar h1 span {
-            font-weight: 300;
-            color: #ffc857;
+        .main-nav ul {
+            display: flex;
+            gap: 20px;
+            list-style: none;
         }
 
-        .nav-links {
-            float: right;
-            margin-top: 8px;
-        }
-
-        .nav-links a {
-            color: white;
+        .main-nav a {
+            color: #cbd5e1;
             text-decoration: none;
-            margin-left: 1.5rem;
-            font-weight: 500;
+            font-size: 0.95rem;
             transition: color 0.3s;
         }
 
-        .nav-links a:hover {
-            color: #ffc857;
+        .main-nav a:hover {
+            color: var(--accent);
         }
 
-        .container {
+        /* --- Layout --- */
+        main {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 20px;
+        }
+
+        section {
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--primary);
+        }
+
+        h2 {
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
             display: flex;
-            max-width: 1400px;
-            margin: 0 auto;
-            background: white;
-            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            align-items: center;
+            gap: 10px;
         }
 
-        .sidebar {
-            width: 280px;
-            background: #f9fafb;
-            border-right: 1px solid #e2e8f0;
-            padding: 2rem 1rem;
-            position: sticky;
-            top: 70px;
-            height: calc(100vh - 70px);
-            overflow-y: auto;
+        h3 {
+            color: var(--primary-dark);
+            margin: 1.5rem 0 1rem 0;
         }
 
-        .sidebar h3 {
-            font-size: 1.1rem;
-            color: #0b2b2b;
+        p {
             margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #ffc857;
-            display: inline-block;
         }
 
-        .sidebar ul {
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- Teacher Note --- */
+        .teacher-note {
+            background-color: #fffbeb;
+            border: 1px solid #fcd34d;
+            border-left: 5px solid #f59e0b;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .teacher-icon {
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        /* --- Guidelines & Systems --- */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        /* --- Anatomy Tabs --- */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-light);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Updated Grid for Explanations */
+        .component-list {
             list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .component-item {
+            background: var(--bg-white);
+            border: 1px solid #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            transition: box-shadow 0.2s;
+        }
+
+        .component-item:hover {
+            box-shadow: var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .component-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: bold;
+            color: var(--secondary);
+            font-size: 1.1rem;
+        }
+
+        .component-header i {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .component-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        /* --- Timeline (Prototyping) --- */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+            border-left: 2px solid #cbd5e1;
+        }
+
+        .timeline-item {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.4rem;
+            top: 5px;
+            width: 16px;
+            height: 16px;
+            background: var(--primary);
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 0 0 1px #cbd5e1;
+        }
+
+        /* --- Visual Comparison (Wireframe vs Hi-Fi) --- */
+        .comparison-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .visual-box {
+            padding: 2rem;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .wireframe-demo {
+            border: 2px dashed #94a3b8;
+            background: #f1f5f9;
+        }
+        
+        .hifi-demo {
+            border: 1px solid #e2e8f0;
+            background: white;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* CSS Mock Elements */
+        .mock-header { height: 20px; width: 60%; background: #cbd5e1; margin-bottom: 10px; }
+        .mock-btn { height: 30px; width: 100%; border-radius: 4px; }
+        .mock-text { height: 10px; width: 90%; background: #cbd5e1; margin-bottom: 5px; }
+        
+        .hifi-btn {
+            height: 40px;
+            width: 100%;
+            background: var(--primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* --- Card Sorting Visual --- */
+        .card-sorting-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 20px;
+            background: #f1f5f9;
+            border-radius: 8px;
+            justify-content: center;
+        }
+        .card-item {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            font-weight: 500;
+            cursor: default;
+        }
+
+        /* --- Accessibility Grid --- */
+        .accessibility-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .do-dont-box h4 {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .list-check li {
+            list-style: none;
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .do .list-check li::before {
+            content: '\f00c';
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--success);
+        }
+
+        .dont .list-check li::before {
+            content: '\f00d';
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--danger);
+        }
+
+        /* --- Flesch Table --- */
+        .flesch-table {
+            width: 100%;
+            border-collapse: collapse;
             margin-top: 1rem;
         }
-
-        .sidebar li {
-            margin: 0.8rem 0;
+        
+        .flesch-table th, .flesch-table td {
+            border: 1px solid #e2e8f0;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .flesch-table th {
+            background-color: var(--secondary);
+            color: white;
         }
 
-        .sidebar a {
-            text-decoration: none;
-            color: #2d4a4a;
-            font-weight: 500;
-            display: block;
-            padding: 0.4rem 0.6rem;
+        .flesch-formula {
+            background: #f8fafc;
+            padding: 1rem;
             border-radius: 8px;
-            transition: all 0.2s;
+            font-family: monospace;
+            text-align: center;
+            margin: 1rem 0;
+            border: 1px solid #cbd5e1;
         }
 
-        .sidebar a:hover, .sidebar a.active {
-            background: #ffc857;
-            color: #0b2b2b;
+        /* --- Footer --- */
+        footer {
+            background: var(--secondary);
+            color: white;
+            text-align: center;
+            padding: 3rem 1rem;
+            margin-top: 3rem;
         }
 
-        .main-content {
-            flex: 1;
-            padding: 2rem 2.5rem;
-            overflow-x: auto;
+        .footer-quote {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--accent);
+            max-width: 600px;
+            margin: 0 auto 2rem auto;
         }
 
-        .modulo {
-            display: none;
-            animation: fadeIn 0.4s ease;
-        }
-
-        .modulo.active-modulo {
-            display: block;
-        }
-
+        /* Utilities */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .modulo h2 {
-            font-size: 1.8rem;
-            color: #0b2b2b;
-            margin-bottom: 0.5rem;
-            border-left: 5px solid #ffc857;
-            padding-left: 1rem;
-        }
-
-        .modulo h3 {
-            margin: 1.5rem 0 0.8rem 0;
-            color: #1a5c5c;
-        }
-
-        .modulo h4 {
-            margin: 1rem 0 0.5rem;
-            color: #2c7a7a;
-        }
-
-        .card-dica {
-            background: #fef9e6;
-            border-left: 4px solid #ffc857;
-            padding: 1rem;
-            margin: 1.5rem 0;
-            border-radius: 8px;
-        }
-
-        .card-exemplo {
-            background: #e6f4f1;
-            border-left: 4px solid #1a5c5c;
-            padding: 1rem;
-            margin: 1.5rem 0;
-            border-radius: 8px;
-        }
-
-        .code-block {
-            background: #1e293b;
-            color: #e2e8f0;
-            padding: 1rem;
-            border-radius: 8px;
-            overflow-x: auto;
-            font-family: 'Courier New', monospace;
-            font-size: 0.85rem;
-            margin: 1rem 0;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0;
-        }
-
-        th, td {
-            border: 1px solid #cbd5e1;
-            padding: 0.6rem;
-            text-align: left;
-            vertical-align: top;
-        }
-
-        th {
-            background: #e2e8f0;
-            color: #0b2b2b;
-        }
-
-        .footer {
-            background: #0b2b2b;
-            color: #bbb;
-            text-align: center;
-            padding: 1.5rem;
-            margin-top: 2rem;
-            font-size: 0.85rem;
-        }
-
-        @media (max-width: 800px) {
-            .container {
-                flex-direction: column;
-            }
-            .sidebar {
-                width: 100%;
-                position: relative;
-                top: 0;
-                height: auto;
-                border-right: none;
-                border-bottom: 1px solid #ddd;
-            }
-            .nav-links {
-                float: none;
-                display: flex;
-                justify-content: center;
-                margin-top: 10px;
-                flex-wrap: wrap;
-            }
-            .top-bar h1 {
-                display: block;
-                text-align: center;
-            }
-            .main-content {
-                padding: 1rem;
-            }
-        }
-
-        .badge {
-            background: #ffc857;
-            color: #0b2b2b;
-            padding: 0.2rem 0.6rem;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: bold;
-            display: inline-block;
-            margin-bottom: 0.5rem;
+        @media (max-width: 768px) {
+            .header-container { flex-direction: column; text-align: center; }
+            .main-nav ul { flex-wrap: wrap; justify-content: center; font-size: 0.8rem; }
+            .accessibility-grid, .comparison-container { grid-template-columns: 1fr; }
+            .tabs { overflow-x: auto; white-space: nowrap; }
+            .component-list { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-<div class="top-bar">
-    <h1>📘 Auditoria de Sistemas <span>| Material de Apoio</span></h1>
-    <div class="nav-links">
-        <a href="#" onclick="showModulo('modulo1'); return false;">Planejamento</a>
-        <a href="#" onclick="showModulo('modulo4'); return false;">Evidências</a>
-        <a href="#" onclick="showModulo('modulo5'); return false;">Recomendações</a>
-    </div>
-</div>
-
-<div class="container">
-    <aside class="sidebar">
-        <h3>📚 Conteúdo de Estudo</h3>
-        <ul>
-            <li><a href="#" onclick="showModulo('modulo1'); return false;" id="link-modulo1">🎯 1. Planejamento de Auditoria</a></li>
-            <li><a href="#" onclick="showModulo('modulo2'); return false;" id="link-modulo2">⚠️ 2. Avaliação e Priorização de Riscos</a></li>
-            <li><a href="#" onclick="showModulo('modulo3'); return false;" id="link-modulo3">🔐 3. Controles Internos (ISO 27001)</a></li>
-            <li><a href="#" onclick="showModulo('modulo4'); return false;" id="link-modulo4">🔍 4. Coleta de Evidências</a></li>
-            <li><a href="#" onclick="showModulo('modulo5'); return false;" id="link-modulo5">📋 5. Recomendações e Melhorias</a></li>
-        </ul>
-        <div class="card-dica" style="margin-top: 2rem;">
-            💡 <strong>Dica do Especialista</strong><br>
-            Para uma boa auditoria: defina escopo, priorize riscos, colete evidências sólidas e proponha controles factíveis.
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <h1>Interface <span>&</span> Usabilidade</h1>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#guidelines">Diretrizes</a></li>
+                    <li><a href="#anatomia">Anatomia</a></li>
+                    <li><a href="#prototipagem">Prototipagem</a></li>
+                    <li><a href="#acessibilidade">Acessibilidade</a></li>
+                </ul>
+            </nav>
         </div>
-    </aside>
+    </header>
 
-    <main class="main-content">
-        <!-- MÓDULO 1: PLANEJAMENTO -->
-        <div id="modulo1" class="modulo active-modulo">
-            <h2>🎯 Módulo 1: Planejamento de Auditoria de Sistemas</h2>
+    <main>
+
+        <!-- Intro Section -->
+        <section>
+            <h2><i class="fas fa-layer-group"></i> Introdução</h2>
+            <p>A interface é o ponto de contato vital entre o usuário e o sistema digital. O design de interação foca em como o usuário se comporta, reage e atinge seus objetivos. Nosso objetivo principal: Criar sistemas intuitivos, eficientes e emocionalmente agradáveis.</p>
             
-            <h3>O que é o planejamento em auditoria?</h3>
-            <p>É a fase inicial onde se define <strong>escopo</strong> (o que será auditado) e <strong>objetivos</strong> (por que e para quê). Um bom planejamento evita desperdício de tempo e foca nos riscos reais.</p>
+            <div class="teacher-note">
+                <i class="fas fa-chalkboard-teacher teacher-icon"></i>
+                <div>
+                    <strong>Explicação do Professor</strong>
+                    <p>Olá, alunos! Hoje vamos mergulhar no mundo da Interface e Usabilidade. Projetar uma interface não é apenas "deixar bonito", mas sim garantir que o usuário consiga realizar suas tarefas sem frustrações. Vamos entender como os elementos visuais e a estrutura do projeto guiam essa experiência.</p>
+                </div>
+            </div>
+        </section>
 
-            <h3>Definição de Escopo</h3>
-            <p>O escopo delimita os sistemas, processos, áreas geográficas ou unidades organizacionais que serão avaliados. Exemplos comuns:</p>
-            <ul>
-                <li>Sistemas críticos (internet banking, ERP, banco de dados de clientes)</li>
-                <li>Processos específicos (gestão de acessos, geração de logs, resposta a incidentes)</li>
-                <li>Período de análise (últimos 6 meses, por exemplo)</li>
+        <!-- Guidelines Section -->
+        <section id="guidelines">
+            <h2><i class="fas fa-book"></i> Consistência Visual</h2>
+            <p>Para evitar que a interface pareça uma "colcha de retalhos", usamos <strong>Guidelines</strong> (diretrizes) e <strong>Design Systems</strong>.</p>
+            <ul style="margin-bottom: 1rem; padding-left: 20px;">
+                <li><strong>Guideline:</strong> Guia de regras para um processo.</li>
+                <li><strong>Design System:</strong> Documento que registra todas as regras da interface (organizacionais, funcionais, comportamentais e visuais).</li>
+                <li><strong>Exemplos famosos:</strong> <a href="https://m2.material.io/" target="_blank" rel="noopener noreferrer">Material Design (Google)</a> e <a href="https://carbondesignsystem.com/" target="_blank" rel="noopener noreferrer">Carbon (IBM)</a>.</li>
             </ul>
 
-            <h3>Definição de Objetivos</h3>
-            <p>Os objetivos respondem: <em>"O que queremos verificar e por quê?"</em>. Eles devem estar alinhados aos objetivos de negócio e aos riscos identificados.</p>
-            
-            <div class="card-exemplo">
-                <strong>📌 Exemplo de objetivo de auditoria:</strong><br>
-                "Verificar se os controles de acesso ao sistema de internet banking são eficazes para prevenir acessos não autorizados, conforme a política de segurança da informação e a ISO 27001."
+            <div class="grid-cards">
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-rocket"></i></div>
+                    <h3>Agilidade</h3>
+                    <p>Acelera o desenvolvimento ao reaproveitar componentes prontos.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-copy"></i></div>
+                    <h3>Consistência</h3>
+                    <p>Garante que a interface tenha o mesmo padrão em todos os canais.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-tools"></i></div>
+                    <h3>Manutenção</h3>
+                    <p>Facilita atualizações globais na identidade visual do produto.</p>
+                </div>
             </div>
 
-            <h3>Tríade CID como base dos objetivos</h3>
-            <ul>
-                <li><strong>Integridade:</strong> Os dados não foram alterados sem autorização?</li>
-                <li><strong>Confidencialidade:</strong> O acesso é restrito a quem realmente precisa?</li>
-                <li><strong>Disponibilidade:</strong> Os sistemas estão acessíveis quando necessários?</li>
-            </ul>
-
-            <div class="card-dica">
-                💡 <strong>Na prática:</strong> Ao definir objetivos, sempre vincule a uma ocorrência ou risco. Ex: "Devido à falha de logs, verificaremos se o sistema de auditoria está configurado corretamente."
+            <div class="teacher-note">
+                <i class="fas fa-chalkboard-teacher teacher-icon"></i>
+                <div>
+                    <strong>Explicação do Professor</strong>
+                    <p>Eles funcionam como um manual de instruções e uma biblioteca de peças prontas. Isso garante que o botão de "confirmar" seja igual em todas as telas, gerando confiança e facilidade de aprendizado para o usuário.</p>
+                </div>
             </div>
-        </div>
+        </section>
 
-        <!-- MÓDULO 2: RISCOS -->
-        <div id="modulo2" class="modulo">
-            <h2>⚠️ Módulo 2: Avaliação e Priorização de Riscos</h2>
-            
-            <h3>Conceitos fundamentais</h3>
-            <ul>
-                <li><strong>Ameaça:</strong> Algo que pode causar dano (ex: hacker, ex-funcionário malicioso).</li>
-                <li><strong>Vulnerabilidade:</strong> Falha que permite a ameaça se concretizar (ex: credencial ativa de ex-funcionário, falta de logs).</li>
-                <li><strong>Risco:</strong> Probabilidade de uma ameaça explorar uma vulnerabilidade, causando impacto ao negócio.</li>
-                <li><strong>Impacto:</strong> Consequência financeira, reputacional, legal ou operacional.</li>
-            </ul>
+        <!-- Anatomy Section (EXPANDED) -->
+        <section id="anatomia">
+            <h2><i class="fas fa-puzzle-piece"></i> Anatomia da Interface</h2>
+            <p>Pensem na interface como um jogo de peças de montar. O segredo é usar esses elementos de forma equilibrada.</p>
 
-            <h3>Como priorizar riscos?</h3>
-            <p>Utilize a matriz de risco (impacto x probabilidade). Riscos com <strong>alto impacto e alta probabilidade</strong> são prioritários.</p>
+            <div class="tabs">
+                <button class="tab-btn active" onclick="openTab(event, 'controle')">Controle de Entrada</button>
+                <button class="tab-btn" onclick="openTab(event, 'navegacao')">Navegação</button>
+                <button class="tab-btn" onclick="openTab(event, 'informativos')">Informativos</button>
+            </div>
+
+            <div id="controle" class="tab-content active">
+                <h3>Componentes para Inserir Dados</h3>
+                <p>Elementos que permitem o usuário fornecer informações ao sistema.</p>
+                <ul class="component-list">
+                    <li class="component-item">
+                        <div class="component-header"><i class="fas fa-check-circle"></i> Botões de Seleção (Radio)</div>
+                        <div class="component-desc">Usados quando o usuário deve escolher apenas uma opção de uma lista mutuamente exclusiva (ex: Masculino/Feminino).</div>
+                    </li>
+                    <li class="component-item">
+                        <div class="component-header"><i class="fas fa-caret-square-down"></i> Listas Suspensas (Dropdowns)</div>
+                        <div class="component-desc">Compactam opções longas em uma linha, exibindo-as apenas quando o usuário clica, economizando espaço na tela.</div>
+                    </li>
+                    <li class="component-item">
+                        <div class="component-header"><i class="fas fa-i-cursor"></i> Campos de Texto</div>
+                        <div class="component-desc">Áreas abertas para entrada livre de dados alfanuméricos. Podem ser curtos (uma linha) ou longos (área de texto).</div>
+                    </li>
+                    <li class="component-item">
+                        <div class="component-header"><i class="fas fa-toggle-on"></i> Toggles e Sliders</div>
+                        <div class="component-desc">Toggles servem para liga/desliga rápido (on/off). Sliders permitem selecionar valores numéricos dentro de um intervalo (ex: Volume, Preço).</div>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="navegacao" class="tab-content">
+                <h3>Componentes para Localização</h3>
+                <p>Ferramentas que ajudam o usuário a se mover e encontrar conteúdo dentro do sistema.</p>
+                <ul class="component-list">
+                    <li class="component-item">
+                        <div class="component-header"><i class="fas fa-bars"></i> Menus e Breadcrumbs</div>
+                        <div class="component-desc">Menus estruturam as seções principais do site. Breadcrumbs (migalhas de pão) mostram o caminho hierárquico (ex: Home > Produtos > Sapatos).</div>
+                    </li>
+                    <li class="component-item">
+                        <div class="component-header"><i class="fas fa-list-ol"></i> Paginação</div>
+                        <div class="component-desc">Divide grandes quantidades de conteúdo em páginas menores, facilitando o carregamento e a digestão da informação.</div>
+                    </li>
+                    <li class="component-item">
+                        <div class="component-header"><i class="fas fa-search"></i> Campos de Pesquisa</div>
+                        <div class="component-desc">Permite que o usuário encontre itens específicos rapidamente digitando palavras-chave, essencial em sites com muito conteúdo.</div>
+                    </li>
+                    <li class="component-item">
+                        <div class="component-header"><i class="fas fa-tags"></i> Tags e Abas</div>
+                        <div class="component-desc">Tags categorizam conteúdos por temas. Abas permitem alternar entre diferentes visões ou seções de conteúdo na mesma página.</div>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="informativos" class="tab-content">
+                <h3>Componentes para Feedback</h3>
+                <p>Elementos que o sistema usa para se comunicar com o usuário sobre o status das ações.</p>
+                <ul class="component-list">
+                    <li class="component-item">
+                        <div class="component-header"><i class="fas fa-bell"></i> Notificações</div>
+                        <div class="component-desc">Mensagens de alerta para informar sobre eventos importantes, como sucesso, erro ou avisos do sistema, sem interromper o fluxo principal.</div>
+                    </li>
+                    <li class="component-item">
+                        <div class="component-header"><i class="fas fa-tasks"></i> Barras de Progresso</div>
+                        <div class="component-desc">Indicadores visuais que mostram o percentual concluído de uma tarefa demorada (upload, instalação) ou o tempo restante.</div>
+                    </li>
+                    <li class="component-item">
+                        <div class="component-header"><i class="fas fa-window-maximize"></i> Janelas Modais</div>
+                        <div class="component-desc">Camadas que bloqueiam a interação com a página principal para focar a atenção do usuário em uma ação específica ou alerta crítico.</div>
+                    </li>
+                    <li class="component-item">
+                        <div class="component-header"><i class="fas fa-folder"></i> Acordeões</div>
+                        <div class="component-desc">Permite revelar e ocultar conteúdo detalhado sob um título. Útil para organizar longas listas de perguntas frequentes (FAQ).</div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Prototyping Cycle -->
+        <section id="prototipagem">
+            <h2><i class="fas fa-drafting-compass"></i> Ciclo da Prototipagem</h2>
+            <p>O protótipo é uma representação funcional da interface antes da implementação final em código. Permite a validação precoce de ideias.</p>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>Passo 1: Análise de Requisitos</h3>
+                    <p>Identificar as necessidades reais dos usuários e os contextos de uso relacionados ao projeto.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Passo 2: Esboços Iniciais</h3>
+                    <p>Desenhar as primeiras telas focando no fluxo de ações, sem se preocupar com acabamento visual.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Passo 3: Card Sorting</h3>
+                    <p>Técnica utilizada para categorizar informações e definir o vocabulário da interface. Define a estrutura lógica.</p>
+                    <!-- Visualização Estática do Card Sorting -->
+                    <div class="card-sorting-area">
+                        <div class="card-item">Perfil do Usuário</div>
+                        <div class="card-item">Configurações</div>
+                        <div class="card-item">Histórico</div>
+                        <div class="card-item">Notificações</div>
+                        <div class="card-item">Ajuda</div>
+                        <div class="card-item">Sair</div>
+                    </div>
+                    <small style="display:block; text-align:center; margin-top:5px; color:var(--text-light)">Exemplo de cartões organizados</small>
+                </div>
+            </div>
+
+            <div class="teacher-note">
+                <i class="fas fa-chalkboard-teacher teacher-icon"></i>
+                <div>
+                    <strong>Explicação do Professor</strong>
+                    <p>Por que prototipar? Porque é muito mais barato e rápido corrigir um erro em um desenho do que em um código pronto. O protótipo serve como uma ponte de comunicação entre designers, desenvolvedores e usuários.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fidelity Comparison -->
+        <section id="fidelidade">
+            <h2><i class="fas fa-eye"></i> Baixa vs. Alta Fidelidade</h2>
             
-            <table>
+            <div class="comparison-container">
+                <!-- Wireframe -->
+                <div class="visual-box wireframe-demo">
+                    <h3 style="color: #64748b; text-align: center;">Wireframe (Baixa Fidelidade)</h3>
+                    <div class="mock-header"></div>
+                    <div style="display:flex; gap:10px;">
+                        <div class="mock-text"></div>
+                        <div class="mock-text" style="width: 30%"></div>
+                    </div>
+                    <div class="mock-btn" style="background: #cbd5e1;"></div>
+                    <div class="mock-text"></div>
+                    <div class="mock-text"></div>
+                    <p style="font-size:0.9rem; color:#64748b; text-align: center; margin-top: auto;">Foco na estrutura e fluxo, sem cores.</p>
+                </div>
+
+                <!-- High Fidelity -->
+                <div class="visual-box hifi-demo">
+                    <h3 style="color: var(--primary); text-align: center;">Alta Fidelidade</h3>
+                    <div style="height: 20px; width: 60%; background: var(--primary); border-radius: 4px; margin-bottom: 10px; opacity: 0.8;"></div>
+                    <div style="display:flex; gap:10px; color: var(--text-main);">
+                        <span style="background:#e2e8f0; padding: 2px 8px; border-radius:4px; font-size:0.8rem;">Opção A</span>
+                        <span style="color:var(--text-light); font-size:0.8rem;">Opção B</span>
+                    </div>
+                    <div class="hifi-btn">Confirmar Ação</div>
+                    <p style="font-size: 0.9rem; color: var(--text-main);">Texto simulado com identidade visual aplicada.</p>
+                    <div style="display:flex; gap:5px;">
+                        <div style="width:10px; height:10px; background:var(--accent); border-radius:50%;"></div>
+                        <span style="font-size:0.8rem; color:var(--text-light);">Indicador de status</span>
+                    </div>
+                    <p style="font-size:0.9rem; color:var(--text-light); text-align: center; margin-top: auto;">Visual idêntico ao produto final.</p>
+                </div>
+            </div>
+
+            <div class="teacher-note">
+                <i class="fas fa-chalkboard-teacher teacher-icon"></i>
+                <div>
+                    <strong>Explicação do Professor</strong>
+                    <p>O wireframe é o "esqueleto". Trabalhamos em tons de cinza para não nos distrairmos com cores. Se a estrutura funcionar bem em preto e branco, ela funcionará bem com cores. O protótipo de alta fidelidade já inclui micro-interações e validação final de mercado.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Accessibility Section -->
+        <section id="acessibilidade">
+            <h2><i class="fas fa-universal-access"></i> Acessibilidade e Inclusão</h2>
+            <p>Acessibilidade digital não é um diferencial, é um direito garantido por lei (<a href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13146.htm" target="_blank" rel="noopener noreferrer">Lei 13.146/2015 - LBI</a>). É projetar para todos, independentemente de habilidades físicas ou cognitivas.</p>
+
+            <div style="background: #e0f2fe; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--primary); margin-bottom: 2rem;">
+                <i class="fas fa-info-circle"></i> <strong>Lembrete:</strong> Acessibilidade não é apenas para deficiências permanentes. Quebrou o braço? Sol forte no celular? Situações temporárias também se beneficiam.
+            </div>
+
+            <h3>Design para o Espectro Autista (TEA)</h3>
+            <p style="margin-bottom: 1rem;">Baseado no <a href="https://accessibility.blog.gov.uk/2016/09/02/autism-and-the-web/" target="_blank" rel="noopener noreferrer">guia do governo do Reino Unido</a>, a previsibilidade é chave.</p>
+            
+            <div class="accessibility-grid do-dont-box">
+                <div class="do">
+                    <h4 style="color: var(--success);"><i class="fas fa-check-circle"></i> FAZER</h4>
+                    <ul class="list-check">
+                        <li>Usar cores simples e calmas.</li>
+                        <li>Escrita clara e objetiva.</li>
+                        <li>Botões descritivos.</li>
+                        <li>Layouts consistentes.</li>
+                    </ul>
+                </div>
+                <div class="dont">
+                    <h4 style="color: var(--danger);"><i class="fas fa-times-circle"></i> NÃO FAZER</h4>
+                    <ul class="list-check">
+                        <li>Cores brilhantes demais.</li>
+                        <li>Linguagem figurada.</li>
+                        <li>Botões vagos (ex: "clique aqui").</li>
+                        <li>Layouts complexos.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="teacher-note">
+                <i class="fas fa-chalkboard-teacher teacher-icon"></i>
+                <div>
+                    <strong>Explicação do Professor</strong>
+                    <p>Para usuários com TEA, a previsibilidade e a clareza são fundamentais. Evitar metáforas e excesso de estímulos visuais ajuda a reduzir a carga cognitiva e torna a navegação muito mais tranquila e inclusiva.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Readability Section -->
+        <section id="leiturabilidade">
+            <h2><i class="fas fa-globe"></i> Padrões Globais e Leiturabilidade</h2>
+            <p>Seguimos padrões como o <strong>W3C</strong> e <strong>WCAG</strong>. Além disso, utilizamos métricas para garantir que o texto é compreensível.</p>
+
+            <h3>Índice Flesch de Leiturabilidade</h3>
+            <p>Mede a facilidade de compreensão de um texto com base na estrutura das frases.</p>
+            
+            <div class="flesch-formula">
+                Fórmula: 248,835 - [1,015 x (palavras/frases)] - [84,6 x (sílabas/palavras)]
+            </div>
+
+            <table class="flesch-table">
                 <thead>
-                    <tr><th>Probabilidade / Impacto</th><th>Baixo Impacto</th><th>Alto Impacto</th></tr>
+                    <tr>
+                        <th>Pontuação</th>
+                        <th>Leiturabilidade</th>
+                        <th>Grau Escolar</th>
+                    </tr>
                 </thead>
                 <tbody>
-                    <tr><td>Alta Probabilidade</td><td>Médio</td><td style="background:#ffc857;">CRÍTICO (prioridade 1)</td></tr>
-                    <tr><td>Baixa Probabilidade</td><td>Baixo</td><td>Médio-Alto</td></tr>
+                    <tr>
+                        <td>100-75</td>
+                        <td>Muito Fácil</td>
+                        <td>1º a 5º ano</td>
+                    </tr>
+                    <tr>
+                        <td>75-50</td>
+                        <td>Fácil</td>
+                        <td>6º a 9º ano</td>
+                    </tr>
+                    <tr>
+                        <td>50-25</td>
+                        <td>Difícil</td>
+                        <td>Ensino Médio</td>
+                    </tr>
+                    <tr>
+                        <td>25-00</td>
+                        <td>Muito Difícil</td>
+                        <td>Ensino Superior</td>
+                    </tr>
                 </tbody>
             </table>
+        </section>
 
-            <h3>Exemplos de riscos em instituições financeiras</h3>
+        <!-- Conclusion -->
+        <section id="conclusao" style="border-left-color: var(--accent);">
+            <h2><i class="fas fa-flag-checkered"></i> Conclusão</h2>
             <ul>
-                <li><strong>Acesso não autorizado a contas de clientes</strong> → risco de fraude, perda financeira, dano reputacional.</li>
-                <li><strong>Credenciais ativas de ex-funcionários</strong> → risco de vazamento de dados ou ações maliciosas internas.</li>
-                <li><strong>Falha na geração de logs de auditoria</strong> → impossibilidade de rastrear ações suspeitas, violação de conformidade (LGPD, ISO 27001).</li>
+                <li>O design não é um evento único, mas um processo contínuo de teste e ajuste.</li>
+                <li>A prática constante na criação de protótipos é o que leva ao domínio da usabilidade.</li>
+                <li>Projetar para a experiência do usuário é, acima de tudo, projetar para pessoas.</li>
             </ul>
+            <br>
+            <p class="footer-quote">"A interface é o espelho da empatia do designer com seu usuário."</p>
+        </section>
 
-            <div class="card-dica">
-                🎯 <strong>Priorização:</strong> Em geral, riscos que afetam diretamente dados sensíveis de clientes ou compliance regulatório são os mais críticos.
-            </div>
-        </div>
-
-        <!-- MÓDULO 3: CONTROLES INTERNOS -->
-        <div id="modulo3" class="modulo">
-            <h2>🔐 Módulo 3: Controles Internos e ISO 27001</h2>
-            
-            <h3>O que são controles internos?</h3>
-            <p>São medidas (políticas, processos, ferramentas) que reduzem riscos. Podem ser preventivos, detectivos ou corretivos.</p>
-
-            <h3>Principais controles para auditoria de sistemas</h3>
-            
-            <h4>🔑 Controles de Acesso</h4>
-            <ul>
-                <li><strong>RBAC (Role-Based Access Control):</strong> Acesso baseado em função.</li>
-                <li><strong>Revogação imediata de credenciais:</strong> Ao desligar um funcionário, o acesso deve ser removido em até 24h (ideal: imediato).</li>
-                <li><strong>MFA (Autenticação Multifator):</strong> Exige mais que senha para acessar sistemas críticos.</li>
-                <li><strong>Revisão periódica de acessos:</strong> A cada 3 ou 6 meses.</li>
-            </ul>
-
-            <h4>📝 Controles de Logging e Monitoramento</h4>
-            <ul>
-                <li><strong>Geração obrigatória de logs:</strong> Quem, quando, o que fez, de onde.</li>
-                <li><strong>Proteção contra alteração de logs:</strong> Logs imutáveis (WORM - Write Once Read Many).</li>
-                <li><strong>Centralização de logs (SIEM):</strong> Ferramentas como Splunk, ELK.</li>
-                <li><strong>Alertas automáticos:</strong> Para atividades suspeitas (ex: múltiplas tentativas de acesso falhas).</li>
-            </ul>
-
-            <h4>📄 ISO 27001 – Anexo A (controles relevantes)</h4>
-            <table>
-                <thead><tr><th>Controle</th><th>Descrição</th></tr></thead>
-                <tbody>
-                    <tr><td>A.9.2.3</td><td>Gestão de direitos de acesso privilegiado</td></tr>
-                    <tr><td>A.9.2.5</td><td>Revisão de direitos de acesso dos usuários</td></tr>
-                    <tr><td>A.9.2.6</td><td>Remoção ou ajuste de direitos de acesso</td></tr>
-                    <tr><td>A.12.4.1</td><td>Registro de eventos (logs)</td></tr>
-                    <tr><td>A.12.4.3</td><td>Proteção dos registros de log</td></tr>
-                </tbody>
-            </table>
-
-            <div class="card-exemplo">
-                <strong>✅ Exemplo de controle eficaz:</strong> "Todo acesso ao banco de dados de clientes deve ser registrado em log imutável e revisado semanalmente pela equipe de segurança."
-            </div>
-        </div>
-
-        <!-- MÓDULO 4: COLETA DE EVIDÊNCIAS -->
-        <div id="modulo4" class="modulo">
-            <h2>🔍 Módulo 4: Coleta de Evidências em Auditoria</h2>
-            
-            <h3>Tipos de métodos de coleta</h3>
-            <ul>
-                <li><strong>📄 Revisão documental:</strong> Políticas, procedimentos, contratos, relatórios anteriores.</li>
-                <li><strong>💬 Entrevistas:</strong> Com gestores, administradores de sistema, equipe de segurança.</li>
-                <li><strong>📊 Análise de logs:</strong> Verificar se logs existem, estão completos e protegidos.</li>
-                <li><strong>🧪 Testes técnicos:</strong> Simulações, varreduras, scripts de validação.</li>
-                <li><strong>👀 Observação direta:</strong> Acompanhar processos em tempo real.</li>
-            </ul>
-
-            <h3>Exemplos práticos de evidências</h3>
-            <table>
-                <thead><tr><th>Risco / Pergunta</th><th>Evidência adequada</th></tr></thead>
-                <tbody>
-                    <tr><td>Ex-funcionário ainda tem acesso?</td><td>Lista de usuários ativos x lista de desligados (entrevista RH + consulta técnica)</td></tr>
-                    <tr><td>Logs estão sendo gerados?</td><td>Extração de registros de log de 72h + verificação de falhas de configuração</td></tr>
-                    <tr><td>Acessos não autorizados?</td><td>Análise de logs de acesso com SQL/Python, buscando padrões anômalos</td></tr>
-                </tbody>
-            </table>
-
-            <div class="code-block">
-                # Exemplo: consulta SQL para identificar acessos suspeitos em horário noturno
-                SELECT usuario, data_hora, acao, ip_origem
-                FROM logs_acesso
-                WHERE data_hora BETWEEN '2025-01-01 00:00:00' AND '2025-01-01 06:00:00'
-                AND sistema = 'internet_banking'
-                ORDER BY data_hora DESC;
-            </div>
-
-            <h3>Ferramentas úteis para coleta</h3>
-            <ul>
-                <li><strong>Splunk / ELK Stack:</strong> Análise centralizada de logs</li>
-                <li><strong>Wireshark:</strong> Monitoramento de tráfego de rede</li>
-                <li><strong>Nessus / Qualys:</strong> Varredura de vulnerabilidades</li>
-                <li><strong>Python + Pandas:</strong> Análise de grandes volumes de dados</li>
-            </ul>
-
-            <div class="card-dica">
-                🧠 <strong>Lembre-se:</strong> A evidência precisa ser <strong>suficiente, relevante, confiável e tempestiva</strong>.
-            </div>
-        </div>
-
-        <!-- MÓDULO 5: RECOMENDAÇÕES -->
-        <div id="modulo5" class="modulo">
-            <h2>📋 Módulo 5: Recomendações e Planos de Melhoria</h2>
-            
-            <h3>Como elaborar uma boa recomendação?</h3>
-            <p>Uma recomendação deve ser:</p>
-            <ul>
-                <li><strong>Específica:</strong> O que exatamente deve ser feito?</li>
-                <li><strong>Factível:</strong> Dentro da realidade da organização.</li>
-                <li><strong>Vinculada a um risco:</strong> Mostrar o "porquê".</li>
-                <li><strong>Priorizada:</strong> O que fazer primeiro.</li>
-            </ul>
-
-            <h3>Estrutura de uma recomendação</h3>
-            <div class="card-exemplo">
-                <strong>📌 Exemplo de recomendação:</strong><br>
-                <strong>Risco identificado:</strong> Credenciais de ex-funcionários ativas no sistema.<br>
-                <strong>Recomendação:</strong> Implementar processo automatizado de revogação de acessos integrado ao RH, com prazo máximo de 24h após desligamento, e realizar revisão trimestral de usuários ativos.<br>
-                <strong>Controle esperado:</strong> Procedimento de desligamento (offboarding) documentado e auditável.
-            </div>
-
-            <h3>Tipos de controles para recomendar</h3>
-            <ul>
-                <li><strong>Preventivos:</strong> Impedem que o erro ocorra (ex: MFA, revogação automática).</li>
-                <li><strong>Detectivos:</strong> Identificam quando o erro ocorre (ex: alertas de acesso de ex-funcionários).</li>
-                <li><strong>Corretivos:</strong> Minimizam o impacto após o erro (ex: plano de resposta a incidentes).</li>
-            </ul>
-
-            <h3>Exemplos de recomendações para riscos comuns</h3>
-            <table>
-                <thead><tr><th>Risco</th><th>Recomendação</th><th>Controle</th></tr></thead>
-                <tbody>
-                    <tr><td>Acesso não autorizado a contas</td><td>Implementar MFA obrigatório para todos os acessos externos e revisar regras de firewall</td><td>Autenticação multifator + segmentação de rede</td></tr>
-                    <tr><td>Credenciais de ex-funcionários ativas</td><td>Criar fluxo de revogação automática via integração RH-AD/LDAP</td><td>Provisionamento/desprovisionamento automatizado</td></tr>
-                    <tr><td>Falha na geração de logs</td><td>Configurar alerta de falha no serviço de logs e implementar redundância (forwarding para SIEM)</td><td>Monitoramento de integridade de logs + SIEM</td></tr>
-                </tbody>
-            </table>
-
-            <div class="card-dica">
-                🚀 <strong>Dica final:</strong> Sempre que possível, priorize recomendações que automatizem controles manuais e que gerem evidências para futuras auditorias.
-            </div>
-        </div>
     </main>
-</div>
 
-<div class="footer">
-    <p>📘 Material de apoio para disciplina de Segurança e Auditoria de Sistemas</p>
-    <p>Conteúdo baseado em ISO 27001, COBIT, ISACA e boas práticas de auditoria de TI</p>
-</div>
+    <footer>
+        <div class="teacher-note" style="background: rgba(255,255,255,0.1); border: none; color: white;">
+            <i class="fas fa-quote-left teacher-icon" style="color: var(--accent);"></i>
+            <div>
+                <strong>Palavras Finais do Professor</strong>
+                <p>Chegamos ao fim da nossa aula! Lembrem-se: o design nunca está "pronto", ele está em constante evolução baseada no feedback dos usuários. Continuem pesquisando, pratiquem a criação de protótipos e sempre coloquem o ser humano no centro do projeto. Bons estudos e até a próxima!</p>
+            </div>
+        </div>
+        <p>&copy; 2023 Curso de Design Digital. Material de Estudo Autônomo.</p>
+    </footer>
 
-<script>
-    function showModulo(moduloId) {
-        var modulos = document.querySelectorAll('.modulo');
-        modulos.forEach(function(modulo) {
-            modulo.classList.remove('active-modulo');
-        });
-        var activeDiv = document.getElementById(moduloId);
-        if (activeDiv) {
-            activeDiv.classList.add('active-modulo');
+    <script>
+        // --- Tab Functionality ---
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            
+            // Hide all tab content
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+                tabcontent[i].classList.remove("active");
+            }
+
+            // Remove active class from buttons
+            tablinks = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            // Show current tab and add active class
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
         }
-        
-        var links = document.querySelectorAll('.sidebar a');
-        links.forEach(function(link) {
-            link.classList.remove('active');
-        });
-        var activeLink = document.getElementById('link-' + moduloId);
-        if (activeLink) {
-            activeLink.classList.add('active');
-        }
-        
-        localStorage.setItem('moduloAtual', moduloId);
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        var ultimoModulo = localStorage.getItem('moduloAtual');
-        if (ultimoModulo && document.getElementById(ultimoModulo)) {
-            showModulo(ultimoModulo);
-        } else {
-            showModulo('modulo1');
-        }
-    });
-</script>
-
+    </script>
 </body>
 </html>
