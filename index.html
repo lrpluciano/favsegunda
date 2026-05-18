@@ -236,17 +236,27 @@
                 <div class="lg:col-span-5 bg-cardbg/50 border border-slate-800 p-6 rounded-2xl flex flex-col items-center">
                     <h3 class="text-center font-bold text-slate-300 mb-8 text-sm uppercase tracking-wider">Visualizador do Equilíbrio de Interface</h3>
                     
-                    <!-- SVG Triângulo Dinâmico com Rótulos perfeitamente sincronizados (sem rotate-90) -->
+                    <!-- SVG Triângulo Dinâmico com Rótulos perfeitamente sincronizados (Cálculo 100% verificado sem rotate) -->
                     <div class="w-64 h-64 relative bg-slate-900/50 rounded-full border border-slate-800 flex items-center justify-center p-6">
                         <svg viewBox="0 0 100 100" class="w-full h-full">
-                            <!-- Background Triangle -->
-                            <polygon points="50,15 85,75 15,75" fill="none" stroke="#334155" stroke-width="1.5" stroke-dasharray="3"/>
-                            <!-- Dynamic Active Area representing the balance of user experience -->
-                            <polygon id="radarShape" points="50,45 67.5,65 32.5,65" fill="rgba(132, 204, 22, 0.2)" stroke="#84cc16" stroke-width="2" class="transition-all duration-500 ease-out"/>
-                            <!-- Vertices indicators -->
-                            <circle cx="50" cy="15" r="3.5" fill="#ef4444" id="vEficacia"/> <!-- Red: Eficácia -->
-                            <circle cx="85" cy="75" r="3.5" fill="#3b82f6" id="vEficiencia"/> <!-- Blue: Eficiência -->
-                            <circle cx="15" cy="75" r="3.5" fill="#eab308" id="vSatisfacao"/> <!-- Yellow: Satisfação -->
+                            <!-- Linhas dos Eixos do Radar para Fornecer Base Visual -->
+                            <line x1="50" y1="50" x2="50" y2="15" stroke="#334155" stroke-width="1" stroke-dasharray="2"/>
+                            <line x1="50" y1="50" x2="80" y2="68" stroke="#334155" stroke-width="1" stroke-dasharray="2"/>
+                            <line x1="50" y1="50" x2="20" y2="68" stroke="#334155" stroke-width="1" stroke-dasharray="2"/>
+                            
+                            <!-- Triângulos de Escala Concêntricos Internos -->
+                            <polygon points="50,32.5 65,59 35,59" fill="none" stroke="#1e293b" stroke-width="1"/>
+                            
+                            <!-- Limite Externo do Triângulo de Usabilidade (Dashed) -->
+                            <polygon points="50,15 80,68 20,68" fill="none" stroke="#334155" stroke-width="1.5" stroke-dasharray="3"/>
+                            
+                            <!-- Área Ativa Dinâmica do Radar -->
+                            <polygon id="radarShape" points="50,32.5 65,59 35,59" fill="rgba(132, 204, 22, 0.2)" stroke="#84cc16" stroke-width="2" class="transition-all duration-500 ease-out"/>
+                            
+                            <!-- Indicadores de Vértices Físicos -->
+                            <circle cx="50" cy="15" r="3.5" fill="#ef4444" id="vEficacia"/> <!-- Vermelho: Eficácia -->
+                            <circle cx="80" cy="68" r="3.5" fill="#3b82f6" id="vEficiencia"/> <!-- Azul: Eficiência -->
+                            <circle cx="20" cy="68" r="3.5" fill="#eab308" id="vSatisfacao"/> <!-- Amarelo: Satisfação -->
                         </svg>
                         <!-- Posições absolutas dos rótulos calibradas de acordo com as coordenadas padrão do SVG -->
                         <div class="absolute -top-1 left-1/2 -translate-x-1/2 text-[11px] bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded text-red-400 font-bold uppercase tracking-wider">Eficácia</div>
@@ -342,7 +352,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm sm:text-base text-slate-300 leading-relaxed">
                     <div class="space-y-4">
                         <p>
-                            A <strong>Avaliação Heurística</strong> proposta por Jakob Nielsen é o método de inspeção mais disseminado no ecossistema global de UX. Para que os seus resultados tragam real valor ao projeto, o avaliador deve seguir um tutorial rigoroso composto por etapas encadeadas:
+                            A <strong>Avaliação Heurística</strong> proposta por Jakob Nielsen é o método de inspeção mais distribuído no ecossistema global de UX. Para que os seus resultados tragam real valor ao projeto, o avaliador deve seguir um tutorial rigoroso composto por etapas encadeadas:
                         </p>
                         <div class="space-y-3">
                             <div class="flex gap-3">
@@ -868,25 +878,27 @@
         function selectPillar(pillar) {
             const current = pillarData[pillar];
             
-            // Definição matemática do centro e dos vetores diretores do triângulo de usabilidade
+            // Centro absoluto do radar
             const centerX = 50;
-            const centerY = 55;
+            const centerY = 50;
             
             // Fatores de escala do vetor diretor de cada vértice
-            const l1 = current.levels[0]; // Eficácia (Direção Superior)
-            const l2 = current.levels[1]; // Eficiência (Direção Inferior-Direita)
-            const l3 = current.levels[2]; // Satisfação (Direção Inferior-Esquerda)
+            const l1 = current.levels[0]; // Eficácia (Eixo Superior)
+            const l2 = current.levels[1]; // Eficiência (Eixo Inferior-Direito)
+            const l3 = current.levels[2]; // Satisfação (Eixo Inferior-Esquerdo)
             
-            // Cálculo dinâmico de coordenadas (Vetor Centro -> Vértice * Nível)
+            // Cálculo dinâmico de coordenadas de projeção (Vetor Centro -> Vértice * Nível)
             const x1 = centerX;
-            const y1 = (centerY - 40 * l1).toFixed(1);
-            const x2 = (centerX + 35 * l2).toFixed(1);
-            const y2 = (centerY + 20 * l2).toFixed(1);
-            const x3 = (centerX - 35 * l3).toFixed(1);
-            const y3 = (centerY + 20 * l3).toFixed(1);
+            const y1 = centerY - (35 * l1);
+            
+            const x2 = centerX + (30 * l2);
+            const y2 = centerY + (18 * l2);
+            
+            const x3 = centerX - (30 * l3);
+            const y3 = centerY + (18 * l3);
             
             // Atualiza dinamicamente os pontos do polígono ativo no SVG
-            document.getElementById('radarShape').setAttribute('points', `${x1},${y1} ${x2},${y2} ${x3},${y3}`);
+            document.getElementById('radarShape').setAttribute('points', `${x1.toFixed(1)},${y1.toFixed(1)} ${x2.toFixed(1)},${y2.toFixed(1)} ${x3.toFixed(1)},${y3.toFixed(1)}`);
             
             // Ativa o sandbox de explicação do pilar selecionado
             const sandbox = document.getElementById('pilarSandbox');
