@@ -1,813 +1,1097 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-pt" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estudo Autônomo: Interface e Usabilidade</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>UX Academy | Aprendizagem Ativa em Usabilidade</title>
+    <!-- Tailwind CSS para Estilização Ágil e Moderna -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para Ícones Fluídos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkbg: '#0f172a',
+                        cardbg: '#1e293b',
+                        primary: '#84cc16', // Verde Lima
+                        accent: '#a3e635',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        title: ['Urbanist', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        :root {
-            --primary: #2563eb;
-            --primary-dark: #1e40af;
-            --secondary: #0f172a;
-            --accent: #f59e0b;
-            --bg-light: #f8fafc;
-            --bg-white: #ffffff;
-            --text-main: #334155;
-            --text-light: #64748b;
-            --success: #10b981;
-            --danger: #ef4444;
-            --border-radius: 12px;
-            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--text-main);
-            background-color: var(--bg-light);
-            scroll-behavior: smooth;
-        }
-
-        /* --- Header & Nav --- */
-        header {
-            background-color: var(--secondary);
-            color: white;
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-
-        .header-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .logo h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-        
-        .logo span {
-            color: var(--accent);
-        }
-
-        .main-nav ul {
-            display: flex;
-            gap: 20px;
-            list-style: none;
-        }
-
-        .main-nav a {
-            color: #cbd5e1;
-            text-decoration: none;
-            font-size: 0.95rem;
-            transition: color 0.3s;
-        }
-
-        .main-nav a:hover {
-            color: var(--accent);
-        }
-
-        /* --- Layout --- */
-        main {
-            max-width: 1000px;
-            margin: 2rem auto;
-            padding: 0 20px;
-        }
-
+        /* Ajuste de margem de scroll para evitar sobreposição do header fixo */
         section {
-            background: var(--bg-white);
-            border-radius: var(--border-radius);
-            padding: 2.5rem;
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow);
-            border-left: 5px solid var(--primary);
+            scroll-margin-top: 110px;
         }
 
-        h2 {
-            color: var(--secondary);
-            margin-bottom: 1.5rem;
-            font-size: 1.8rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        h3 {
-            color: var(--primary-dark);
-            margin: 1.5rem 0 1rem 0;
-        }
-
-        p {
-            margin-bottom: 1rem;
-        }
-
-        a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
+        /* Estilos Customizados para Efeitos de Glassmorphism e Componentes Interativos */
+        .glass {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            /* Transição suave do transform e opacity para o Header Inteligente */
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, background-color 0.3s ease;
         }
         
-        a:hover {
-            text-decoration: underline;
+        /* Classe de ocultação do Header Inteligente (mantém o alinhamento central de -50%) */
+        .header-hidden {
+            transform: translate(-50%, -160%) scale(0.95) !important;
+            opacity: 0;
+            pointer-events: none;
         }
 
-        /* --- Teacher Note --- */
-        .teacher-note {
-            background-color: #fffbeb;
-            border: 1px solid #fcd34d;
-            border-left: 5px solid #f59e0b;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 2rem 0;
-            display: flex;
-            gap: 1rem;
-            align-items: flex-start;
-        }
-
-        .teacher-icon {
-            font-size: 1.5rem;
-            color: var(--accent);
-        }
-
-        /* --- Guidelines & Systems --- */
-        .grid-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .card {
-            background: white;
-            border: 1px solid #e2e8f0;
-            padding: 1.5rem;
-            border-radius: 8px;
-            transition: transform 0.2s;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-        }
-
-        .card-icon {
-            font-size: 2rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-
-        /* --- Anatomy Tabs --- */
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 1.5rem;
-            border-bottom: 2px solid #e2e8f0;
-        }
-
-        .tab-btn {
-            background: none;
-            border: none;
-            padding: 10px 20px;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-light);
-            cursor: pointer;
-            border-bottom: 3px solid transparent;
-        }
-
-        .tab-btn.active {
-            color: var(--primary);
-            border-bottom-color: var(--primary);
-        }
-
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        /* Updated Grid for Explanations */
-        .component-list {
-            list-style: none;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .component-item {
-            background: var(--bg-white);
-            border: 1px solid #e2e8f0;
-            padding: 1.5rem;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-            transition: box-shadow 0.2s;
-        }
-
-        .component-item:hover {
-            box-shadow: var(--shadow);
-            border-color: var(--primary);
-        }
-
-        .component-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: bold;
-            color: var(--secondary);
-            font-size: 1.1rem;
-        }
-
-        .component-header i {
-            color: var(--primary);
-            font-size: 1.2rem;
-        }
-
-        .component-desc {
-            font-size: 0.9rem;
-            color: var(--text-light);
-            line-height: 1.5;
-        }
-
-        /* --- Timeline (Prototyping) --- */
-        .timeline {
-            position: relative;
-            padding-left: 2rem;
-            border-left: 2px solid #cbd5e1;
-        }
-
-        .timeline-item {
-            margin-bottom: 2rem;
-            position: relative;
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -2.4rem;
-            top: 5px;
-            width: 16px;
-            height: 16px;
-            background: var(--primary);
-            border-radius: 50%;
-            border: 4px solid white;
-            box-shadow: 0 0 0 1px #cbd5e1;
-        }
-
-        /* --- Visual Comparison (Wireframe vs Hi-Fi) --- */
-        .comparison-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .visual-box {
-            padding: 2rem;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .wireframe-demo {
-            border: 2px dashed #94a3b8;
-            background: #f1f5f9;
+        .active-dot {
+            box-shadow: 0 0 15px #84cc16;
         }
         
-        .hifi-demo {
-            border: 1px solid #e2e8f0;
-            background: white;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        /* Definição de animação ping-slow para os alertas interativos */
+        @keyframes ping-slow {
+            0% { transform: scale(1); opacity: 1; }
+            70%, 100% { transform: scale(1.4); opacity: 0; }
+        }
+        .animate-ping-slow {
+            animation: ping-slow 2s cubic-bezier(0, 0, 0.2, 1) infinite;
         }
 
-        /* CSS Mock Elements */
-        .mock-header { height: 20px; width: 60%; background: #cbd5e1; margin-bottom: 10px; }
-        .mock-btn { height: 30px; width: 100%; border-radius: 4px; }
-        .mock-text { height: 10px; width: 90%; background: #cbd5e1; margin-bottom: 5px; }
-        
-        .hifi-btn {
-            height: 40px;
-            width: 100%;
-            background: var(--primary);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-
-        /* --- Card Sorting Visual --- */
-        .card-sorting-area {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            padding: 20px;
-            background: #f1f5f9;
-            border-radius: 8px;
-            justify-content: center;
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
         }
-        .card-item {
-            background: white;
-            padding: 10px 20px;
-            border-radius: 6px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            font-weight: 500;
-            cursor: default;
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
         }
-
-        /* --- Accessibility Grid --- */
-        .accessibility-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
-
-        .do-dont-box h4 {
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .list-check li {
-            list-style: none;
-            margin-bottom: 0.5rem;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-
-        .do .list-check li::before {
-            content: '\f00c';
-            font-family: "Font Awesome 6 Free";
-            font-weight: 900;
-            position: absolute;
-            left: 0;
-            color: var(--success);
-        }
-
-        .dont .list-check li::before {
-            content: '\f00d';
-            font-family: "Font Awesome 6 Free";
-            font-weight: 900;
-            position: absolute;
-            left: 0;
-            color: var(--danger);
-        }
-
-        /* --- Flesch Table --- */
-        .flesch-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
-        }
-        
-        .flesch-table th, .flesch-table td {
-            border: 1px solid #e2e8f0;
-            padding: 12px;
-            text-align: left;
-        }
-        
-        .flesch-table th {
-            background-color: var(--secondary);
-            color: white;
-        }
-
-        .flesch-formula {
-            background: #f8fafc;
-            padding: 1rem;
-            border-radius: 8px;
-            font-family: monospace;
-            text-align: center;
-            margin: 1rem 0;
-            border: 1px solid #cbd5e1;
-        }
-
-        /* --- Footer --- */
-        footer {
-            background: var(--secondary);
-            color: white;
-            text-align: center;
-            padding: 3rem 1rem;
-            margin-top: 3rem;
-        }
-
-        .footer-quote {
-            font-size: 1.2rem;
-            font-style: italic;
-            color: var(--accent);
-            max-width: 600px;
-            margin: 0 auto 2rem auto;
-        }
-
-        /* Utilities */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @media (max-width: 768px) {
-            .header-container { flex-direction: column; text-align: center; }
-            .main-nav ul { flex-wrap: wrap; justify-content: center; font-size: 0.8rem; }
-            .accessibility-grid, .comparison-container { grid-template-columns: 1fr; }
-            .tabs { overflow-x: auto; white-space: nowrap; }
-            .component-list { grid-template-columns: 1fr; }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #84cc16;
         }
     </style>
 </head>
-<body>
+<body class="bg-darkbg text-slate-100 font-sans antialiased overflow-x-hidden">
 
-    <!-- Header -->
-    <header>
-        <div class="header-container">
-            <div class="logo">
-                <h1>Interface <span>&</span> Usabilidade</h1>
+    <!-- BARRA DE PROGRESSO SUPERIOR -->
+    <div class="fixed top-0 left-0 w-full h-1.5 bg-slate-900 z-50">
+        <div id="progressBar" class="h-full bg-primary w-0 transition-all duration-300 shadow-[0_0_10px_#84cc16]"></div>
+    </div>
+
+    <!-- CABEÇALHO FLUTUANTE INTELIGENTE REFORMULADO (Melhores Práticas de UI/UX) -->
+    <header id="mainHeader" class="fixed top-4 left-1/2 -translate-x-1/2 w-[92%] max-w-6xl glass rounded-2xl z-50 px-6 py-3 transition-all duration-300 shadow-2xl">
+        <div class="flex items-center justify-between">
+            <!-- LOGOTIPO COM CONTRASTE APERFEIÇOADO -->
+            <div class="flex items-center gap-3 shrink-0">
+                <div class="bg-primary text-darkbg font-title font-extrabold px-3 py-1.5 rounded-lg text-lg tracking-wider shadow-[0_0_15px_rgba(132,204,22,0.3)]">UX</div>
+                <span class="font-title font-extrabold text-xl tracking-tight hidden sm:inline text-white">ACADEMY</span>
             </div>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="#guidelines">Diretrizes</a></li>
-                    <li><a href="#anatomia">Anatomia</a></li>
-                    <li><a href="#prototipagem">Prototipagem</a></li>
-                    <li><a href="#acessibilidade">Acessibilidade</a></li>
-                </ul>
+            
+            <!-- NAVEGAÇÃO PRINCIPAL (FLEX INLINE SEM QUEBRAS) -->
+            <nav class="hidden md:flex items-center gap-7">
+                <a href="#modulo1" class="group flex items-center gap-2 hover:text-primary transition-all text-sm font-semibold tracking-wide text-slate-300 whitespace-nowrap">
+                    <span class="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-md border border-primary/20 transition-colors group-hover:bg-primary group-hover:text-darkbg">1</span>
+                    Fundamentos
+                </a>
+                <a href="#modulo2" class="group flex items-center gap-2 hover:text-primary transition-all text-sm font-semibold tracking-wide text-slate-300 whitespace-nowrap">
+                    <span class="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-md border border-primary/20 transition-colors group-hover:bg-primary group-hover:text-darkbg">2</span>
+                    Heurísticas
+                </a>
+                <a href="#modulo3" class="group flex items-center gap-2 hover:text-primary transition-all text-sm font-semibold tracking-wide text-slate-300 whitespace-nowrap">
+                    <span class="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-md border border-primary/20 transition-colors group-hover:bg-primary group-hover:text-darkbg">3</span>
+                    Testes
+                </a>
+                <a href="#modulo4" class="group flex items-center gap-2 hover:text-primary transition-all text-sm font-semibold tracking-wide text-slate-300 whitespace-nowrap">
+                    <span class="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-md border border-primary/20 transition-colors group-hover:bg-primary group-hover:text-darkbg">4</span>
+                    Severidade
+                </a>
+                <a href="#desafio" class="bg-primary text-darkbg hover:bg-accent hover:shadow-[0_0_15px_rgba(132,204,22,0.4)] hover:scale-105 transition-all px-5 py-2 rounded-xl text-xs uppercase tracking-wider font-extrabold whitespace-nowrap">
+                    Oficina Prática
+                </a>
             </nav>
+
+            <!-- PAINEL DE PERFORMANCE / CONTROLO DE SESSÃO -->
+            <div class="flex items-center gap-4 shrink-0">
+                <div class="flex items-center gap-2.5 bg-slate-900/80 border border-slate-800/80 px-4 py-2 rounded-xl text-xs font-bold tracking-wider text-slate-300 shadow-inner">
+                    <i class="fa-solid fa-trophy text-primary text-sm animate-pulse"></i> 
+                    <span><span id="scoreBadge" class="font-bold text-slate-100 text-sm">0</span> <span class="text-slate-500 font-extrabold">XP</span></span>
+                </div>
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()" class="md:hidden text-slate-300 hover:text-white text-xl p-2 hover:bg-slate-800/50 rounded-xl transition-all">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown Nav com espaçamento e estilo aprimorados para evitar sobreposições -->
+        <div id="mobileMenu" class="hidden flex flex-col gap-3 mt-4 pt-4 border-t border-slate-800 md:hidden max-h-[70vh] overflow-y-auto">
+            <a href="#modulo1" onclick="toggleMobileMenu()" class="flex items-center gap-3 hover:text-primary py-2.5 px-4 hover:bg-slate-800/50 rounded-xl transition-all text-slate-300 font-semibold text-sm">
+                <span class="text-[10px] text-primary bg-primary/10 px-2.5 py-0.5 rounded-md border border-primary/20 font-bold">1</span>
+                Fundamentos
+            </a>
+            <a href="#modulo2" onclick="toggleMobileMenu()" class="flex items-center gap-3 hover:text-primary py-2.5 px-4 hover:bg-slate-800/50 rounded-xl transition-all text-slate-300 font-semibold text-sm">
+                <span class="text-[10px] text-primary bg-primary/10 px-2.5 py-0.5 rounded-md border border-primary/20 font-bold">2</span>
+                Heurísticas
+            </a>
+            <a href="#modulo3" onclick="toggleMobileMenu()" class="flex items-center gap-3 hover:text-primary py-2.5 px-4 hover:bg-slate-800/50 rounded-xl transition-all text-slate-300 font-semibold text-sm">
+                <span class="text-[10px] text-primary bg-primary/10 px-2.5 py-0.5 rounded-md border border-primary/20 font-bold">3</span>
+                Testes
+            </a>
+            <a href="#modulo4" onclick="toggleMobileMenu()" class="flex items-center gap-3 hover:text-primary py-2.5 px-4 hover:bg-slate-800/50 rounded-xl transition-all text-slate-300 font-semibold text-sm">
+                <span class="text-[10px] text-primary bg-primary/10 px-2.5 py-0.5 rounded-md border border-primary/20 font-bold">4</span>
+                Severidade
+            </a>
+            <a href="#desafio" onclick="toggleMobileMenu()" class="bg-primary text-darkbg text-center py-3.5 rounded-xl font-extrabold uppercase tracking-wider text-xs mt-2 hover:bg-accent transition-all shadow-[0_4px_15px_rgba(132,204,22,0.2)]">
+                Oficina Prática
+            </a>
         </div>
     </header>
 
-    <main>
-
-        <!-- Intro Section -->
-        <section>
-            <h2><i class="fas fa-layer-group"></i> Introdução</h2>
-            <p>A interface é o ponto de contato vital entre o usuário e o sistema digital. O design de interação foca em como o usuário se comporta, reage e atinge seus objetivos. Nosso objetivo principal: Criar sistemas intuitivos, eficientes e emocionalmente agradáveis.</p>
-            
-            <div class="teacher-note">
-                <i class="fas fa-chalkboard-teacher teacher-icon"></i>
-                <div>
-                    <strong>Explicação do Professor</strong>
-                    <p>Olá, alunos! Hoje vamos mergulhar no mundo da Interface e Usabilidade. Projetar uma interface não é apenas "deixar bonito", mas sim garantir que o usuário consiga realizar suas tarefas sem frustrações. Vamos entender como os elementos visuais e a estrutura do projeto guiam essa experiência.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Guidelines Section -->
-        <section id="guidelines">
-            <h2><i class="fas fa-book"></i> Consistência Visual</h2>
-            <p>Para evitar que a interface pareça uma "colcha de retalhos", usamos <strong>Guidelines</strong> (diretrizes) e <strong>Design Systems</strong>.</p>
-            <ul style="margin-bottom: 1rem; padding-left: 20px;">
-                <li><strong>Guideline:</strong> Guia de regras para um processo.</li>
-                <li><strong>Design System:</strong> Documento que registra todas as regras da interface (organizacionais, funcionais, comportamentais e visuais).</li>
-                <li><strong>Exemplos famosos:</strong> <a href="https://m2.material.io/" target="_blank" rel="noopener noreferrer">Material Design (Google)</a> e <a href="https://carbondesignsystem.com/" target="_blank" rel="noopener noreferrer">Carbon (IBM)</a>.</li>
-            </ul>
-
-            <div class="grid-cards">
-                <div class="card">
-                    <div class="card-icon"><i class="fas fa-rocket"></i></div>
-                    <h3>Agilidade</h3>
-                    <p>Acelera o desenvolvimento ao reaproveitar componentes prontos.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon"><i class="fas fa-copy"></i></div>
-                    <h3>Consistência</h3>
-                    <p>Garante que a interface tenha o mesmo padrão em todos os canais.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon"><i class="fas fa-tools"></i></div>
-                    <h3>Manutenção</h3>
-                    <p>Facilita atualizações globais na identidade visual do produto.</p>
-                </div>
-            </div>
-
-            <div class="teacher-note">
-                <i class="fas fa-chalkboard-teacher teacher-icon"></i>
-                <div>
-                    <strong>Explicação do Professor</strong>
-                    <p>Eles funcionam como um manual de instruções e uma biblioteca de peças prontas. Isso garante que o botão de "confirmar" seja igual em todas as telas, gerando confiança e facilidade de aprendizado para o usuário.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Anatomy Section (EXPANDED) -->
-        <section id="anatomia">
-            <h2><i class="fas fa-puzzle-piece"></i> Anatomia da Interface</h2>
-            <p>Pensem na interface como um jogo de peças de montar. O segredo é usar esses elementos de forma equilibrada.</p>
-
-            <div class="tabs">
-                <button class="tab-btn active" onclick="openTab(event, 'controle')">Controle de Entrada</button>
-                <button class="tab-btn" onclick="openTab(event, 'navegacao')">Navegação</button>
-                <button class="tab-btn" onclick="openTab(event, 'informativos')">Informativos</button>
-            </div>
-
-            <div id="controle" class="tab-content active">
-                <h3>Componentes para Inserir Dados</h3>
-                <p>Elementos que permitem o usuário fornecer informações ao sistema.</p>
-                <ul class="component-list">
-                    <li class="component-item">
-                        <div class="component-header"><i class="fas fa-check-circle"></i> Botões de Seleção (Radio)</div>
-                        <div class="component-desc">Usados quando o usuário deve escolher apenas uma opção de uma lista mutuamente exclusiva (ex: Masculino/Feminino).</div>
-                    </li>
-                    <li class="component-item">
-                        <div class="component-header"><i class="fas fa-caret-square-down"></i> Listas Suspensas (Dropdowns)</div>
-                        <div class="component-desc">Compactam opções longas em uma linha, exibindo-as apenas quando o usuário clica, economizando espaço na tela.</div>
-                    </li>
-                    <li class="component-item">
-                        <div class="component-header"><i class="fas fa-i-cursor"></i> Campos de Texto</div>
-                        <div class="component-desc">Áreas abertas para entrada livre de dados alfanuméricos. Podem ser curtos (uma linha) ou longos (área de texto).</div>
-                    </li>
-                    <li class="component-item">
-                        <div class="component-header"><i class="fas fa-toggle-on"></i> Toggles e Sliders</div>
-                        <div class="component-desc">Toggles servem para liga/desliga rápido (on/off). Sliders permitem selecionar valores numéricos dentro de um intervalo (ex: Volume, Preço).</div>
-                    </li>
-                </ul>
-            </div>
-
-            <div id="navegacao" class="tab-content">
-                <h3>Componentes para Localização</h3>
-                <p>Ferramentas que ajudam o usuário a se mover e encontrar conteúdo dentro do sistema.</p>
-                <ul class="component-list">
-                    <li class="component-item">
-                        <div class="component-header"><i class="fas fa-bars"></i> Menus e Breadcrumbs</div>
-                        <div class="component-desc">Menus estruturam as seções principais do site. Breadcrumbs (migalhas de pão) mostram o caminho hierárquico (ex: Home > Produtos > Sapatos).</div>
-                    </li>
-                    <li class="component-item">
-                        <div class="component-header"><i class="fas fa-list-ol"></i> Paginação</div>
-                        <div class="component-desc">Divide grandes quantidades de conteúdo em páginas menores, facilitando o carregamento e a digestão da informação.</div>
-                    </li>
-                    <li class="component-item">
-                        <div class="component-header"><i class="fas fa-search"></i> Campos de Pesquisa</div>
-                        <div class="component-desc">Permite que o usuário encontre itens específicos rapidamente digitando palavras-chave, essencial em sites com muito conteúdo.</div>
-                    </li>
-                    <li class="component-item">
-                        <div class="component-header"><i class="fas fa-tags"></i> Tags e Abas</div>
-                        <div class="component-desc">Tags categorizam conteúdos por temas. Abas permitem alternar entre diferentes visões ou seções de conteúdo na mesma página.</div>
-                    </li>
-                </ul>
-            </div>
-
-            <div id="informativos" class="tab-content">
-                <h3>Componentes para Feedback</h3>
-                <p>Elementos que o sistema usa para se comunicar com o usuário sobre o status das ações.</p>
-                <ul class="component-list">
-                    <li class="component-item">
-                        <div class="component-header"><i class="fas fa-bell"></i> Notificações</div>
-                        <div class="component-desc">Mensagens de alerta para informar sobre eventos importantes, como sucesso, erro ou avisos do sistema, sem interromper o fluxo principal.</div>
-                    </li>
-                    <li class="component-item">
-                        <div class="component-header"><i class="fas fa-tasks"></i> Barras de Progresso</div>
-                        <div class="component-desc">Indicadores visuais que mostram o percentual concluído de uma tarefa demorada (upload, instalação) ou o tempo restante.</div>
-                    </li>
-                    <li class="component-item">
-                        <div class="component-header"><i class="fas fa-window-maximize"></i> Janelas Modais</div>
-                        <div class="component-desc">Camadas que bloqueiam a interação com a página principal para focar a atenção do usuário em uma ação específica ou alerta crítico.</div>
-                    </li>
-                    <li class="component-item">
-                        <div class="component-header"><i class="fas fa-folder"></i> Acordeões</div>
-                        <div class="component-desc">Permite revelar e ocultar conteúdo detalhado sob um título. Útil para organizar longas listas de perguntas frequentes (FAQ).</div>
-                    </li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- Prototyping Cycle -->
-        <section id="prototipagem">
-            <h2><i class="fas fa-drafting-compass"></i> Ciclo da Prototipagem</h2>
-            <p>O protótipo é uma representação funcional da interface antes da implementação final em código. Permite a validação precoce de ideias.</p>
-
-            <div class="timeline">
-                <div class="timeline-item">
-                    <h3>Passo 1: Análise de Requisitos</h3>
-                    <p>Identificar as necessidades reais dos usuários e os contextos de uso relacionados ao projeto.</p>
-                </div>
-                <div class="timeline-item">
-                    <h3>Passo 2: Esboços Iniciais</h3>
-                    <p>Desenhar as primeiras telas focando no fluxo de ações, sem se preocupar com acabamento visual.</p>
-                </div>
-                <div class="timeline-item">
-                    <h3>Passo 3: Card Sorting</h3>
-                    <p>Técnica utilizada para categorizar informações e definir o vocabulário da interface. Define a estrutura lógica.</p>
-                    <!-- Visualização Estática do Card Sorting -->
-                    <div class="card-sorting-area">
-                        <div class="card-item">Perfil do Usuário</div>
-                        <div class="card-item">Configurações</div>
-                        <div class="card-item">Histórico</div>
-                        <div class="card-item">Notificações</div>
-                        <div class="card-item">Ajuda</div>
-                        <div class="card-item">Sair</div>
-                    </div>
-                    <small style="display:block; text-align:center; margin-top:5px; color:var(--text-light)">Exemplo de cartões organizados</small>
-                </div>
-            </div>
-
-            <div class="teacher-note">
-                <i class="fas fa-chalkboard-teacher teacher-icon"></i>
-                <div>
-                    <strong>Explicação do Professor</strong>
-                    <p>Por que prototipar? Porque é muito mais barato e rápido corrigir um erro em um desenho do que em um código pronto. O protótipo serve como uma ponte de comunicação entre designers, desenvolvedores e usuários.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Fidelity Comparison -->
-        <section id="fidelidade">
-            <h2><i class="fas fa-eye"></i> Baixa vs. Alta Fidelidade</h2>
-            
-            <div class="comparison-container">
-                <!-- Wireframe -->
-                <div class="visual-box wireframe-demo">
-                    <h3 style="color: #64748b; text-align: center;">Wireframe (Baixa Fidelidade)</h3>
-                    <div class="mock-header"></div>
-                    <div style="display:flex; gap:10px;">
-                        <div class="mock-text"></div>
-                        <div class="mock-text" style="width: 30%"></div>
-                    </div>
-                    <div class="mock-btn" style="background: #cbd5e1;"></div>
-                    <div class="mock-text"></div>
-                    <div class="mock-text"></div>
-                    <p style="font-size:0.9rem; color:#64748b; text-align: center; margin-top: auto;">Foco na estrutura e fluxo, sem cores.</p>
-                </div>
-
-                <!-- High Fidelity -->
-                <div class="visual-box hifi-demo">
-                    <h3 style="color: var(--primary); text-align: center;">Alta Fidelidade</h3>
-                    <div style="height: 20px; width: 60%; background: var(--primary); border-radius: 4px; margin-bottom: 10px; opacity: 0.8;"></div>
-                    <div style="display:flex; gap:10px; color: var(--text-main);">
-                        <span style="background:#e2e8f0; padding: 2px 8px; border-radius:4px; font-size:0.8rem;">Opção A</span>
-                        <span style="color:var(--text-light); font-size:0.8rem;">Opção B</span>
-                    </div>
-                    <div class="hifi-btn">Confirmar Ação</div>
-                    <p style="font-size: 0.9rem; color: var(--text-main);">Texto simulado com identidade visual aplicada.</p>
-                    <div style="display:flex; gap:5px;">
-                        <div style="width:10px; height:10px; background:var(--accent); border-radius:50%;"></div>
-                        <span style="font-size:0.8rem; color:var(--text-light);">Indicador de status</span>
-                    </div>
-                    <p style="font-size:0.9rem; color:var(--text-light); text-align: center; margin-top: auto;">Visual idêntico ao produto final.</p>
-                </div>
-            </div>
-
-            <div class="teacher-note">
-                <i class="fas fa-chalkboard-teacher teacher-icon"></i>
-                <div>
-                    <strong>Explicação do Professor</strong>
-                    <p>O wireframe é o "esqueleto". Trabalhamos em tons de cinza para não nos distrairmos com cores. Se a estrutura funcionar bem em preto e branco, ela funcionará bem com cores. O protótipo de alta fidelidade já inclui micro-interações e validação final de mercado.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Accessibility Section -->
-        <section id="acessibilidade">
-            <h2><i class="fas fa-universal-access"></i> Acessibilidade e Inclusão</h2>
-            <p>Acessibilidade digital não é um diferencial, é um direito garantido por lei (<a href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13146.htm" target="_blank" rel="noopener noreferrer">Lei 13.146/2015 - LBI</a>). É projetar para todos, independentemente de habilidades físicas ou cognitivas.</p>
-
-            <div style="background: #e0f2fe; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--primary); margin-bottom: 2rem;">
-                <i class="fas fa-info-circle"></i> <strong>Lembrete:</strong> Acessibilidade não é apenas para deficiências permanentes. Quebrou o braço? Sol forte no celular? Situações temporárias também se beneficiam.
-            </div>
-
-            <h3>Design para o Espectro Autista (TEA)</h3>
-            <p style="margin-bottom: 1rem;">Baseado no <a href="https://accessibility.blog.gov.uk/2016/09/02/autism-and-the-web/" target="_blank" rel="noopener noreferrer">guia do governo do Reino Unido</a>, a previsibilidade é chave.</p>
-            
-            <div class="accessibility-grid do-dont-box">
-                <div class="do">
-                    <h4 style="color: var(--success);"><i class="fas fa-check-circle"></i> FAZER</h4>
-                    <ul class="list-check">
-                        <li>Usar cores simples e calmas.</li>
-                        <li>Escrita clara e objetiva.</li>
-                        <li>Botões descritivos.</li>
-                        <li>Layouts consistentes.</li>
-                    </ul>
-                </div>
-                <div class="dont">
-                    <h4 style="color: var(--danger);"><i class="fas fa-times-circle"></i> NÃO FAZER</h4>
-                    <ul class="list-check">
-                        <li>Cores brilhantes demais.</li>
-                        <li>Linguagem figurada.</li>
-                        <li>Botões vagos (ex: "clique aqui").</li>
-                        <li>Layouts complexos.</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="teacher-note">
-                <i class="fas fa-chalkboard-teacher teacher-icon"></i>
-                <div>
-                    <strong>Explicação do Professor</strong>
-                    <p>Para usuários com TEA, a previsibilidade e a clareza são fundamentais. Evitar metáforas e excesso de estímulos visuais ajuda a reduzir a carga cognitiva e torna a navegação muito mais tranquila e inclusiva.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Readability Section -->
-        <section id="leiturabilidade">
-            <h2><i class="fas fa-globe"></i> Padrões Globais e Leiturabilidade</h2>
-            <p>Seguimos padrões como o <strong>W3C</strong> e <strong>WCAG</strong>. Além disso, utilizamos métricas para garantir que o texto é compreensível.</p>
-
-            <h3>Índice Flesch de Leiturabilidade</h3>
-            <p>Mede a facilidade de compreensão de um texto com base na estrutura das frases.</p>
-            
-            <div class="flesch-formula">
-                Fórmula: 248,835 - [1,015 x (palavras/frases)] - [84,6 x (sílabas/palavras)]
-            </div>
-
-            <table class="flesch-table">
-                <thead>
-                    <tr>
-                        <th>Pontuação</th>
-                        <th>Leiturabilidade</th>
-                        <th>Grau Escolar</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>100-75</td>
-                        <td>Muito Fácil</td>
-                        <td>1º a 5º ano</td>
-                    </tr>
-                    <tr>
-                        <td>75-50</td>
-                        <td>Fácil</td>
-                        <td>6º a 9º ano</td>
-                    </tr>
-                    <tr>
-                        <td>50-25</td>
-                        <td>Difícil</td>
-                        <td>Ensino Médio</td>
-                    </tr>
-                    <tr>
-                        <td>25-00</td>
-                        <td>Muito Difícil</td>
-                        <td>Ensino Superior</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-        <!-- Conclusion -->
-        <section id="conclusao" style="border-left-color: var(--accent);">
-            <h2><i class="fas fa-flag-checkered"></i> Conclusão</h2>
-            <ul>
-                <li>O design não é um evento único, mas um processo contínuo de teste e ajuste.</li>
-                <li>A prática constante na criação de protótipos é o que leva ao domínio da usabilidade.</li>
-                <li>Projetar para a experiência do usuário é, acima de tudo, projetar para pessoas.</li>
-            </ul>
-            <br>
-            <p class="footer-quote">"A interface é o espelho da empatia do designer com seu usuário."</p>
-        </section>
-
-    </main>
-
-    <footer>
-        <div class="teacher-note" style="background: rgba(255,255,255,0.1); border: none; color: white;">
-            <i class="fas fa-quote-left teacher-icon" style="color: var(--accent);"></i>
-            <div>
-                <strong>Palavras Finais do Professor</strong>
-                <p>Chegamos ao fim da nossa aula! Lembrem-se: o design nunca está "pronto", ele está em constante evolução baseada no feedback dos usuários. Continuem pesquisando, pratiquem a criação de protótipos e sempre coloquem o ser humano no centro do projeto. Bons estudos e até a próxima!</p>
+    <!-- HERO SECTION -->
+    <section class="min-h-screen flex items-center justify-center pt-36 pb-16 px-4 relative overflow-hidden bg-[radial-gradient(circle_at_center,rgba(132,204,22,0.08)_0%,transparent_70%)]">
+        <div class="max-w-4xl text-center z-10">
+            <span class="text-primary font-bold tracking-widest text-xs uppercase bg-primary/10 px-4 py-1.5 rounded-full border border-primary/20 inline-block mb-6">Plataforma de Aprendizagem Autónoma</span>
+            <h1 class="font-title font-extrabold text-4xl sm:text-6xl md:text-7xl leading-tight mb-6">
+                Domine a Arte de Criar <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-emerald-400">Interfaces Perfeitas</span>
+            </h1>
+            <p class="text-slate-400 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
+                Explore módulos práticos interativos construídos com base no programa oficial de Interface e Usabilidade. Estude autonomamente através de simulações em tempo real.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="#modulo1" class="w-full sm:w-auto bg-primary text-darkbg hover:bg-accent transition-all duration-300 px-8 py-4 rounded-xl font-bold shadow-[0_4px_20px_rgba(132,204,22,0.3)] text-center">
+                    Iniciar Trilha de Estudo <i class="fa-solid fa-arrow-right ml-2"></i>
+                </a>
+                <a href="#desafio" class="w-full sm:w-auto bg-slate-800 hover:bg-slate-700 text-slate-200 transition-all duration-300 px-8 py-4 rounded-xl font-semibold text-center border border-slate-700">
+                    Aceder à Oficina Prática
+                </a>
             </div>
         </div>
-        <p>&copy; 2023 Curso de Design Digital. Material de Estudo Autônomo.</p>
+        <div class="absolute -bottom-10 left-1/2 -translate-x-1/2 w-full max-w-5xl opacity-30 h-96 bg-gradient-to-t from-primary/10 to-transparent blur-3xl pointer-events-none"></div>
+    </section>
+
+    <!-- MÓDULO 1: O RADAR DA USABILIDADE -->
+    <section id="modulo1" class="py-24 border-t border-slate-800 relative">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                <div>
+                    <span class="text-primary font-bold text-sm tracking-wider uppercase">Módulo 1: Fundamentos</span>
+                    <h2 class="font-title text-3xl sm:text-5xl font-bold mt-2">O Radar da Usabilidade</h2>
+                </div>
+                <p class="text-slate-400 max-w-md mt-4 md:mt-0 text-sm sm:text-base">
+                    Segundo a norma <strong>ISO 9241:11</strong>, a usabilidade equilibra três métricas vitais. Clique nos pilares abaixo para ver o impacto dinâmico na experiência.
+                </p>
+            </div>
+
+            <!-- UNIDADE ACADÉMICA / TEXTO DE APOIO (CONTEÚDO AVA EXPANDIDO) -->
+            <div class="bg-slate-900/30 border border-slate-800/80 rounded-3xl p-6 md:p-8 mb-12 space-y-6">
+                <div class="flex items-center gap-3 pb-4 border-b border-slate-800">
+                    <span class="w-3 h-3 rounded-full bg-primary inline-block"></span>
+                    <h3 class="font-title text-lg md:text-xl font-bold text-white uppercase tracking-wider">Unidade de Leitura: O Processo de Avaliação de Usabilidade</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm sm:text-base text-slate-300 leading-relaxed">
+                    <div class="space-y-4">
+                        <p>
+                            A avaliação de usabilidade é uma das etapas fundamentais do <strong>Projeto Centrado no Usuário (UCD - User-Centered Design)</strong>. Ela não se limita a analisar a estética do sistema, mas serve para compreender de forma profunda a experiência do utilizador, mapeando as suas dores, barreiras cognitivas e propondo melhorias.
+                        </p>
+                        <p>
+                            O processo estruturado de avaliação deve contemplar as seguintes etapas operacionais:
+                        </p>
+                        <ul class="list-disc pl-5 space-y-1 text-slate-400">
+                            <li><strong>Definir a estratégia de avaliação:</strong> Alinhamento de escopo e restrições.</li>
+                            <li><strong>Criar o plano de avaliação:</strong> Cronogramas, roteiros e hipóteses.</li>
+                            <li><strong>Preparar e executar a avaliação:</strong> Recrutamento e coleta ativa de dados.</li>
+                            <li><strong>Analisar e interpretar os dados coletados:</strong> Identificação de padrões.</li>
+                            <li><strong>Elaborar o relatório de avaliação:</strong> Proposição de valor e recomendações.</li>
+                        </ul>
+                    </div>
+                    <div class="space-y-4">
+                        <p>
+                            As abordagens metodológicas dividem-se em duas grandes categorias técnicas:
+                        </p>
+                        <div class="p-4 bg-slate-950/50 rounded-xl border border-slate-800/80 space-y-3">
+                            <p class="text-xs font-bold text-primary uppercase tracking-wider"><i class="fa-solid fa-list-check mr-1.5"></i> Técnicas de Inspeção de Interface</p>
+                            <p class="text-xs text-slate-400">Avaliações baseadas no julgamento analítico de especialistas em IHC (Interação Homem-Computador). Não exigem a participação direta do usuário final. Exemplos: Avaliação Heurística e Percurso Cognitivo.</p>
+                        </div>
+                        <div class="p-4 bg-slate-950/50 rounded-xl border border-slate-800/80 space-y-3">
+                            <p class="text-xs font-bold text-primary uppercase tracking-wider"><i class="fa-solid fa-users-viewfinder mr-1.5"></i> Técnicas de Observação do Usuário</p>
+                            <p class="text-xs text-slate-400">Métodos práticos onde observamos o usuário real interagindo com a interface no seu próprio ambiente ou laboratório para captar comportamento legítimo. Exemplos: Testes de Usabilidade, Teste de Árvore, Teste A/B.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <!-- Painel Esquerdo: Controle & Simulação Visual -->
+                <div class="lg:col-span-5 bg-cardbg/50 border border-slate-800 p-6 rounded-2xl flex flex-col items-center">
+                    <h3 class="text-center font-bold text-slate-300 mb-8 text-sm uppercase tracking-wider">Visualizador do Equilíbrio de Interface</h3>
+                    
+                    <!-- SVG Triângulo Dinâmico com Rótulos sem Risco de Sobreposição -->
+                    <div class="w-64 h-64 relative bg-slate-900/50 rounded-full border border-slate-800 flex items-center justify-center p-6">
+                        <svg viewBox="0 0 100 100" class="w-full h-full transform -rotate-90">
+                            <!-- Background Triangle -->
+                            <polygon points="50,15 85,75 15,75" fill="none" stroke="#334155" stroke-width="1.5" stroke-dasharray="3"/>
+                            <!-- Dynamic Active Area representing the balance of user experience -->
+                            <polygon id="radarShape" points="50,15 85,75 15,75" fill="rgba(132, 204, 22, 0.2)" stroke="#84cc16" stroke-width="2" class="transition-all duration-500 ease-out"/>
+                            <!-- Vertices indicators -->
+                            <circle cx="50" cy="15" r="3.5" fill="#ef4444" id="vEficacia"/> <!-- Red: Eficácia -->
+                            <circle cx="85" cy="75" r="3.5" fill="#3b82f6" id="vEficiencia"/> <!-- Blue: Eficiência -->
+                            <circle cx="15" cy="75" r="3.5" fill="#eab308" id="vSatisfacao"/> <!-- Yellow: Satisfação -->
+                        </svg>
+                        <!-- Posições absolutas dos rótulos recalibradas com padding externo para segurança visual -->
+                        <div class="absolute -top-1 left-1/2 -translate-x-1/2 text-[11px] bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded text-red-400 font-bold uppercase tracking-wider">Eficácia</div>
+                        <div class="absolute -bottom-1 -right-2 text-[11px] bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded text-blue-400 font-bold uppercase tracking-wider">Eficiência</div>
+                        <div class="absolute -bottom-1 -left-2 text-[11px] bg-yellow-500/10 border border-yellow-500/20 px-2 py-0.5 rounded text-yellow-500 font-bold uppercase tracking-wider">Satisfação</div>
+                    </div>
+
+                    <p class="text-xs text-slate-500 text-center mt-8 italic">
+                        [Diagrama do Framework ISO 9241-11 integrando Eficácia, Eficiência e Satisfação]
+                    </p>
+                </div>
+
+                <!-- Painel Direito: Cards de Interação Teórica -->
+                <div class="lg:col-span-7 space-y-4">
+                    <!-- Eficácia Card -->
+                    <div onclick="selectPillar('eficacia')" id="card-eficacia" class="group p-6 rounded-xl border border-slate-800 hover:border-red-500/50 cursor-pointer transition-all duration-300 bg-cardbg/40">
+                        <div class="flex items-start gap-4">
+                            <div class="p-3 rounded-lg bg-red-500/10 text-red-400 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-bullseye text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg text-slate-200">Eficácia</h4>
+                                <p class="text-slate-400 text-sm mt-1">O quão bem o utilizador realiza a sua meta final? Conclui a ação sem impedimentos críticos?</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Eficiência Card -->
+                    <div onclick="selectPillar('eficiencia')" id="card-eficiencia" class="group p-6 rounded-xl border border-slate-800 hover:border-blue-500/50 cursor-pointer transition-all duration-300 bg-cardbg/40">
+                        <div class="flex items-start gap-4">
+                            <div class="p-3 rounded-lg bg-blue-500/10 text-blue-400 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-stopwatch text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg text-slate-200">Eficiência</h4>
+                                <p class="text-slate-400 text-sm mt-1">Tempo, caminhos, quantidade de cliques e carga mental gasta para finalizar as operações.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Satisfação Card -->
+                    <div onclick="selectPillar('satisfacao')" id="card-satisfacao" class="group p-6 rounded-xl border border-slate-800 hover:border-yellow-500/50 cursor-pointer transition-all duration-300 bg-cardbg/40">
+                        <div class="flex items-start gap-4">
+                            <div class="p-3 rounded-lg bg-yellow-500/10 text-yellow-400 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-smile-beam text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg text-slate-200">Satisfação</h4>
+                                <p class="text-slate-400 text-sm mt-1">A atitude subjetiva e o conforto sentido pelo utilizador ao interagir com o fluxo.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Zona de Diagnóstico do Pilar Selecionado -->
+            <div id="pilarSandbox" class="mt-8 bg-slate-900/50 border border-slate-800/80 rounded-2xl p-6 md:p-8 hidden">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+                    <h3 id="sandboxTitle" class="font-title text-2xl font-bold text-primary">Detecção de Padrões</h3>
+                    <span class="text-xs bg-primary/10 text-primary border border-primary/20 px-3 py-1 rounded-full uppercase tracking-wider font-semibold">Teoria Aplicada</span>
+                </div>
+                <p id="sandboxDescription" class="text-slate-300 my-4 text-sm md:text-base"></p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <div class="bg-red-500/5 border border-red-500/20 p-5 rounded-xl">
+                        <span class="text-red-400 font-bold text-xs uppercase tracking-widest"><i class="fa-solid fa-circle-xmark mr-1"></i> Erro Comum de Projeto</span>
+                        <p id="sandboxWrong" class="text-slate-300 mt-2 text-sm"></p>
+                    </div>
+                    <div class="bg-emerald-500/5 border border-emerald-500/20 p-5 rounded-xl">
+                        <span class="text-emerald-400 font-bold text-xs uppercase tracking-widest"><i class="fa-solid fa-circle-check mr-1"></i> Boas Práticas Recomendadas</span>
+                        <p id="sandboxRight" class="text-slate-300 mt-2 text-sm"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MÓDULO 2: O INSPECTOR DE HEURÍSTICAS -->
+    <section id="modulo2" class="py-24 bg-slate-900/40 border-t border-slate-800 relative">
+        <div class="max-w-6xl mx-auto px-4">
+            <span class="text-primary font-bold text-sm tracking-wider uppercase">Módulo 2: Inspeção da Interface</span>
+            <h2 class="font-title text-3xl sm:text-5xl font-bold mt-2 mb-4">Inspeção Heurística Interativa</h2>
+            <p class="text-slate-400 max-w-2xl mb-12">
+                A avaliação heurística é um método de inspeção baseado em princípios de usabilidade consolidados. Desbloqueie o seu olhar crítico: <strong>inspecione o mockup abaixo e clique nas anomalias (ícones vermelhos)</strong> para diagnosticar violações heurísticas de Jakob Nielsen.
+            </p>
+
+            <!-- CONTEÚDO DE APRESENTAÇÃO DO AVA PARA AVALIAÇÃO HEURÍSTICA -->
+            <div class="bg-slate-900/30 border border-slate-800/80 rounded-3xl p-6 md:p-8 mb-12 space-y-6">
+                <div class="flex items-center gap-3 pb-4 border-b border-slate-800">
+                    <span class="w-3 h-3 rounded-full bg-primary inline-block"></span>
+                    <h3 class="font-title text-lg md:text-xl font-bold text-white uppercase tracking-wider">Metodologia: Como Conduzir uma Avaliação Heurística Profissional</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm sm:text-base text-slate-300 leading-relaxed">
+                    <div class="space-y-4">
+                        <p>
+                            A <strong>Avaliação Heurística</strong> proposta por Jakob Nielsen é o método de inspeção mais disseminado no ecossistema global de UX. Para que os seus resultados tragam real valor ao projeto, o avaliador deve seguir um tutorial rigoroso composto por etapas encadeadas:
+                        </p>
+                        <div class="space-y-3">
+                            <div class="flex gap-3">
+                                <span class="bg-primary/20 text-primary w-6 h-6 rounded-full flex items-center justify-center shrink-0 font-bold text-xs mt-1">1</span>
+                                <p><strong class="text-slate-200">Selecionar Heurísticas:</strong> Escolher os princípios de design de usabilidade que serão aplicados.</p>
+                            </div>
+                            <div class="flex gap-3">
+                                <span class="bg-primary/20 text-primary w-6 h-6 rounded-full flex items-center justify-center shrink-0 font-bold text-xs mt-1">2</span>
+                                <p><strong class="text-slate-200">Definir o Escopo:</strong> Mapear quais telas ou fluxos específicos serão analisados de ponta a ponta.</p>
+                            </div>
+                            <div class="flex gap-3">
+                                <span class="bg-primary/20 text-primary w-6 h-6 rounded-full flex items-center justify-center shrink-0 font-bold text-xs mt-1">3</span>
+                                <p><strong class="text-slate-200">Identificar Objetivos:</strong> Entender com clareza o que o usuário quer fazer na interface.</p>
+                            </div>
+                            <div class="flex gap-3">
+                                <span class="bg-primary/20 text-primary w-6 h-6 rounded-full flex items-center justify-center shrink-0 font-bold text-xs mt-1">4</span>
+                                <p><strong class="text-slate-200">Percurso Cognitivo:</strong> O especialista simula o uso real, passo a passo, identificando possíveis barreiras e atalhos mentais que o utilizador adotará.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="space-y-3">
+                            <div class="flex gap-3">
+                                <span class="bg-primary/20 text-primary w-6 h-6 rounded-full flex items-center justify-center shrink-0 font-bold text-xs mt-1">5</span>
+                                <p><strong class="text-slate-200">Identificar e Anotar Problemas:</strong> Para cada inconsistência encontrada (onde a resposta para as heurísticas for "não"), mapeia-se o problema, as heurísticas associadas e as prováveis consequências.</p>
+                            </div>
+                            <div class="flex gap-3">
+                                <span class="bg-primary/20 text-primary w-6 h-6 rounded-full flex items-center justify-center shrink-0 font-bold text-xs mt-1">6</span>
+                                <p><strong class="text-slate-200">Definir a Severidade:</strong> Classificar a gravidade de cada inconsistência de forma científica (Frequência, Impacto e Persistência).</p>
+                            </div>
+                            <div class="flex gap-3">
+                                <span class="bg-primary/20 text-primary w-6 h-6 rounded-full flex items-center justify-center shrink-0 font-bold text-xs mt-1">7</span>
+                                <p><strong class="text-slate-200">Propor Recomendações:</strong> Desenhar ou descrever soluções de design para os desvios.</p>
+                            </div>
+                            <div class="flex gap-3">
+                                <span class="bg-primary/20 text-primary w-6 h-6 rounded-full flex items-center justify-center shrink-0 font-bold text-xs mt-1">8</span>
+                                <p><strong class="text-slate-200">Elaborar o Relatório Final:</strong> Sintetizar os achados, as falhas, as soluções e destacar também as boas práticas de usabilidade observadas.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-xs text-slate-500 mb-4 italic">
+                [As 10 Heurísticas de Usabilidade de Jakob Nielsen com exemplos visuais práticos]
+            </p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+                <!-- Sandbox Simulador de Tela - Removido overflow-hidden externo do card principal para evitar corte (clipping) dos botões absolutos de erro -->
+                <div class="lg:col-span-7 bg-slate-950 border border-slate-800 rounded-3xl shadow-2xl relative">
+                    <!-- Mockup Header -->
+                    <div class="bg-slate-900 px-4 py-3 border-b border-slate-800 flex items-center justify-between rounded-t-3xl">
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span>
+                            <span class="w-3 h-3 rounded-full bg-yellow-500 inline-block"></span>
+                            <span class="w-3 h-3 rounded-full bg-green-500 inline-block"></span>
+                        </div>
+                        <div class="bg-slate-800 text-[10px] text-slate-400 px-10 py-1 rounded-md max-w-xs truncate">www.comprasonline-ruim.com/checkout</div>
+                        <div class="w-10"></div>
+                    </div>
+
+                    <!-- Mockup Content -->
+                    <div class="p-6 relative">
+                        <!-- Alertas e Modifiers Interativos - Ajustados paddings internos para evitar que alertas sobreponham textos cruciais -->
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6 relative">
+                            <div class="pr-8">
+                                <h4 class="font-bold text-slate-300">Meu Carrinho</h4>
+                                <span class="text-xs text-slate-500">Passo 3 de ???</span>
+                            </div>
+                            <!-- Erro Heurística 1: Falta de status claro do progresso -->
+                            <button onclick="inspectHeuristic('h1')" class="absolute top-1/2 -translate-y-1/2 right-1 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center text-sm font-bold animate-ping-slow hover:scale-125 transition-all shadow-lg z-10">
+                                <i class="fa-solid fa-circle-exclamation animate-pulse"></i>
+                            </button>
+                        </div>
+
+                        <!-- Item list -->
+                        <div class="space-y-4 mb-6">
+                            <div class="flex items-center gap-4 bg-slate-900/60 p-4 rounded-xl border border-slate-800/80 relative pr-12">
+                                <div class="w-12 h-12 bg-slate-800 rounded-md shrink-0"></div>
+                                <div class="flex-1">
+                                    <h5 class="text-xs font-bold text-slate-300">Smartphone Super Premium G3</h5>
+                                    <span class="text-xs text-slate-500">Preço: € 999,00</span>
+                                </div>
+                                <button class="text-xs text-red-500 hover:underline shrink-0">Apagar</button>
+                                <!-- Erro Heurística 3: Sem controle e liberdade (Posicionado de forma segura sem ser cortado pelo container) -->
+                                <button onclick="inspectHeuristic('h3')" class="absolute -top-3 right-4 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center text-sm font-bold hover:scale-125 transition-all shadow-lg z-10">
+                                    <i class="fa-solid fa-circle-exclamation animate-pulse"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Caixa de Cupom Misteriosa e Mensagem de Erro Confusa -->
+                        <div class="bg-slate-900/40 p-4 rounded-xl border border-slate-800/80 mb-6 relative pr-12">
+                            <label class="text-[11px] text-slate-400 block mb-1">Insira o código promocional:</label>
+                            <div class="flex gap-2">
+                                <input type="text" value="XPTO99" class="bg-slate-800 text-xs px-3 py-2 rounded border border-slate-700 w-full" disabled>
+                                <button class="bg-slate-700 text-xs px-4 py-2 rounded text-slate-400 cursor-not-allowed">Aplicar</button>
+                            </div>
+                            <!-- Mensagem de erro incompreensível -->
+                            <div class="text-[10px] text-red-400 mt-2 flex items-center gap-1">
+                                <i class="fa-solid fa-circle-xmark"></i> Erro do sistema: SYS_ERR_CODE_0x9923 (Operação Inválida)
+                            </div>
+                            <!-- Erro Heurística 9: Mensagem de erro técnica (Ajustado posicionamento absoluto para evitar corte) -->
+                            <button onclick="inspectHeuristic('h9')" class="absolute top-1/2 -translate-y-1/2 right-2 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center text-sm font-bold hover:scale-125 transition-all shadow-lg z-10">
+                                <i class="fa-solid fa-circle-exclamation animate-pulse"></i>
+                            </button>
+                        </div>
+
+                        <!-- Botão de Ação Sem Claras Indicações ou Feedbacks -->
+                        <div class="flex justify-between items-center relative pr-12">
+                            <div>
+                                <span class="text-xs text-slate-500">Total</span>
+                                <p class="font-bold text-lg text-primary">€ 999,00</p>
+                            </div>
+                            <button class="bg-slate-800 text-slate-500 text-xs py-3 px-6 rounded-xl border border-slate-700 cursor-not-allowed">
+                                Executar Ação Especial
+                            </button>
+                            <!-- Erro Heurística 4 & 6: Ícones não-padrão (Ajustado posicionamento para evitar sobreposição e corte inferior) -->
+                            <button onclick="inspectHeuristic('h6')" class="absolute top-1/2 -translate-y-1/2 right-2 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center text-sm font-bold hover:scale-125 transition-all shadow-lg z-10">
+                                <i class="fa-solid fa-circle-exclamation animate-pulse"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Painel de Feedback e Explicações Heurísticas -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div class="bg-cardbg border border-slate-800 p-6 rounded-2xl">
+                        <h3 class="font-title text-xl font-bold mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-stethoscope text-primary"></i> Relatório de Diagnóstico
+                        </h3>
+                        <div id="inspectorInstruction" class="text-slate-400 text-sm">
+                            Utilize o simulador clicando nas marcações de alerta (<i class="fa-solid fa-circle-exclamation text-red-500"></i>) na tela esquerda para revelar qual das Heurísticas de Nielsen foi severamente violada no exemplo e acumular pontos de XP.
+                        </div>
+
+                        <div id="inspectorFeedback" class="hidden space-y-4">
+                            <div class="bg-red-500/10 text-red-400 font-bold text-xs uppercase px-3 py-1.5 rounded-lg border border-red-500/20 inline-block" id="violatedName">
+                                Heurística Violada
+                            </div>
+                            <h4 class="font-bold text-lg text-slate-100" id="heuristicTitle">Visibilidade de Status do Sistema</h4>
+                            <p class="text-slate-300 text-sm" id="heuristicDescription">Explicação didática da heurística.</p>
+                            
+                            <div class="pt-4 border-t border-slate-800">
+                                <h5 class="text-xs text-primary font-bold uppercase tracking-widest mb-2">Sugestão de Correção UX</h5>
+                                <p class="text-slate-400 text-xs" id="heuristicCorrection"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Progresso do Diagnóstico Heurístico -->
+                    <div class="bg-slate-900/60 border border-slate-800 p-4 rounded-xl flex items-center justify-between">
+                        <span class="text-xs text-slate-400 font-semibold">Erros Descobertos:</span>
+                        <div class="flex gap-2">
+                            <span id="badge-h1" class="w-7 h-7 rounded-full bg-slate-800 text-[10px] flex items-center justify-center font-bold text-slate-500 transition-all">H1</span>
+                            <span id="badge-h3" class="w-7 h-7 rounded-full bg-slate-800 text-[10px] flex items-center justify-center font-bold text-slate-500 transition-all">H3</span>
+                            <span id="badge-h6" class="w-7 h-7 rounded-full bg-slate-800 text-[10px] flex items-center justify-center font-bold text-slate-500 transition-all">H6</span>
+                            <span id="badge-h9" class="w-7 h-7 rounded-full bg-slate-800 text-[10px] flex items-center justify-center font-bold text-slate-500 transition-all">H9</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MÓDULO 3: O LABORATÓRIO DE TESTES -->
+    <section id="modulo3" class="py-24 border-t border-slate-800 relative">
+        <div class="max-w-6xl mx-auto px-4">
+            <span class="text-primary font-bold text-sm tracking-wider uppercase">Módulo 3: Observação de Usuários</span>
+            <h2 class="font-title text-3xl sm:text-5xl font-bold mt-2 mb-4">O Laboratório de Testes de Usabilidade</h2>
+            <p class="text-slate-400 max-w-2xl mb-12">
+                A observação é considerada a melhor ferramenta para descobrir as motivações ocultas do utilizador. Planeje o cenário ideal comparando os métodos disponíveis.
+            </p>
+
+            <!-- NOVO CONTEÚDO EXPLICATIVO AVA (RELATÓRIO DE TESTE DE USABILIDADE) -->
+            <div class="bg-slate-900/30 border border-slate-800/80 rounded-3xl p-6 md:p-8 mb-12 space-y-6">
+                <div class="flex items-center gap-3 pb-4 border-b border-slate-800">
+                    <span class="w-3 h-3 rounded-full bg-primary inline-block"></span>
+                    <h3 class="font-title text-lg md:text-xl font-bold text-white uppercase tracking-wider">Unidade Académica: Elementos-Chave de um Relatório de Teste de Usabilidade</h3>
+                </div>
+                <div class="text-sm sm:text-base text-slate-300 leading-relaxed space-y-4">
+                    <p>
+                        Após planejar e executar as sessões com usuários, o analista deve condensar as conclusões em um **Relatório de Teste de Usabilidade** abrangente e estratégico para a equipe de desenvolvimento. Conforme estudado, este relatório final é composto por diversos blocos estruturantes fundamentais:
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+                        <div class="bg-slate-950/40 p-5 rounded-xl border border-slate-800/50 space-y-2">
+                            <h4 class="font-bold text-slate-200 text-sm flex items-center gap-2"><i class="fa-solid fa-compass text-primary"></i> Contexto & Objetivos</h4>
+                            <p class="text-xs text-slate-400">Definição clara do produto, perfil dos usuários recrutados, escopo do teste, local de execução e objetivos centrais mapeados.</p>
+                        </div>
+                        <div class="bg-slate-950/40 p-5 rounded-xl border border-slate-800/50 space-y-2">
+                            <h4 class="font-bold text-slate-200 text-sm flex items-center gap-2"><i class="fa-solid fa-chart-line text-primary"></i> Resultados</h4>
+                            <p class="text-xs text-slate-400">Dados quantitativos consolidados e tabulados obtidos a partir de métricas, questionários aplicados e entrevistas pós-teste.</p>
+                        </div>
+                        <div class="bg-slate-950/40 p-5 rounded-xl border border-slate-800/50 space-y-2">
+                            <h4 class="font-bold text-slate-200 text-sm flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation text-primary"></i> Problemas & Recomendações</h4>
+                            <p class="text-xs text-slate-400">O mapeamento preciso de cada erro encontrado, devidamente classificado pela sua severidade, junto de soluções práticas de redesign de interface.</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-400">
+                        <strong>Dica do Moderador:</strong> Para tornar o relatório persuasivo, adicione citações textuais diretas dos usuários (comentários) e clipes de vídeo ou áudio curtos que demonstrem de forma inequívoca o momento exato em que o utilizador enfrentou um bloqueio. Isso evita discussões subjetivas no time de produto.
+                    </p>
+                </div>
+            </div>
+
+            <p class="text-xs text-slate-500 mb-4 italic">
+                [Infográfico do fluxo de testes de usabilidade remoto e presencial]
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <!-- Testes Presenciais -->
+                <div class="bg-cardbg border border-slate-800 rounded-2xl p-6 hover:border-primary/30 transition-all">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+                            <i class="fa-solid fa-people-arrows text-lg"></i>
+                        </div>
+                        <h3 class="font-title text-xl font-bold">Laboratório & Campo (Presencial)</h3>
+                    </div>
+                    <p class="text-sm text-slate-400 mb-6">
+                        O moderador e o participante estão integrados no mesmo espaço físico. Ideal para capturar reações corporais finas e expressão facial de forma precisa.
+                    </p>
+                    <ul class="space-y-3 text-xs text-slate-300">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-primary"></i> Amplo controle técnico do ecossistema físico do teste.</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-primary"></i> Excelente para protótipos em fases físicas iniciais.</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-primary"></i> Possibilidade de captação de áudio/vídeo avançado.</li>
+                    </ul>
+                </div>
+
+                <!-- Testes Remotos -->
+                <div class="bg-cardbg border border-slate-800 rounded-2xl p-6 hover:border-primary/30 transition-all">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+                            <i class="fa-solid fa-globe text-lg"></i>
+                        </div>
+                        <h3 class="font-title text-xl font-bold">Sistemas Distribuídos (Remoto)</h3>
+                    </div>
+                    <p class="text-sm text-slate-400 mb-6">
+                        Realizado via plataformas digitais de videoconferência. Pode ser <strong>Moderado</strong> (com acompanhamento síncrono) ou <strong>Não Moderado</strong> (sem auxílio síncrono).
+                    </p>
+                    <ul class="space-y-3 text-xs text-slate-300">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-primary"></i> Alto alcance geográfico de participantes com menor custo.</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-primary"></i> Avaliação executada diretamente no contexto doméstico do usuário.</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-primary"></i> Menos intimidador do que estruturas laboratoriais tradicionais.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Simulador Interativo de Escolha de Amostra de Nielsen -->
+            <div class="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 md:p-8">
+                <h3 class="font-title text-xl md:text-2xl font-bold mb-4">Planeador de Amostragem (Nielsen, 2000)</h3>
+                <p class="text-slate-400 text-sm mb-6">
+                    Ajuste o número de grupos de perfis diferentes de usuários e veja qual a amostragem ideal para obter até 85% dos erros da sua interface com menor custo financeiro.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="space-y-4">
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest">Selecione o número de Perfis de Usuários:</label>
+                        <div class="flex flex-wrap gap-3">
+                            <button onclick="calculateSample(1)" id="btn-p1" class="flex-1 min-w-[120px] bg-primary text-darkbg font-bold py-3 px-2 rounded-xl transition-all">1 Perfil Único</button>
+                            <button onclick="calculateSample(2)" id="btn-p2" class="flex-1 min-w-[120px] bg-slate-800 text-slate-200 font-bold py-3 px-2 rounded-xl transition-all border border-slate-700">2 Perfis Distintos</button>
+                            <button onclick="calculateSample(3)" id="btn-p3" class="flex-1 min-w-[120px] bg-slate-800 text-slate-200 font-bold py-3 px-2 rounded-xl transition-all border border-slate-700">3+ Perfis</button>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-950 p-6 rounded-2xl border border-slate-800 text-center md:text-left flex flex-col md:flex-row items-center gap-6">
+                        <div class="w-16 h-16 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                            <span id="sampleOutputNumber" class="text-3xl font-extrabold text-primary font-title">5</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-slate-200 text-sm">Quantidade Recomendada de Participantes</h4>
+                            <p id="sampleOutputText" class="text-xs text-slate-400 mt-1">Conforme indicado por Jakob Nielsen, os utilizadores de teste são suficientes para detectar quase todos os bugs de usabilidade críticos do mesmo perfil de utilização.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MÓDULO 4: CALCULADORA DE SEVERIDADE DE NIELSEN -->
+    <section id="modulo4" class="py-24 bg-slate-900/40 border-t border-slate-800 relative">
+        <div class="max-w-6xl mx-auto px-4">
+            <span class="text-primary font-bold text-sm tracking-wider uppercase">Módulo 4: Análise e Classificação</span>
+            <h2 class="font-title text-3xl sm:text-5xl font-bold mt-2 mb-4">Matriz de Severidade de Erros</h2>
+            <p class="text-slate-400 max-w-2xl mb-12">
+                Classificar os erros descobertos de forma técnica permite priorizar o desenvolvimento de forma assertiva. Use o simulador abaixo baseado no framework de Nielsen (1994).
+            </p>
+
+            <!-- NOVO CONTEÚDO EXPLICATIVO AVA (A TRÍADE DE SEVERIDADE) -->
+            <div class="bg-slate-900/30 border border-slate-800/80 rounded-3xl p-6 md:p-8 mb-12 space-y-6">
+                <div class="flex items-center gap-3 pb-4 border-b border-slate-800">
+                    <span class="w-3 h-3 rounded-full bg-primary inline-block"></span>
+                    <h3 class="font-title text-lg md:text-xl font-bold text-white uppercase tracking-wider">Unidade Académica: O Framework de Severidade de Nielsen (1994)</h3>
+                </div>
+                <div class="text-sm sm:text-base text-slate-300 leading-relaxed space-y-4">
+                    <p>
+                        Um problema de usabilidade não pode ser tratado como um erro binário (existe / não existe). Na engenharia de usabilidade, a sua severidade é classificada através do cruzamento dinâmico de três fatores determinantes:
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+                        <div class="p-4 bg-slate-950/30 border border-slate-800 rounded-xl space-y-2">
+                            <span class="text-primary font-bold text-xs uppercase tracking-wider flex items-center gap-1.5"><i class="fa-solid fa-wave-square"></i> Frequência</span>
+                            <p class="text-xs text-slate-400">O problema mapeado ocorre de maneira repetida com quase todos os participantes ou trata-se de uma falha isolada/rara?</p>
+                        </div>
+                        <div class="p-4 bg-slate-950/30 border border-slate-800 rounded-xl space-y-2">
+                            <span class="text-primary font-bold text-xs uppercase tracking-wider flex items-center gap-1.5"><i class="fa-solid fa-circle-nodes"></i> Impacto</span>
+                            <p class="text-xs text-slate-400">Quando a falha acontece, o usuário consegue facilmente superá-la e continuar a tarefa ou ela cria um bloqueio impeditivo catastrófico?</p>
+                        </div>
+                        <div class="p-4 bg-slate-950/30 border border-slate-800 rounded-xl space-y-2">
+                            <span class="text-primary font-bold text-xs uppercase tracking-wider flex items-center gap-1.5"><i class="fa-solid fa-arrows-spin"></i> Persistência</span>
+                            <p class="text-xs text-slate-400">O usuário consegue aprender a superar o problema no segundo uso, ou ele continuará a enfrentar a barreira repetidamente?</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-xs text-slate-500 mb-4 italic">
+                [Matriz de Calor para Classificação de Severidade de Problemas de Usabilidade]
+            </p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- Calculadora Interativa -->
+                <div class="lg:col-span-7 bg-cardbg border border-slate-800 p-6 rounded-3xl space-y-6">
+                    <h3 class="font-title text-xl font-bold text-slate-200 flex items-center gap-2 pb-4 border-b border-slate-800">
+                        <i class="fa-solid fa-calculator text-primary"></i> Calculadora de Gravidade
+                    </h3>
+
+                    <!-- Slider 1: Frequência -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-xs">
+                            <span class="text-slate-400 font-bold uppercase">1. Frequência do Erro</span>
+                            <span id="freqValue" class="text-primary font-bold">Raro (0)</span>
+                        </div>
+                        <input type="range" min="0" max="4" value="0" id="freqSlider" oninput="calcSeverity()" class="w-full accent-primary bg-slate-800 h-2 rounded-lg cursor-pointer">
+                        <p class="text-[10px] text-slate-500">Este problema acontece frequentemente com os usuários ou trata-se de um evento isolado?</p>
+                    </div>
+
+                    <!-- Slider 2: Impacto -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-xs">
+                            <span class="text-slate-400 font-bold uppercase">2. Impacto Técnico</span>
+                            <span id="impValue" class="text-primary font-bold">Fácil de contornar (0)</span>
+                        </div>
+                        <input type="range" min="0" max="4" value="0" id="impSlider" oninput="calcSeverity()" class="w-full accent-primary bg-slate-800 h-2 rounded-lg cursor-pointer">
+                        <p class="text-[10px] text-slate-500">O usuário consegue superar o erro e prosseguir com a tarefa de maneira simples?</p>
+                    </div>
+
+                    <!-- Slider 3: Persistência -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-xs">
+                            <span class="text-slate-400 font-bold uppercase">3. Persistência do Erro</span>
+                            <span id="perValue" class="text-primary font-bold">Ocorre apenas uma vez (0)</span>
+                        </div>
+                        <input type="range" min="0" max="4" value="0" id="perSlider" oninput="calcSeverity()" class="w-full accent-primary bg-slate-800 h-2 rounded-lg cursor-pointer">
+                        <p class="text-[10px] text-slate-500">Uma vez superado o problema, o usuário o enfrentará novamente nas próximas utilizações?</p>
+                    </div>
+                </div>
+
+                <!-- Resultado Dinâmico da Severidade (Ajustado min-h para evitar problemas de dimensionamento flex e overflow) -->
+                <div class="lg:col-span-5 bg-slate-950 border border-slate-800 rounded-3xl p-6 flex flex-col justify-between h-auto min-h-[320px]">
+                    <div class="space-y-4">
+                        <div>
+                            <span class="text-slate-500 text-xs font-bold uppercase tracking-widest block mb-1">Índice Calculado</span>
+                            <div class="flex items-baseline gap-2">
+                                <span id="calcTotal" class="text-5xl font-extrabold font-title text-primary">0.0</span>
+                                <span class="text-xs text-slate-500">/ 4.0 maximum</span>
+                            </div>
+                        </div>
+
+                        <div id="severityBadge" class="px-4 py-2 bg-slate-800 text-slate-300 border border-slate-700 text-xs font-bold rounded-xl inline-block uppercase tracking-wider">
+                            Cosmético
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold text-slate-200 text-sm">Diretriz Recomendada para Correção:</h4>
+                            <p id="severityAdvice" class="text-xs text-slate-400 mt-2 leading-relaxed">
+                                Trata-se de um problema apenas cosmético, não sendo necessária intervenção técnica urgente. O ajuste visual pode ser corrigido em sprints secundárias de lapidação estética de design.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="pt-6 border-t border-slate-900 mt-6">
+                        <div class="flex items-center gap-3 bg-cardbg/40 p-3 rounded-xl border border-slate-800">
+                            <i class="fa-solid fa-file-invoice text-primary text-xl shrink-0"></i>
+                            <div>
+                                <h5 class="text-xs font-bold text-slate-200">Integrar com o Relatório Final</h5>
+                                <p class="text-[10px] text-slate-500 mt-0.5">Use este índice para justificar a priorização das tarefas de projeto para a equipe técnica.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- OFICINA PRÁTICA INTEGRADA -->
+    <section id="desafio" class="py-24 border-t border-slate-800 relative bg-[radial-gradient(circle_at_bottom,rgba(132,204,22,0.05)_0%,transparent_60%)]">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-primary font-bold text-sm tracking-wider uppercase">Encontro Presencial & Oficina de Soluções</span>
+                <h2 class="font-title text-3xl sm:text-5xl font-bold mt-2">Oficina de Soluções Profissionais</h2>
+                <p class="text-slate-400 mt-4 text-sm sm:text-base">
+                    Aplique de forma direta todos os conceitos que você acabou de estudar. Abaixo estão os desafios oficiais estruturados para você responder com maestria.
+                </p>
+            </div>
+
+            <!-- Tab System for Challenges -->
+            <div class="bg-cardbg border border-slate-800 rounded-3xl overflow-hidden shadow-2xl">
+                <div class="flex border-b border-slate-800 overflow-x-auto">
+                    <button onclick="switchChallenge('c1')" id="tab-c1" class="flex-1 py-4 px-6 font-bold text-xs sm:text-sm tracking-wider uppercase border-b-2 border-primary bg-slate-900 text-slate-100 whitespace-nowrap">
+                        <i class="fa-solid fa-mobile-screen-button mr-2"></i> Desafio 1: App de Compras
+                    </button>
+                    <button onclick="switchChallenge('c2')" id="tab-c2" class="flex-1 py-4 px-6 font-bold text-xs sm:text-sm tracking-wider uppercase border-b-2 border-transparent hover:bg-slate-900/50 text-slate-400 whitespace-nowrap">
+                        <i class="fa-solid fa-graduation-cap mr-2"></i> Desafio 2: Portal Matrículas
+                    </button>
+                    <button onclick="switchChallenge('c3')" id="tab-c3" class="flex-1 py-4 px-6 font-bold text-xs sm:text-sm tracking-wider uppercase border-b-2 border-transparent hover:bg-slate-900/50 text-slate-400 whitespace-nowrap">
+                        <i class="fa-solid fa-shield-halved mr-2"></i> Desafio 3: Gestão ERP
+                    </button>
+                </div>
+
+                <div class="p-6 sm:p-8 space-y-6">
+                    <!-- Conteúdo do Desafio Ativo -->
+                    <div id="challengeBody" class="space-y-6">
+                        <!-- Será populado dinamicamente via JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-12 border-t border-slate-800 text-center text-xs text-slate-500">
+        <div class="max-w-6xl mx-auto px-4 space-y-4">
+            <div class="flex items-center justify-center gap-2">
+                <div class="bg-primary/20 text-primary font-title font-extrabold px-2 py-0.5 rounded text-sm">UX</div>
+                <span class="font-title font-bold text-sm tracking-tight text-slate-300">ACADEMY</span>
+            </div>
+            <p>Construído estrategicamente seguindo as heurísticas de usabilidade, focado em metodologias ativas de ensino.</p>
+            <p class="text-[10px] text-slate-600">© 2026 UX Academy. Desenvolvido para uso instrucional presencial e remoto.</p>
+        </div>
     </footer>
 
+    <!-- LOGICA JAVASCRIPT EM ARQUIVO ÚNICO -->
     <script>
-        // --- Tab Functionality ---
-        function openTab(evt, tabName) {
-            var i, tabcontent, tablinks;
+        // CONTROLE DO PROGRESSO DE LEITURA (SCROLL) + HEADER INTELIGENTE
+        let lastScrollY = window.scrollY;
+        const mainHeader = document.getElementById('mainHeader');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
             
-            // Hide all tab content
-            tabcontent = document.getElementsByClassName("tab-content");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-                tabcontent[i].classList.remove("active");
-            }
+            // Atualiza barra de progresso superior
+            document.getElementById("progressBar").style.width = scrolled + "%";
 
-            // Remove active class from buttons
-            tablinks = document.getElementsByClassName("tab-btn");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            // Lógica do Header Inteligente:
+            // Só esconde se o menu mobile NÃO estiver visível/aberto e passou de um limite inicial de scroll (120px)
+            if (mobileMenu.classList.contains('hidden')) {
+                if (winScroll > lastScrollY && winScroll > 120) {
+                    // Rolar para baixo -> Oculta o menu suavemente
+                    mainHeader.classList.add('header-hidden');
+                } else {
+                    // Rolar para cima -> Mostra o menu suavemente
+                    mainHeader.classList.remove('header-hidden');
+                }
             }
+            
+            lastScrollY = winScroll;
+        });
 
-            // Show current tab and add active class
-            document.getElementById(tabName).style.display = "block";
-            evt.currentTarget.className += " active";
+        // GAMIFICATION: SISTEMA DE PONTOS DE EXPERIÊNCIA (XP)
+        let totalXP = 0;
+        const clickedActions = new Set();
+
+        // Incremento inicial para dar engajamento na leitura
+        setTimeout(() => {
+            addXP(20, 'read-intro');
+        }, 3000);
+
+        function addXP(amount, actionId) {
+            if (!clickedActions.has(actionId)) {
+                clickedActions.add(actionId);
+                totalXP += amount;
+                document.getElementById('scoreBadge').innerText = totalXP;
+                // Efeito visual no badge
+                const badge = document.getElementById('scoreBadge').parentElement;
+                badge.classList.add('scale-110', 'bg-primary/30');
+                setTimeout(() => {
+                    badge.classList.remove('scale-110', 'bg-primary/30');
+                }, 300);
+            }
         }
+
+        // MOBILE NAV MENU TOGGLE
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // MÓDULO 1: SELEÇÃO DE PILARES DO RADAR
+        const pillarData = {
+            eficacia: {
+                points: "25,35 85,75 15,75", // distorcendo em direção a eficácia (topo)
+                title: "Pilar: Eficácia",
+                description: "A eficácia quantifica a taxa de sucesso da tarefa executada pelo usuário final. Ela ignora o tempo gasto e foca puramente se o objetivo estipulado no projeto foi concluído de forma correta e sem bloqueios sistêmicos incontornáveis.",
+                wrong: "O botão de pagamento em tablets falha ao registrar o toque devido a bugs de layout, fazendo com que mais de 30% dos clientes de dispositivos móveis abandonem a compra por não conseguir finalizar a operação.",
+                right: "Garantia técnica de que as interações críticas funcionem plenamente de maneira responsiva em resoluções variadas, incluindo fluxos de checkout simplificados em um único clique."
+            },
+            eficiencia: {
+                points: "50,55 95,75 15,75", // distorcendo em direção a eficiência (direita)
+                title: "Pilar: Eficiência",
+                description: "Mede o consumo de recursos necessários (cliques de mouse, navegação entre telas, tempo absoluto gasto e esforço mental) que o usuário investe para atingir a meta estipulada pela interface.",
+                wrong: "Exigir que um usuário de e-commerce preencha manualmente o mesmo endereço três vezes em telas diferentes e navegue por 12 etapas para efetivar a compra de um livro simples.",
+                right: "Uso de autopreenchimento por banco de dados integrado de CEP, caminhos reduzidos com menos de 3 telas e botões de atalhos rápidos de checkout."
+            },
+            satisfacao: {
+                points: "50,55 85,75 5,75", // distorcendo em direção a satisfação (esquerda)
+                title: "Pilar: Satisfação",
+                description: "Avalia a aceitação e o conforto do usuário na jornada de uso do sistema. Um sistema com alta eficácia e eficiência ainda pode ter satisfação baixa caso seja percebido como hostil, esteticamente poluído ou confuso.",
+                wrong: "Exibir mensagens de falha em código puro do servidor contendo jargões técnicos incompreensíveis e designs poluídos que irritam o usuário e reduzem seu conforto visual.",
+                right: "Design limpo focado na estética minimalista, micro-animações de confirmação de sucesso elegantes e feedbacks humanizados constantes durante todas as etapas do processo."
+            }
+        };
+
+        function selectPillar(pillar) {
+            const current = pillarData[pillar];
+            document.getElementById('radarShape').setAttribute('points', current.points);
+            
+            // Ativa o sandbox
+            const sandbox = document.getElementById('pilarSandbox');
+            sandbox.classList.remove('hidden');
+            
+            document.getElementById('sandboxTitle').innerText = current.title;
+            document.getElementById('sandboxDescription').innerText = current.description;
+            document.getElementById('sandboxWrong').innerText = current.wrong;
+            document.getElementById('sandboxRight').innerText = current.right;
+
+            // Remove bordas ativas de outros elementos
+            ['eficacia', 'eficiencia', 'satisfacao'].forEach(p => {
+                document.getElementById(`card-${p}`).classList.remove('border-primary', 'shadow-md');
+            });
+            document.getElementById(`card-${pillar}`).classList.add('border-primary', 'shadow-md');
+
+            // Adiciona XP pedagógica
+            addXP(50, `pillar-${pillar}`);
+        }
+
+        // MÓDULO 2: INSPEÇÃO HEURÍSTICA DE MOCKUP
+        const heuristicData = {
+            h1: {
+                name: "Heurística 1",
+                title: "Visibilidade do Status do Sistema",
+                description: "O sistema deve sempre manter os usuários informados sobre o que está acontecendo por meio de feedback apropriado e em tempo hábil. No exemplo, o usuário não faz ideia de quantas etapas faltam ou se o sistema está travado.",
+                correction: "Implementar um indicador de progresso (Breadcrumbs ou Linha do Tempo) que exiba claramente 'Passo 3 de 4: Revisão Técnica' e barras de progresso reais ao interagir."
+            },
+            h3: {
+                name: "Heurística 3",
+                title: "Controle e Liberdade do Usuário",
+                description: "Os usuários frequentemente escolhem funções do sistema por engano e precisam de uma 'saída de emergência' claramente marcada para sair do estado indesejado sem ter que passar por um diálogo estendido.",
+                correction: "Adicionar a option imediata de 'Desfazer' (Undo) logo após o utilizador excluir um item da lista do carrinho de compras por engano, sem exigir que ele procure o item no site novamente."
+            },
+            h6: {
+                name: "Heurística 6",
+                title: "Reconhecer em vez de Lembrar",
+                description: "Minimize a carga de memória do usuário tornando objetos, ações e opções visíveis. O usuário não deve ter que lembrar informações de uma parte do diálogo para outra. No mockup, o botão cinza sem ícone explicativo ou texto claro obriga o utilizador a tentar lembrar para que serve a operação.",
+                correction: "Tornar o rótulo do botão sempre explícito (ex: 'Finalizar Compra') e usar ícones universais amplamente adotados pelo mercado de design digital."
+            },
+            h9: {
+                name: "Heurística 9",
+                title: "Ajudar os Usuários a Reconhecer e se Recuperar de Erros",
+                description: "As mensagens de erro devem ser expressas in linguagem clara (sem códigos ou jargões técnicos), indicar precisamente o problema e sugerir uma solução construtiva na interface.",
+                correction: "Substituir códigos crípticos do servidor por mensagens humanizadas: 'O código inserido expirou em 10/05. Verifique a digitação ou tente outro cupom de desconto.'"
+            }
+        };
+
+        function inspectHeuristic(id) {
+            const data = heuristicData[id];
+            
+            // Mostra o card de feedback
+            document.getElementById('inspectorInstruction').classList.add('hidden');
+            const feedback = document.getElementById('inspectorFeedback');
+            feedback.classList.remove('hidden');
+
+            document.getElementById('violatedName').innerText = data.name;
+            document.getElementById('heuristicTitle').innerText = data.title;
+            document.getElementById('heuristicDescription').innerText = data.description;
+            document.getElementById('heuristicCorrection').innerText = data.correction;
+
+            // Marca o badge de progresso de inspeção como ativado
+            const badge = document.getElementById(`badge-${id}`);
+            badge.classList.remove('bg-slate-800', 'text-slate-500');
+            badge.classList.add('bg-primary', 'text-darkbg');
+
+            // Adiciona XP
+            addXP(100, `heuristic-${id}`);
+        }
+
+        // MÓDULO 3: PLANEADOR DE NIELSEN
+        const samples = {
+            1: { number: 5, text: "Conforme indicado por Jakob Nielsen, se você estiver testando um único grupo de perfil homogêneo de usuários de forma qualitativa, recrutar exatamente 5 participantes já é o suficiente para detectar até 85% dos bugs de usabilidade críticos, garantindo a melhor relação custo-benefício para a equipe." },
+            2: { number: "3 a 4", text: "Ao expandir os testes para cobrir dois públicos de perfis significativamente diferentes (ex: Administrador técnico vs. Usuário final básico), o ideal recomendado é recrutar de 3 a 4 participantes de cada perfil para manter a representatividade dos dados." },
+            3: { number: "3 por grupo", text: "Se você possuir três ou mais grupos distintos de profiles de utilizadores, Nielsen sugere focar na eficiência orçamentária de projeto recrutando exatamente 3 participantes dedicados de cada um dos perfis selecionados." }
+        };
+
+        function calculateSample(profiles) {
+            const data = samples[profiles];
+            document.getElementById('sampleOutputNumber').innerText = data.number;
+            document.getElementById('sampleOutputText').innerText = data.text;
+
+            // Atualiza botões
+            [1, 2, 3].forEach(p => {
+                const btn = document.getElementById(`btn-p${p}`);
+                if (p === profiles) {
+                    btn.classList.remove('bg-slate-800', 'text-slate-200', 'border-slate-700');
+                    btn.classList.add('bg-primary', 'text-darkbg');
+                } else {
+                    btn.classList.remove('bg-primary', 'text-darkbg');
+                    btn.classList.add('bg-slate-800', 'text-slate-200', 'border-slate-700');
+                }
+            });
+
+            addXP(40, `sample-calc-${profiles}`);
+        }
+
+        // MÓDULO 4: CÁLCULO DE SEVERIDADE
+        function calcSeverity() {
+            const freq = parseInt(document.getElementById('freqSlider').value);
+            const imp = parseInt(document.getElementById('impSlider').value);
+            const per = parseInt(document.getElementById('perSlider').value);
+
+            // Média ponderada simplificada para simular índice científico de severidade
+            const total = ((freq + imp + per) / 3).toFixed(1);
+            document.getElementById('calcTotal').innerText = total;
+
+            // Labels correspondentes
+            const freqLabels = ["Raro (0)", "Pouco frequente (1)", "Ocorre ocasionalmente (2)", "Frequente (3)", "Comum a quase todos (4)"];
+            const impLabels = ["Fácil de contornar (0)", "Inconveniente pequeno (1)", "Inconveniente médio (2)", "Barreira severa (3)", "Impede a tarefa (4)"];
+            const perLabels = ["Ocorre apenas uma vez (0)", "Fácil de contornar depois (1)", "Ocasionalmente repetitivo (2)", "Inconveniente persistente (3)", "Altamente repetitivo (4)"];
+
+            document.getElementById('freqValue').innerText = freqLabels[freq];
+            document.getElementById('impValue').innerText = impLabels[imp];
+            document.getElementById('perValue').innerText = perLabels[per];
+
+            // Badges e Conselhos
+            const badge = document.getElementById('severityBadge');
+            const advice = document.getElementById('severityAdvice');
+
+            if (total < 1.0) {
+                badge.innerText = "Cosmético";
+                badge.className = "mt-4 px-4 py-2 bg-slate-800 text-slate-300 border border-slate-700 text-xs font-bold rounded-xl inline-block uppercase tracking-wider";
+                advice.innerText = "Trata-se de um problema apenas estético ou cosmético, não sendo necessária intervenção de desenvolvimento urgente. O ajuste pode ser resolvido em sprints de refinação estética visual secundárias.";
+            } else if (total < 2.5) {
+                badge.innerText = "Problema Leve / Moderado";
+                badge.className = "mt-4 px-4 py-2 bg-blue-500/10 text-blue-400 border border-blue-500/20 text-xs font-bold rounded-xl inline-block uppercase tracking-wider";
+                advice.innerText = "Problema de usabilidade de gravidade moderada. O usuário terá pequenos atrasos, mas conseguirá concluir a tarefa. Deve ser integrado na fila de melhorias de produto do próximo ciclo.";
+            } else if (total < 3.5) {
+                badge.innerText = "Problema Grave";
+                badge.className = "mt-4 px-4 py-2 bg-yellow-500/10 text-yellow-500 border border-yellow-500/20 text-xs font-bold rounded-xl inline-block uppercase tracking-wider";
+                advice.innerText = "Problema grave de usabilidade que perturba drasticamente a experiência, gerando extrema fadiga, dúvidas e possíveis desistências parciais. Deve ser tratado com prioridade alta na equipe de desenvolvimento.";
+            } else {
+                badge.innerText = "Catastrófico (Prioridade Crítica)";
+                badge.className = "mt-4 px-4 py-2 bg-red-500/10 text-red-400 border border-red-500/20 text-xs font-bold rounded-xl inline-block uppercase tracking-wider animate-pulse";
+                advice.innerText = "Problema catastrófico de usabilidade. Impede que o usuário atinja seu objetivo e encerre o processo do sistema de forma segura. Requer hotfix emergencial do time de desenvolvimento para evitar perda de dados e receita financeira.";
+            }
+
+            addXP(10, `calc-severity-interactive-${freq}-${imp}-${per}`);
+        }
+
+        // OFICINA DE SOLUÇÕES: TRATAMENTO DE DESAFIOS E RESPOSTAS
+        const challenges = {
+            c1: {
+                title: "Desafio Prático 1: Estudo de Caso de E-commerce",
+                context: "Uma empresa desenvolveu um aplicativo de compras online inovador. Após o lançamento das operações de vendas, começaram a surgir feedbacks severos sobre barreiras na hora de localizar produtos específicos, falhas na finalização das compras no checkout e pouca clareza de certas micro-interações.",
+                questions: [
+                    { q: "Quais tarefas de teste os participantes deveriam executar?", a: "Recomenda-se projetar tarefas simulando o fluxo real: '1. Buscar um smartphone utilizando a caixa de pesquisa principal', '2. Aplicar um filtro de marca e modelo', '3. Adicionar o produto ao carrinho' e '4. Finalizar o pagamento utilizando cartão simulado'." },
+                    { q: "Quais são os principais problemas que podem ser capturados pela observação?", a: "Problemas de navegação em profundidade (usuário perdido em menus complexos), atrasos e cliques desnecessários por falta de filtros, erros não documentados que causam a desistência e inconsistência visual dos botões de ação final." },
+                    { q: "O que deve ser rigorosamente documentado durante a sessão?", a: "Taxas de conversão das tarefas (sucesso, falha ou suporte), tempo decorrido, número absoluto de erros por tela, manifestações de insatisfação verbal, e observações qualitativas dos momentos exatos de indecisão." }
+                ]
+            },
+            c2: {
+                title: "Desafio Prático 2: Sistema Web de Matrículas",
+                context: "Um novo sistema web para matrículas acadêmicas foi disponibilizado. Os novos estudantes reclamam que não conseguem encontrar com facilidade os botões de inscrição primários, que há poluição visual excessiva e que os retornos das mensagens de erro são técnicos e confusos.",
+                questions: [
+                    { q: "Como propor correções práticas para esta interface de matrícula?", a: "1. Reduzir a poluição visual adotando uma arquitetura de informações em etapas claras (Steppers). 2. Substituir textos longos por cards informativos intuitivos. 3. Mapear botões de ação principal utilizando cores quentes de alto contraste em relação ao fundo." },
+                    { q: "Quais elements específicos da interface induzem à poluição mental?", a: "Campos de digitação redundantes que exigem informações repetidas e a falta de hierarquia visual que mistura seções obrigatórias com conteúdos informativos secundários." },
+                    { q: "Proposta de tratamento didático para mensagens de erro:", a: "Utilizar o padrão da Heurística 9 de Nielsen. Em vez de 'ERRO: NULL_FIELD_4303', apresentar o feedback explicativo: 'Por favor, selecione pelo menos um curso para prosseguir. Clique aqui para retornar à listagem.'" }
+                ]
+            },
+            c3: {
+                title: "Desafio Prático 3: Auditoria Heurística ERP de Gestão",
+                context: "A equipe de design decidiu fazer uma avaliação heurística interna preventiva antes de rodar o deploy final de um software corporativo complexo tipo ERP (Enterprise Resource Planning) para otimizar os fluxos de trabalho antes do onboarding corporativo formal.",
+                questions: [
+                    { q: "Quais Heurísticas de Nielsen são mais cruciais para um sistema ERP complexo?", a: "1. Consistência e Padrões (H4) - para assegurar que tabelas e gráficos tenham nomenclaturas uniformes. 2. Prevenção de Erros (H5) - para evitar que ações corporativas destruam dados contábeis por engano. 3. Flexibilidade e Eficiência de Uso (H7) - fornecendo teclas de atalhos rápidos para usuários experts." },
+                    { q: "Quais sugestões rápidas de onboarding podem reduzir o tempo de treinamento dos funcionários?", a: "Introduzir tutoriais assistivos interativos e guias suspensos contextuais integrados na primeira inicialização do painel." },
+                    { q: "Como estruturar um plano de relatório preventivo robusto para gestores?", a: "Listar os problemas encontrados indexados por sua respectiva Heurística violada, acompanhados do cálculo científico de sua Severidade e sua proposta de solução com estimativa de impacto na eficiência de produção." }
+                ]
+            }
+        };
+
+        function switchChallenge(id) {
+            const data = challenges[id];
+            
+            // Alterar visualmente as tabs
+            ['c1', 'c2', 'c3'].forEach(tab => {
+                const btn = document.getElementById(`tab-${tab}`);
+                if (tab === id) {
+                    btn.classList.add('border-primary', 'bg-slate-900', 'text-slate-100');
+                    btn.classList.remove('border-transparent', 'text-slate-400');
+                } else {
+                    btn.classList.remove('border-primary', 'bg-slate-900', 'text-slate-100');
+                    btn.classList.add('border-transparent', 'text-slate-400');
+                }
+            });
+
+            // Popula os dados
+            const body = document.getElementById('challengeBody');
+            let questionsHTML = '';
+            
+            data.questions.forEach((q, index) => {
+                questionsHTML += `
+                    <div class="bg-slate-900/40 border border-slate-800 p-5 rounded-2xl relative">
+                        <span class="absolute -top-3 left-4 bg-primary text-darkbg font-extrabold text-[10px] px-3 py-0.5 rounded-full uppercase">Etapa 0${index + 1}</span>
+                        <h4 class="font-bold text-slate-200 text-sm sm:text-base mt-2">${q.q}</h4>
+                        <div class="mt-4 bg-slate-950 p-4 rounded-xl border border-slate-900 flex items-start gap-3">
+                            <i class="fa-solid fa-lightbulb text-primary text-xs sm:text-sm mt-1"></i>
+                            <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">${q.a}</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            body.innerHTML = `
+                <div>
+                    <h3 class="font-title text-xl sm:text-2xl font-bold text-slate-100 mb-2">${data.title}</h3>
+                    <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">${data.context}</p>
+                </div>
+                <div class="grid grid-cols-1 gap-6">
+                    ${questionsHTML}
+                </div>
+            `;
+
+            addXP(60, `switch-challenge-${id}`);
+        }
+
+        // INICIALIZAÇÃO DO SITE
+        window.onload = function() {
+            // Inicializa a calculadora com os parâmetros básicos
+            calcSeverity();
+            // Inicializa o primeiro desafio visualizado
+            switchChallenge('c1');
+        };
     </script>
 </body>
 </html>
