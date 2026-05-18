@@ -236,19 +236,19 @@
                 <div class="lg:col-span-5 bg-cardbg/50 border border-slate-800 p-6 rounded-2xl flex flex-col items-center">
                     <h3 class="text-center font-bold text-slate-300 mb-8 text-sm uppercase tracking-wider">Visualizador do Equilíbrio de Interface</h3>
                     
-                    <!-- SVG Triângulo Dinâmico com Rótulos sem Risco de Sobreposição -->
+                    <!-- SVG Triângulo Dinâmico com Rótulos perfeitamente sincronizados (sem rotate-90) -->
                     <div class="w-64 h-64 relative bg-slate-900/50 rounded-full border border-slate-800 flex items-center justify-center p-6">
-                        <svg viewBox="0 0 100 100" class="w-full h-full transform -rotate-90">
+                        <svg viewBox="0 0 100 100" class="w-full h-full">
                             <!-- Background Triangle -->
                             <polygon points="50,15 85,75 15,75" fill="none" stroke="#334155" stroke-width="1.5" stroke-dasharray="3"/>
                             <!-- Dynamic Active Area representing the balance of user experience -->
-                            <polygon id="radarShape" points="50,15 85,75 15,75" fill="rgba(132, 204, 22, 0.2)" stroke="#84cc16" stroke-width="2" class="transition-all duration-500 ease-out"/>
+                            <polygon id="radarShape" points="50,45 67.5,65 32.5,65" fill="rgba(132, 204, 22, 0.2)" stroke="#84cc16" stroke-width="2" class="transition-all duration-500 ease-out"/>
                             <!-- Vertices indicators -->
                             <circle cx="50" cy="15" r="3.5" fill="#ef4444" id="vEficacia"/> <!-- Red: Eficácia -->
                             <circle cx="85" cy="75" r="3.5" fill="#3b82f6" id="vEficiencia"/> <!-- Blue: Eficiência -->
                             <circle cx="15" cy="75" r="3.5" fill="#eab308" id="vSatisfacao"/> <!-- Yellow: Satisfação -->
                         </svg>
-                        <!-- Posições absolutas dos rótulos recalibradas com padding externo para segurança visual -->
+                        <!-- Posições absolutas dos rótulos calibradas de acordo com as coordenadas padrão do SVG -->
                         <div class="absolute -top-1 left-1/2 -translate-x-1/2 text-[11px] bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded text-red-400 font-bold uppercase tracking-wider">Eficácia</div>
                         <div class="absolute -bottom-1 -right-2 text-[11px] bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded text-blue-400 font-bold uppercase tracking-wider">Eficiência</div>
                         <div class="absolute -bottom-1 -left-2 text-[11px] bg-yellow-500/10 border border-yellow-500/20 px-2 py-0.5 rounded text-yellow-500 font-bold uppercase tracking-wider">Satisfação</div>
@@ -592,7 +592,7 @@
             <div class="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 md:p-8">
                 <h3 class="font-title text-xl md:text-2xl font-bold mb-4">Planeador de Amostragem (Nielsen, 2000)</h3>
                 <p class="text-slate-400 text-sm mb-6">
-                    Ajuste o número de grupos de perfis diferentes de usuários e veja qual a amostragem ideal para obter até 85% dos erros da sua interface com menor custo financeiro.
+                    Ajuste o número de grupos de profiles diferentes de usuários e veja qual a amostragem ideal para obter até 85% dos erros da sua interface com menor custo financeiro.
                 </p>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
@@ -840,24 +840,24 @@
             menu.classList.toggle('hidden');
         }
 
-        // MÓDULO 1: SELEÇÃO DE PILARES DO RADAR
+        // MÓDULO 1: SELEÇÃO DE PILARES DO RADAR (CÁLCULO MATEMÁTICO REAL DE DISTORÇÃO VETORIAL)
         const pillarData = {
             eficacia: {
-                points: "25,35 85,75 15,75", // distorcendo em direção a eficácia (topo)
+                levels: [1.0, 0.35, 0.35], // Foco em Eficácia (Eficácia alto, eficiência e satisfação baixos)
                 title: "Pilar: Eficácia",
                 description: "A eficácia quantifica a taxa de sucesso da tarefa executada pelo usuário final. Ela ignora o tempo gasto e foca puramente se o objetivo estipulado no projeto foi concluído de forma correta e sem bloqueios sistêmicos incontornáveis.",
                 wrong: "O botão de pagamento em tablets falha ao registrar o toque devido a bugs de layout, fazendo com que mais de 30% dos clientes de dispositivos móveis abandonem a compra por não conseguir finalizar a operação.",
                 right: "Garantia técnica de que as interações críticas funcionem plenamente de maneira responsiva em resoluções variadas, incluindo fluxos de checkout simplificados em um único clique."
             },
             eficiencia: {
-                points: "50,55 95,75 15,75", // distorcendo em direção a eficiência (direita)
+                levels: [0.35, 1.0, 0.35], // Foco em Eficiência
                 title: "Pilar: Eficiência",
                 description: "Mede o consumo de recursos necessários (cliques de mouse, navegação entre telas, tempo absoluto gasto e esforço mental) que o usuário investe para atingir a meta estipulada pela interface.",
                 wrong: "Exigir que um usuário de e-commerce preencha manualmente o mesmo endereço três vezes em telas diferentes e navegue por 12 etapas para efetivar a compra de um livro simples.",
                 right: "Uso de autopreenchimento por banco de dados integrado de CEP, caminhos reduzidos com menos de 3 telas e botões de atalhos rápidos de checkout."
             },
             satisfacao: {
-                points: "50,55 85,75 5,75", // distorcendo em direção a satisfação (esquerda)
+                levels: [0.35, 0.35, 1.0], // Foco em Satisfação
                 title: "Pilar: Satisfação",
                 description: "Avalia a aceitação e o conforto do usuário na jornada de uso do sistema. Um sistema com alta eficácia e eficiência ainda pode ter satisfação baixa caso seja percebido como hostil, esteticamente poluído ou confuso.",
                 wrong: "Exibir mensagens de falha em código puro do servidor contendo jargões técnicos incompreensíveis e designs poluídos que irritam o usuário e reduzem seu conforto visual.",
@@ -867,9 +867,28 @@
 
         function selectPillar(pillar) {
             const current = pillarData[pillar];
-            document.getElementById('radarShape').setAttribute('points', current.points);
             
-            // Ativa o sandbox
+            // Definição matemática do centro e dos vetores diretores do triângulo de usabilidade
+            const centerX = 50;
+            const centerY = 55;
+            
+            // Fatores de escala do vetor diretor de cada vértice
+            const l1 = current.levels[0]; // Eficácia (Direção Superior)
+            const l2 = current.levels[1]; // Eficiência (Direção Inferior-Direita)
+            const l3 = current.levels[2]; // Satisfação (Direção Inferior-Esquerda)
+            
+            // Cálculo dinâmico de coordenadas (Vetor Centro -> Vértice * Nível)
+            const x1 = centerX;
+            const y1 = (centerY - 40 * l1).toFixed(1);
+            const x2 = (centerX + 35 * l2).toFixed(1);
+            const y2 = (centerY + 20 * l2).toFixed(1);
+            const x3 = (centerX - 35 * l3).toFixed(1);
+            const y3 = (centerY + 20 * l3).toFixed(1);
+            
+            // Atualiza dinamicamente os pontos do polígono ativo no SVG
+            document.getElementById('radarShape').setAttribute('points', `${x1},${y1} ${x2},${y2} ${x3},${y3}`);
+            
+            // Ativa o sandbox de explicação do pilar selecionado
             const sandbox = document.getElementById('pilarSandbox');
             sandbox.classList.remove('hidden');
             
@@ -884,7 +903,7 @@
             });
             document.getElementById(`card-${pillar}`).classList.add('border-primary', 'shadow-md');
 
-            // Adiciona XP pedagógica
+            // Adiciona XP pedagógica de conquista
             addXP(50, `pillar-${pillar}`);
         }
 
